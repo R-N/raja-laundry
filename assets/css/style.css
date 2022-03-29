@@ -1,0 +1,57 @@
+.chosen-search input{
+	width: 100% !important;
+}
+
+.groceryCrudTable{
+    overflow-x: scroll !important;
+    white-space: nowrap !important;
+	min-width: 100% !important;
+}
+.groceryCrudTable>*{
+	min-width: 100% !important;
+}
+.groceryCrudTable tr{
+	min-width: 100% !important;
+}
+.actions{
+}
+.DataTables_sort_wrapper{
+	text-align: left !important;
+}
+
+.dataTables_filter{
+	float: right;
+}
+.dataTables_length{
+	float: left;
+}
+.panel-footer{
+	width: 100%;
+}
+.dataTables_info{
+	float:left;
+}
+.dataTables_paginate{
+	float:right;
+	width: auto !important;
+}
+.pull-right{
+	float:right;
+}
+
+.bg-primary a{
+	color:white;
+}
+.pit-0 *{
+	padding-top:0 !important;
+}
+.error{
+	font-size: 1rem;
+}
+.actions .ui-icon{
+	#display: none;
+	left: 0;
+}
+.actions .ui-button-text{
+	padding: .2em .5em .2em 1em;
+}

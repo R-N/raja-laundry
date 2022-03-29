@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Profil - Raja Laundry</title>
+    <link rel="stylesheet" href="<?=base_url();?>assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="<?=base_url();?>assets/fonts/fontawesome-all.min.css">
+	<?php 
+	foreach($css_files as $file): ?>
+		<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
+	<?php endforeach; ?>
+    <link rel="stylesheet" href="<?=base_url();?>assets/css/style.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>Raja Laundry</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>"><span>Dashboard</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>customer"><span>Customer</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>pesanan"><span>Pesanan</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>pengeluaran"><span>Pengeluaran</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>laporan"><span>Laporan</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button></div>
+                </nav>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4  class="text-primary d-inline-block"><?=$title;?></h4>
+                                    <div class="dropdown float-right">
+										<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Data <?=$bulan;?> Bulan Terakhir</button>
+										<div class="dropdown-menu" role="menu">
+											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>1">1 Bulan</a>
+											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>2">2 Bulan</a>
+											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>3">3 Bulan</a>
+											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>6">6 Bulan</a>
+											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>12">12 Bulan</a>
+										</div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+									<?=$output;?>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+						<div class="col-lg-7 col-xl-8">
+							<div class="card shadow mb-4">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h6 class="text-primary font-weight-bold m-0">Pesanan Harian</h6>
+								</div>
+								<div class="card-body">
+									<div class="chart-area"><canvas id="chart-pesanan-harian"></canvas></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-5 col-xl-4">
+							<div class="card shadow mb-4">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h6 class="text-primary font-weight-bold m-0">Pesanan Paket</h6>
+								</div>
+								<div class="card-body">
+									<div class="chart-area"><canvas id="chart-pesanan-paket"></canvas></div>
+								</div>
+							</div>
+						</div>
+                        <div class="col-xl-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary font-weight-bold m-0">Pesanan</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area"><canvas id="chart-pesanan"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary font-weight-bold m-0">Pembayaran</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area"><canvas id="chart-pembayaran"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Raja Laundry 2019</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+    <script src="<?=base_url();?>assets/js/jquery.min.js"></script>
+    <script src="<?=base_url();?>assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<?=base_url();?>assets/js/chart.min.js"></script>
+    <script src="<?=base_url();?>assets/js/bs-charts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="<?=base_url();?>assets/js/theme.js"></script>
+    <?php foreach($js_files as $file): ?>
+        <script src="<?php echo $file; ?>"></script>
+    <?php endforeach; ?>
+	<script>
+		var dataChartPesananHarian = {
+		  "type": "bar",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->HARI;'), $dataPesananHarian));?>,
+			"datasets": [
+			  {
+				"label": "Pesanan Bulanan",
+				"backgroundColor": "#0041ff",
+				"borderColor": "rgba(78, 115, 223, 1)",
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesananHarian));?>
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			},
+			"scales": {
+			  "xAxes": [
+				{
+				  "ticks": {
+					"beginAtZero": true
+				  }
+				}
+			  ],
+			  "yAxes": [
+				{
+				  "ticks": {
+					"beginAtZero": true
+				  }
+				}
+			  ]
+			}
+		  }
+		};
+		var dataChartPesananPaket = {
+		  "type": "doughnut",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->PAKET;'), $dataPesananPaket));?>,
+			"datasets": [
+			  {
+				"label": "Penjualan",
+				"backgroundColor": [
+				  "#4e73df",
+				  "#1cc88a",
+				  "#36b9cc",
+				  "#d38e3c",
+				  "#c94242"
+				],
+				"borderColor": [
+				  "#ffffff",
+				  "#ffffff",
+				  "#ffffff",
+				  "#ffffff",
+				  "#ffffff"
+				],
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPesananPaket));?>
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": true,
+			  "position": "bottom"
+			},
+			"title": {}
+		  }
+		};
+		var dataChartPesanan = {
+		  "type": "line",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPesanan));?>,
+			"datasets": [
+			  {
+				"label": "Pesanan",
+				"fill": true,
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesanan));?>,
+				"backgroundColor": "rgba(0,65,255,0.18)",
+				"borderColor": "rgba(78, 115, 223, 1)"
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			}
+		  }
+		};
+		var dataChartPembayaran = {
+		  "type": "line",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPembayaran));?>,
+			"datasets": [
+			  {
+				"label": "Pemasukan",
+				"fill": true,
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPembayaran));?>,
+				"backgroundColor": "rgba(255,214,0,0.18)",
+				"borderColor": "rgb(223,182,78)"
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			},
+		  }
+		};
+		$(document).ready(function(){
+			var chartPesananHarian = new Chart($("#chart-pesanan-harian"), dataChartPesananHarian);
+			var chartPesananPaket = new Chart($("#chart-pesanan-paket"), dataChartPesananPaket);
+			var chartPesanan = new Chart($("#chart-pesanan"), dataChartPesanan);
+			var chartPembayaran = new Chart($("#chart-pembayaran"), dataChartPembayaran);
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Dashboard - Raja Laundry</title>
+    <link rel="stylesheet" href="<?=base_url();?>assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="<?=base_url();?>assets/fonts/fontawesome-all.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+                    <div class="sidebar-brand-text mx-3"><span>Raja Laundry</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="nav navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>"><span>Dashboard</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>customer"><span>Customer</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>pesanan"><span>Pesanan</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>pengeluaran"><span>Pengeluaran</span></a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" href="<?=base_url();?>laporan"><span>Laporan</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+            </div>
+            </nav>
+            <div class="container-fluid">
+                <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-dark mb-0">Dashboard</h3>
+                    <div class="dropdown">
+						<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Data <?=$month;?> Bulan Terakhir</button>
+                        <div class="dropdown-menu" role="menu">
+							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>1">1 Bulan</a>
+							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>2">2 Bulan</a>
+							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>3">3 Bulan</a>
+							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>6">6 Bulan</a>
+							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>12">12 Bulan</a>
+						</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-primary py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Pesanan bulanan</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												<?=intval($stats->pesananBulanan);?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-success py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>pesanan bulan ini</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												<?=$stats->pesananBulanIni;?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-info py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Pesanan Belum lunas</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												<?=$stats->pesananBelumLunas;?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-warning py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pesanan belum diambil</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												<?=$stats->pesananBelumDiambil;?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-primary py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Pemasukan bulanan</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												Rp <?=number_format($stats->pemasukanBulanan, "0", ",", ".");?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-success py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Pemasukan bulan ini</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												Rp <?=number_format($stats->pemasukanBulanIni, "0", ",", ".");?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-info py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>PEngeluaran bulanan</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												Rp <?=number_format($stats->pengeluaranBulanan, "0", ",", ".");?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                        <div class="card shadow border-left-warning py-2">
+                            <div class="card-body">
+                                <div class="row align-items-center no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pengeluaran bulan ini</span></div>
+                                        <div class="text-dark font-weight-bold h5 mb-0">
+											<span>
+												Rp <?=number_format($stats->pengeluaranBulanIni, "0", ",", ".");?>
+											</span>
+										</div>
+                                    </div>
+                                    <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-7 col-xl-8">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Pesanan Harian</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas id="chart-pesanan-harian"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-xl-4">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Penjualan Paket Bulanan</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas id="chart-penjualan-paket"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Top Pemesan</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas id="chart-top-pemesan"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Top Pembayar</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas id="chart-top-pembayar"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Pemasukan dan Pengeluaran</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas id="chart-pemasukan-pengeluaran"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary font-weight-bold m-0">Laba/Rugi</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-area"><canvas id="chart-laba-rugi"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="bg-white sticky-footer">
+            <div class="container my-auto">
+                <div class="text-center my-auto copyright"><span>Copyright © Raja Laundry 2019</span></div>
+            </div>
+        </footer>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a></div>
+    <script src="<?=base_url();?>assets/js/jquery.min.js"></script>
+    <script src="<?=base_url();?>assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="<?=base_url();?>assets/js/chart.min.js"></script>
+    <script src="<?=base_url();?>assets/js/bs-charts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="<?=base_url();?>assets/js/theme.js"></script>
+	<script>
+		var dataChartPesananHarian = {
+		  "type": "bar",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->HARI;'), $dataPesananHarian));?>,
+			"datasets": [
+			  {
+				"label": "Pesanan Bulanan",
+				"backgroundColor": "#0041ff",
+				"borderColor": "rgba(78, 115, 223, 1)",
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesananHarian));?>
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			},
+			"scales": {
+			  "xAxes": [
+				{
+				  "ticks": {
+					"beginAtZero": true
+				  }
+				}
+			  ],
+			  "yAxes": [
+				{
+				  "ticks": {
+					"beginAtZero": true
+				  }
+				}
+			  ]
+			}
+		  }
+		};
+		var dataChartPenjualanPaket = {
+		  "type": "doughnut",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->PAKET;'), $dataPenjualanPaket));?>,
+			"datasets": [
+			  {
+				"label": "Penjualan",
+				"backgroundColor": [
+				  "#4e73df",
+				  "#1cc88a",
+				  "#36b9cc",
+				  "#d38e3c",
+				  "#c94242"
+				],
+				"borderColor": [
+				  "#ffffff",
+				  "#ffffff",
+				  "#ffffff",
+				  "#ffffff",
+				  "#ffffff"
+				],
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPenjualanPaket));?>
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": true,
+			  "position": "bottom"
+			},
+			"title": {}
+		  }
+		};
+		var dataChartTopPemesan = {
+		  "type": "horizontalBar",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->NAMA_CUSTOMER;'), $dataTopPemesan));?>,
+			"datasets": [
+			  {
+				"label": "Pesanan Bulanan",
+				"backgroundColor": "#0041ff",
+				"borderColor": "rgba(78, 115, 223, 1)",
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH_PESANAN;'), $dataTopPemesan));?>
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			}
+		  }
+		};
+		var dataChartTopPembayar = {
+		  "type": "horizontalBar",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->NAMA_CUSTOMER;'), $dataTopPembayar));?>,
+			"datasets": [
+			  {
+				"label": "Pembayaran Bulanan",
+				"backgroundColor": "#0041ff",
+				"borderColor": "rgba(78, 115, 223, 1)",
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL_PEMBAYARAN;'), $dataTopPembayar));?>
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			}
+		  }
+		};
+		var dataChartPemasukanPengeluaran = {
+		  "type": "line",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPemasukanPengeluaran));?>,
+			"datasets": [
+			  {
+				"label": "Pemasukan",
+				"fill": true,
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->PEMASUKAN;'), $dataPemasukanPengeluaran));?>,
+				"backgroundColor": "rgba(0,65,255,0.18)",
+				"borderColor": "rgba(78, 115, 223, 1)"
+			  },
+			  {
+				"label": "Pengeluaran",
+				"fill": true,
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->PENGELUARAN;'), $dataPemasukanPengeluaran));?>,
+				"backgroundColor": "rgba(255,199,0,0.1)",
+				"borderColor": "#ffb800"
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			}
+		  }
+		};
+		var dataChartLabaRugi = {
+		  "type": "line",
+		  "data": {
+			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataLabaRugi));?>,
+			"datasets": [
+			  {
+				"label": "Laba/Rugi",
+				"fill": true,
+				"data": <?=json_encode(array_map(create_function('$o', 'return $o->LABA;'), $dataLabaRugi));?>,
+				"backgroundColor": "rgba(255,214,0,0.18)",
+				"borderColor": "rgb(223,182,78)"
+			  }
+			]
+		  },
+		  "options": {
+			"maintainAspectRatio": false,
+			"legend": {
+			  "display": false
+			}
+		  }
+		};
+		$(document).ready(function(){
+			var chartPesananHarian = new Chart($("#chart-pesanan-harian"), dataChartPesananHarian);
+			var chartPenjualanPaket = new Chart($("#chart-penjualan-paket"), dataChartPenjualanPaket);
+			var chartTopPemesan = new Chart($("#chart-top-pemesan"), dataChartTopPemesan);
+			var chartTopPembayar = new Chart($("#chart-top-pembayar"), dataChartTopPembayar);
+			var chartPemasukanPengeluaran = new Chart($("#chart-pemasukan-pengeluaran"), dataChartPemasukanPengeluaran);
+			var chartLabaRugi = new Chart($("#chart-laba-rugi"), dataChartLabaRugi);
+		});
+	</script>
+</body>
+
+</html>
