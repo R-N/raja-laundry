@@ -23,7 +23,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/raja-laundry';
+
+$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+$domain = $_SERVER['HTTP_HOST'];
+$root = $protocol.$domain;
+$root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$req_uri = $_SERVER['REQUEST_URI'];
+$path = substr($req_uri,0,strrpos($req_uri,'/'));
+
+$config['base_url'] = $root;
+
+//$config['base_url'] = 'http://localhost/raja-laundry';
 
 /*
 |--------------------------------------------------------------------------
@@ -401,8 +411,10 @@ $config['sess_regenerate_destroy'] = FALSE;
 |
 */
 $config['cookie_prefix']	= '';
-$config['cookie_domain']	= 'localhost';
-$config['cookie_path']		= '/raja-laundry';
+$config['cookie_domain']	= $domain;
+$config['cookie_path']		= '/'.$path;
+//$config['cookie_domain']	= 'localhost';
+//$config['cookie_path']		= '/raja-laundry';
 $config['cookie_secure']	= FALSE;
 $config['cookie_httponly'] 	= FALSE;
 
