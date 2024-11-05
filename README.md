@@ -1,5 +1,7 @@
 # Laundry CRM
 
+Transaction system and CRM in form of analytics and dashboard
+
 Default config in application/config/config.php:
 - $config['base_url'] = 'http://localhost/raja-laundry';
 
