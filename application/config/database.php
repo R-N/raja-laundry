@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
     'dsn'   => '',
-    'hostname' => 'pdo:host=postgres://default:zSwfJ4Yj0vrh@ep-plain-frost-a10yfu67.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require;dbname=raja-laundry',
+    'hostname' => 'ep-plain-frost-a10yfu67.ap-southeast-1.aws.neon.tech',
     'username' => 'default',
     'password' => 'zSwfJ4Yj0vrh',
-    'database' => 'raja-laundry',
+    'database' => 'verceldb',
     'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
