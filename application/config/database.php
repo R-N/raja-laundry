@@ -79,7 +79,7 @@ $db['default'] = array(
     'username' => 'root',
     'password' => '',
     'database' => 'raja-laundry',
-    'dbdriver' => 'mysqli',
+    'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
     'db_debug' => (ENVIRONMENT !== 'production'),
