@@ -74,8 +74,9 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-    'dsn'   => '',
+    'dsn'   => 'pgsql:host=ep-plain-frost-a10yfu67.ap-southeast-1.aws.neon.tech;port=5432;dbname=verceldb',
     'hostname' => 'ep-plain-frost-a10yfu67.ap-southeast-1.aws.neon.tech',
+    'port'     => 5432,
     'username' => 'default',
     'password' => 'zSwfJ4Yj0vrh',
     'database' => 'verceldb',
