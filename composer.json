@@ -43,7 +43,10 @@
     "nguyenanhung/codeigniter-framework": "^3.2",
     "nguyenanhung/my-debug": "^4.0 || ^3.0",
     "nguyenanhung/requests": "^4.0 || ^3.0",
-    "nguyenanhung/basic-firewall": "^2.0"
+    "nguyenanhung/basic-firewall": "^2.0",
+    "php7.0-pgsql": "^7.1",
+    "php-pgsql": "7.1",
+    "pdo_pgsql": "7.1"
   },
   "autoload": {
     "psr-4": {
