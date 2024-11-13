@@ -80,7 +80,7 @@ $db['default'] = array(
     'username' => 'default',
     'password' => 'zSwfJ4Yj0vrh',
     'database' => 'verceldb',
-    'dbdriver' => 'pdo',
+    'dbdriver' => 'postgres',
     'dbprefix' => '',
     'pconnect' => FALSE,
     'db_debug' => (ENVIRONMENT !== 'production'),
