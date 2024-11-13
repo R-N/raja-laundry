@@ -84,3 +84,17 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 define('ENTITIES_DIR', APPPATH . "entities/");
+// Custom Constants
+defined('_PROCESS_TEST_') OR define('_PROCESS_TEST_', FALSE);
+defined('CACHE_KEY') OR define('CACHE_KEY', 'Bear-CodeIgniter-v3-Skeleton-on-Vercel-Cache-');
+defined('GLOBAL_CACHE_PREFIX') OR define('GLOBAL_CACHE_PREFIX', CACHE_KEY);
+defined('MY_TELEGRAM_ID') OR define('MY_TELEGRAM_ID', '1234');
+defined('TELEGRAM_JARVIS_BOT') OR define('TELEGRAM_JARVIS_BOT', [
+    'telegram_messages' => [
+        'bot_name' => 'xxx',
+        'bot_api_key' => 'xxx',
+        'default_chat_id' => MY_TELEGRAM_ID
+    ]
+]);
+// Elasticsearch
+defined('HOST_ELASTICSEARCH') OR define('HOST_ELASTICSEARCH', 'http://127.0.0.1:9200');

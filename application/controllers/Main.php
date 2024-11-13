@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Main extends CI_Controller {
+class Main extends HungNG_CI_Base_Controllers {
 
 	public function __construct()
 	{
