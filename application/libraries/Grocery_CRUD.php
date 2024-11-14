@@ -1640,9 +1640,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
     protected function set_basic_Layout()
     {
         $path = $this->theme_path.$this->theme.'/views/list_template.php';
+        $cwd = getcwd();
         if(!file_exists($path))
         {
-            throw new Exception("The template does not exist. Please check your files and try again. {$path}", 12);
+            throw new Exception("The template does not exist. Please check your files and try again. {$cwd}. {$path}", 12);
             die();
         }
     }
