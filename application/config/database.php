@@ -106,6 +106,6 @@ if (ENVIRONMENT == 'production'){
     $db['default']['dbdriver'] = 'postgre';
     $db['default']['pconnect'] = TRUE;
     $db['default']['sslmode'] = 'allow';
-    $db['default']['dsn'] = "pgsql:host={$db['default']['hostname']};port={$db['default']['port']};dbname={$db['default']['database']};sslmode=allow";
+    $db['default']['dsn'] = "pgsql:host={$db['default']['hostname']};port={$db['default']['port']};dbname={$db['default']['database']};sslmode=require";
 }
 //echo '<pre>'; print_r($db['default']); echo '</pre>';
