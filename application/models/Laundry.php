@@ -32,23 +32,25 @@ class Laundry extends CI_Model {
             }
             return "INTERVAL '{$matches[1]} $unit'";
         }, $query);
-        //\"{$this->db->schema}\"
-        // Add schema name to all table names (assuming schema is "raja-laundry")
-        // Handle FROM, JOIN, LEFT JOIN, RIGHT JOIN, and comma-separated tables
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) {
-            // Match and add schema only to the table names, not aliases
-            $table = $matches[2];
-            return $matches[1] . " \"{$this->db->schema}\"." . $table; // Add schema prefix
-        }, $query);
 
-        // Add schema name to tables in the comma-separated lists (FROM, WHERE, etc.)
-        $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) {
+        //\"{$this->db->schema}\"
+        $schema = $this->db->schema;  // Replace with your dynamic schema name
+
+        // Add schema name to all table names (assuming schema is dynamic)
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) use ($schema) {
+            $table = $matches[2];
+            // Add dynamic schema prefix only once to table names
+            return $matches[1] . ' "' . $schema . '".' . $table;
+        }, $query);
+        
+        // Now handle comma-separated tables and add dynamic schema to each table (only once)
+        $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) use ($schema) {
             // Split comma-separated tables
             $tables = explode(',', $matches[1]);
             foreach ($tables as &$table) {
-                // Add schema to each table (strip extra spaces)
+                // Trim spaces and add schema to each table name
                 $table = trim($table);
-                $table = "\"{$this->db->schema}\"." . $table;
+                $table = '"' . $schema . '".' . $table;
             }
             return implode(', ', $tables);
         }, $query);
