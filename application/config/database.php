@@ -108,3 +108,5 @@ if (ENVIRONMENT == 'production'){
     $db['default']['sslmode'] = 'allow';
     $db['default']['dsn'] = 'pgsql:host=' . $db['default']['host'] . ';port=' . $db['default']['port'] . ';dbname=' . $db['default']['database'] . ';sslmode=allow';
 }
+
+echo $db['default'];
