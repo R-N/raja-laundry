@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -44,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/date_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/date_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -134,7 +135,7 @@ if ( ! function_exists('standard_date'))
 	 *
 	 * @todo	Remove in version 3.1+.
 	 * @deprecated	3.0.0	Use PHP's native date() instead.
-	 * @link	http://www.php.net/manual/en/class.datetime.php#datetime.constants.types
+	 * @link	https://www.php.net/manual/en/class.datetime.php#datetime.constants.types
 	 *
 	 * @example	date(DATE_RFC822, now()); // default
 	 * @example	date(DATE_W3C, $time); // a different format and time
@@ -738,5 +739,52 @@ if ( ! function_exists('date_range'))
 		}
 
 		return $range;
+	}
+}
+
+// ------------------------------------------------------------------------
+
+if (!function_exists('get_zulu_ime')) {
+	/**
+	 * Function get_zulu_ime
+	 *
+	 * @return string|null
+	 * @author   : 713uk13m <dev@nguyenanhung.com>
+	 * @copyright: 713uk13m <dev@nguyenanhung.com>
+	 * @time     : 16/06/2022 40:35
+	 */
+	function get_zulu_ime()
+	{
+		try {
+			return (new DateTime("now", new DateTimeZone("UTC")))->format('Y-m-d\TH:i:s\Z');
+		} catch (Exception $e) {
+			return null;
+		}
+	}
+}
+
+// ------------------------------------------------------------------------
+
+if (!function_exists('calculator_day_floor')) {
+	/**
+	 * Function calculator_day_floor
+	 *
+	 * @param string $start
+	 * @param string $end
+	 *
+	 * @return int
+	 * @author   : 713uk13m <dev@nguyenanhung.com>
+	 * @copyright: 713uk13m <dev@nguyenanhung.com>
+	 * @time     : 10/05/2021 12:01
+	 */
+	function calculator_day_floor($start = '', $end = '')
+	{
+		if (empty($start) && empty($end)) {
+			return 0;
+		}
+
+		$floor = abs(strtotime($start) - strtotime($end));
+
+		return (int) floor($floor / (60 * 60 * 24));
 	}
 }

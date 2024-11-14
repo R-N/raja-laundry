@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
@@ -46,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Libraries
  * @author		Andrey Andreev
- * @link		https://codeigniter.com/user_guide/libraries/encryption.html
+ * @link		https://codeigniter.com/userguide3/libraries/encryption.html
  */
 class CI_Encryption {
 
@@ -161,7 +162,7 @@ class CI_Encryption {
 			show_error('Encryption: Unable to find an available encryption driver.');
 		}
 
-		isset(self::$func_overload) OR self::$func_overload = (extension_loaded('mbstring') && ini_get('mbstring.func_overload'));
+		isset(self::$func_overload) OR self::$func_overload = ( ! is_php('8.0') && extension_loaded('mbstring') && @ini_get('mbstring.func_overload'));
 		$this->initialize($params);
 
 		if ( ! isset($this->_key) && self::strlen($key = config_item('encryption_key')) > 0)
@@ -228,12 +229,12 @@ class CI_Encryption {
 	{
 		if ( ! empty($params['cipher']))
 		{
-			$params['cipher'] = strtolower($params['cipher']);
+			$params['cipher'] = strtolower((string) $params['cipher']);
 			$this->_cipher_alias($params['cipher']);
 
 			if ( ! in_array($params['cipher'], mcrypt_list_algorithms(), TRUE))
 			{
-				log_message('error', 'Encryption: MCrypt cipher '.strtoupper($params['cipher']).' is not available.');
+				log_message('error', 'Encryption: MCrypt cipher '.strtoupper((string) $params['cipher']).' is not available.');
 			}
 			else
 			{
@@ -243,10 +244,10 @@ class CI_Encryption {
 
 		if ( ! empty($params['mode']))
 		{
-			$params['mode'] = strtolower($params['mode']);
+			$params['mode'] = strtolower((string) $params['mode']);
 			if ( ! isset($this->_modes['mcrypt'][$params['mode']]))
 			{
-				log_message('error', 'Encryption: MCrypt mode '.strtoupper($params['mode']).' is not available.');
+				log_message('error', 'Encryption: MCrypt mode '.strtoupper((string) $params['mode']).' is not available.');
 			}
 			else
 			{
@@ -266,11 +267,11 @@ class CI_Encryption {
 
 			if ($this->_handle = mcrypt_module_open($this->_cipher, '', $this->_mode, ''))
 			{
-				log_message('info', 'Encryption: MCrypt cipher '.strtoupper($this->_cipher).' initialized in '.strtoupper($this->_mode).' mode.');
+				log_message('info', 'Encryption: MCrypt cipher '.strtoupper((string) $this->_cipher).' initialized in '.strtoupper((string) $this->_mode).' mode.');
 			}
 			else
 			{
-				log_message('error', 'Encryption: Unable to initialize MCrypt with cipher '.strtoupper($this->_cipher).' in '.strtoupper($this->_mode).' mode.');
+				log_message('error', 'Encryption: Unable to initialize MCrypt with cipher '.strtoupper((string) $this->_cipher).' in '.strtoupper((string) $this->_mode).' mode.');
 			}
 		}
 	}
@@ -297,7 +298,7 @@ class CI_Encryption {
 			$params['mode'] = strtolower($params['mode']);
 			if ( ! isset($this->_modes['openssl'][$params['mode']]))
 			{
-				log_message('error', 'Encryption: OpenSSL mode '.strtoupper($params['mode']).' is not available.');
+				log_message('error', 'Encryption: OpenSSL mode '.strtoupper((string) $params['mode']).' is not available.');
 			}
 			else
 			{
@@ -315,12 +316,12 @@ class CI_Encryption {
 			if ( ! in_array($handle, openssl_get_cipher_methods(), TRUE))
 			{
 				$this->_handle = NULL;
-				log_message('error', 'Encryption: Unable to initialize OpenSSL with method '.strtoupper($handle).'.');
+				log_message('error', 'Encryption: Unable to initialize OpenSSL with method '.strtoupper((string) $handle).'.');
 			}
 			else
 			{
 				$this->_handle = $handle;
-				log_message('info', 'Encryption: OpenSSL initialized with method '.strtoupper($handle).'.');
+				log_message('info', 'Encryption: OpenSSL initialized with method '.strtoupper((string) $handle).'.');
 			}
 		}
 	}
@@ -476,7 +477,7 @@ class CI_Encryption {
 
 		$iv = ($iv_size = openssl_cipher_iv_length($params['handle']))
 			? $this->create_key($iv_size)
-			: NULL;
+			: '';
 
 		$data = openssl_encrypt(
 			$data,
@@ -585,7 +586,7 @@ class CI_Encryption {
 		}
 		else
 		{
-			$iv = NULL;
+			$iv = '';
 		}
 
 		if (mcrypt_generic_init($params['handle'], $params['key'], $iv) < 0)
@@ -632,7 +633,7 @@ class CI_Encryption {
 		}
 		else
 		{
-			$iv = NULL;
+			$iv = '';
 		}
 
 		return empty($params['handle'])
@@ -910,8 +911,8 @@ class CI_Encryption {
 	protected static function strlen($str)
 	{
 		return (self::$func_overload)
-			? mb_strlen($str, '8bit')
-			: strlen($str);
+			? mb_strlen((string) $str, '8bit')
+			: strlen((string) $str);
 	}
 
 	// --------------------------------------------------------------------

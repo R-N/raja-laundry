@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -46,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	User Agent
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/user_agent.html
+ * @link		https://codeigniter.com/userguide3/libraries/user_agent.html
  */
 class CI_User_agent {
 
@@ -193,7 +194,11 @@ class CI_User_agent {
 	 */
 	protected function _load_agent_file()
 	{
-		if (($found = file_exists(APPPATH.'config/user_agents.php')))
+		if (($found = file_exists(__DIR__.'/../../config/user_agents.php')))
+		{
+			include(__DIR__.'/../../config/user_agents.php');
+		}
+		if (file_exists(APPPATH.'config/user_agents.php'))
 		{
 			include(APPPATH.'config/user_agents.php');
 		}
@@ -376,7 +381,7 @@ class CI_User_agent {
 	{
 		if ((count($this->languages) === 0) && ! empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
 		{
-			$this->languages = explode(',', preg_replace('/(;\s?q=[0-9\.]+)|\s/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_LANGUAGE']))));
+			$this->languages = explode(',', preg_replace('/(;\s?q=[0-9\.]+)|\s/i', '', strtolower(trim((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']))));
 		}
 
 		if (count($this->languages) === 0)
@@ -396,7 +401,7 @@ class CI_User_agent {
 	{
 		if ((count($this->charsets) === 0) && ! empty($_SERVER['HTTP_ACCEPT_CHARSET']))
 		{
-			$this->charsets = explode(',', preg_replace('/(;\s?q=.+)|\s/i', '', strtolower(trim($_SERVER['HTTP_ACCEPT_CHARSET']))));
+			$this->charsets = explode(',', preg_replace('/(;\s?q=.+)|\s/i', '', strtolower(trim((string) $_SERVER['HTTP_ACCEPT_CHARSET']))));
 		}
 
 		if (count($this->charsets) === 0)
@@ -498,7 +503,7 @@ class CI_User_agent {
 			else
 			{
 				$referer_host = @parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
-				$own_host = parse_url(config_item('base_url'), PHP_URL_HOST);
+				$own_host = parse_url((string) config_item('base_url'), PHP_URL_HOST);
 
 				$this->referer = ($referer_host && $referer_host !== $own_host);
 			}
@@ -634,7 +639,7 @@ class CI_User_agent {
 	 */
 	public function accept_lang($lang = 'en')
 	{
-		return in_array(strtolower($lang), $this->languages(), TRUE);
+		return in_array(strtolower((string) $lang), $this->languages(), TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -647,7 +652,7 @@ class CI_User_agent {
 	 */
 	public function accept_charset($charset = 'utf-8')
 	{
-		return in_array(strtolower($charset), $this->charsets(), TRUE);
+		return in_array(strtolower((string) $charset), $this->charsets(), TRUE);
 	}
 
 	// --------------------------------------------------------------------
