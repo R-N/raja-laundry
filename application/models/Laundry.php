@@ -38,7 +38,7 @@ class Laundry extends CI_Model {
             // Match and replace table names in the FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses
             $tables = array_merge(explode(',', $matches[2]), explode(',', $matches[2])); // Split comma-separated tables
             foreach ($tables as &$table) {
-                $table = "{$this->db->schema}." . trim($table); // Add schema prefix
+                $table = "\"{$this->db->schema}\".\"" . trim($table) . "\""; // Add schema prefix
             }
             return $matches[1] . ' ' . implode(', ', $tables); // Return the JOIN clause with schema-prefixed tables
         }, $query);
