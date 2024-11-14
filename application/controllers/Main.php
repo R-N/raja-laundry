@@ -21,40 +21,23 @@ class Main extends HungNG_CI_Base_Controllers {
 
     public function index($month=3)
     {
-        echo 'this is index';
-
         $q = 0;
         $lineMonth = max($month, 6);
         $stats = new stdClass();
-        echo "doing query {($q++)}";
         $stats->pesananBulanan = $this->Laundry->getMonthlyPesanan("PESANAN", null, $month);
-        echo "doing query {($q++)}";
         $stats->pesananBulanIni = $this->Laundry->getCurrentMonthPesanan("PESANAN", null, $month);
-        echo "doing query {($q++)}";
         $stats->pesananBelumLunas = $this->Laundry->getOutstandingPesanan("LUNAS");
-        echo "doing query {($q++)}";
         $stats->pesananBelumDiambil = $this->Laundry->getOutstandingPesanan("AMBIL");
-        echo "doing query {($q++)}";
         $stats->pemasukanBulanan = $this->Laundry->getMonthlyIncome("LUNAS", true, $month);
-        echo "doing query {($q++)}";
         $stats->pemasukanBulanIni = $this->Laundry->getCurrentMonthIncome("LUNAS", true);
-        echo "doing query {($q++)}";
         $stats->pengeluaranBulanan = $this->Laundry->getMonthlySpending($month);
-        echo "doing query {($q++)}";
         $stats->pengeluaranBulanIni = $this->Laundry->getCurrentMonthSpending();
-        echo "doing query {($q++)}";
         $dataPesananHarian = $this->Laundry->getWeekdayStats("PESANAN", null, $month);
-        echo "doing query {($q++)}";
         $dataPenjualanPaket = $this->Laundry->getMonthlyPaketSells("PESANAN", null, $month);
-        echo "doing query {($q++)}";
         $dataTopPemesan = $this->Laundry->getTopCountStatsCustomer("PESANAN", null, $month, 10);
-        echo "doing query {($q++)}";
         $dataTopPembayar = $this->Laundry->getTopAmountStatsCustomer("LUNAS", null, $month, 10);
-        echo "doing query {($q++)}";
         $dataPemasukanPengeluaran = $this->Laundry->getMonthlyCashflowStats($lineMonth);
-        echo "doing query {($q++)}";
         $dataLabaRugi = $this->Laundry->getMonthlyProfitStats($lineMonth);
-        echo "done query {($q)}";
         $data = array(
             "stats"=>$stats,
             "month"=>$month,
@@ -67,9 +50,7 @@ class Main extends HungNG_CI_Base_Controllers {
             "dataLabaRugi"=>$dataLabaRugi,
             "lineMonth"=>$lineMonth
         );
-        echo 'loading dashboard';
         $this->load->view("dashboard.html", $data);
-        echo 'loaded dashboard';
     }
     
     public function customer($op='', $idCustomer='', $month=3){
