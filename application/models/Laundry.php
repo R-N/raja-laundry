@@ -10,7 +10,7 @@ class Laundry extends CI_Model {
         if ($this->db->dbdriver == "postgre"){
             $schema = $this->db->schema;
             $this->db->query("SET search_path TO {$schema};");
-            $sql =  "SET lc_time = 'id_ID';";
+            $sql =  "SET lc_time TO 'id_ID';";
         }else{
             $sql =  "SET lc_time_names = 'id_ID';";
         }
