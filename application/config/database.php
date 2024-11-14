@@ -76,11 +76,11 @@ $query_builder = TRUE;
 $db['default'] = array(
     'dsn'   => '',
     'hostname' => 'localhost',
-    //'port'     => 5432,
-    'username' => 'root',
+    'port'     => 5432,
+    'username' => 'postgres',
     'password' => '',
-    'database' => 'public',
-    'dbdriver' => 'pdo',
+    'database' => 'postgres',
+    'dbdriver' => 'postgre',
     'dbprefix' => '',
     'pconnect' => FALSE,
     'db_debug' => (ENVIRONMENT !== 'production'),
@@ -96,13 +96,14 @@ $db['default'] = array(
     'save_queries' => TRUE
 );
 
-$db['default']['schema'] = $db['default']['database'];
+$db['default']['schema'] = "public";
 if (ENVIRONMENT == 'production'){
-    $db['default']['hostname'] = getenv('POSTGRES_HOST') ?? $db['default']['hostname'];
+    $db['default']['hostname'] = getenv('POSTGRES_HOST') ? getenv('POSTGRES_HOST') : $db['default']['hostname'];
     $db['default']['port']     = 5432;
-    $db['default']['username'] = getenv('POSTGRES_USER') ?? $db['default']['username'];
-    $db['default']['password'] = getenv('POSTGRES_PASSWORD') ?? $db['default']['password'];
-    $db['default']['database'] = getenv('POSTGRES_DATABASE') ?? $db['default']['database'];
+    $db['default']['username'] = getenv('POSTGRES_USER') ? getenv('POSTGRES_USER') : $db['default']['username'];
+    $db['default']['password'] = getenv('POSTGRES_PASSWORD') ? getenv('POSTGRES_PASSWORD') : $db['default']['password'];
+    $db['default']['schema'] = $db['default']['database'];
+    $db['default']['database'] = getenv('POSTGRES_DATABASE') ? getenv('POSTGRES_DATABASE') : $db['default']['database'];
     $db['default']['dbdriver'] = 'postgre';
     // $db['default']['pconnect'] = TRUE;
     // $db['default']['sslmode'] = 'allow';
