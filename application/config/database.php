@@ -104,5 +104,6 @@ if (ENVIRONMENT == 'production'){
     $db['default']['password'] = getenv('POSTGRES_PASSWORD') ?? $db['default']['password'];
     $db['default']['database'] = getenv('POSTGRES_DATABASE') ?? $db['default']['database'];
     $db['default']['sslmode'] = 'allow';
+    $db['default']['dbdriver'] = 'postgre';
     $db['default']['dsn'] = 'pgsql:host=' . $db['default']['host'] . ';port=' . $db['default']['port'] . ';dbname=' . $db['default']['database'] . ';sslmode=allow';
 }
