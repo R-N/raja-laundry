@@ -8,10 +8,10 @@ class Laundry extends CI_Model {
         parent::__construct();
 
         if (ENVIRONMENT == 'production'){
-            // $schema = $this->db->schema;
-            // echo "setting search_path to schema {$schema}";
-            // $this->db->query("SET search_path TO {$schema};");
-            // echo 'done';
+            $schema = $this->db->schema;
+            echo "setting search_path to schema {$schema}";
+            $this->db->query("SET search_path TO {$schema};");
+            echo 'done';
         }
         $sql =  "SET lc_time_names = 'id_ID';";
         $query = $this->db->query($sql);
