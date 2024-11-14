@@ -80,7 +80,7 @@ $db['default'] = array(
     'username' => 'root',
     'password' => '',
     'database' => 'raja-laundry',
-    'dbdriver' => 'postgre',
+    'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
     'db_debug' => (ENVIRONMENT !== 'production'),
