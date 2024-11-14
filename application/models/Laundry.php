@@ -32,16 +32,25 @@ class Laundry extends CI_Model {
             }
             return "INTERVAL '{$matches[1]} $unit'";
         }, $query);
-        // Add schema name to all table names (assuming schema is "public")
-        // Handle FROM, JOIN, LEFT JOIN, RIGHT JOIN, etc.
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)(?=\s*(?:,|\s|\b))/i', function($matches) {
-            // Match and replace table names in the FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses
-            $tables = array_merge(explode(',', $matches[2]), explode(',', $matches[2])); // Split comma-separated tables
-            foreach ($tables as &$table) {
-                $table = "\"{$this->db->schema}\".\"" . trim($table) . "\""; // Add schema prefix
-            }
-            return $matches[1] . ' ' . implode(', ', $tables); // Return the JOIN clause with schema-prefixed tables
+        // Add schema name to all table names (assuming schema is "raja-laundry")
+        // Handle FROM, JOIN, LEFT JOIN, RIGHT JOIN, and comma-separated tables
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) {
+            // This will match table names (without aliases) after FROM, JOIN, LEFT JOIN, RIGHT JOIN
+            return $matches[1] . ' ' . "\"{$this->db->schema}\"." . $matches[2]; // Add schema prefix
         }, $query);
+        
+        // Add schema name to tables in the comma-separated lists (FROM, WHERE, etc.)
+        $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) {
+            // Split comma-separated tables
+            $tables = explode(',', $matches[1]);
+            foreach ($tables as &$table) {
+                // Add schema to each table (strip extra spaces)
+                $table = trim($table);
+                $table = "\"{$this->db->schema}\"." . $table;
+            }
+            return implode(', ', $tables);
+        }, $query);
+        
         // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
         $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
         // Replace MONTH(<column>) with EXTRACT(MONTH FROM <column>)
