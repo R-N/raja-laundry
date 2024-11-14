@@ -80,6 +80,7 @@ $db['default'] = array(
     'username' => 'postgres',
     'password' => '',
     'database' => 'postgres',
+    'schema'   => 'raja-laundry',
     'dbdriver' => 'postgre',
     'dbprefix' => '',
     'pconnect' => FALSE,
@@ -96,17 +97,19 @@ $db['default'] = array(
     'save_queries' => TRUE
 );
 
-$db['default']['schema'] = "public";
 if (ENVIRONMENT == 'production'){
     $db['default']['hostname'] = getenv('POSTGRES_HOST') ? getenv('POSTGRES_HOST') : $db['default']['hostname'];
     $db['default']['port']     = 5432;
     $db['default']['username'] = getenv('POSTGRES_USER') ? getenv('POSTGRES_USER') : $db['default']['username'];
     $db['default']['password'] = getenv('POSTGRES_PASSWORD') ? getenv('POSTGRES_PASSWORD') : $db['default']['password'];
-    $db['default']['schema'] = $db['default']['database'];
+    //$db['default']['schema'] = $db['default']['database'];
     $db['default']['database'] = getenv('POSTGRES_DATABASE') ? getenv('POSTGRES_DATABASE') : $db['default']['database'];
     $db['default']['dbdriver'] = 'postgre';
     // $db['default']['pconnect'] = TRUE;
     // $db['default']['sslmode'] = 'allow';
     // $db['default']['dsn'] = "pgsql:host={$db['default']['hostname']};port={$db['default']['port']};dbname={$db['default']['database']}";
+}
+if ($db['default']['dbdriver'] == 'mysqli'){
+    $db['default']['database'] = $db['default']['schema'];
 }
 //echo '<pre>'; print_r($db['default']); echo '</pre>';
