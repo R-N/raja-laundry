@@ -10,11 +10,14 @@ class Laundry extends CI_Model {
         if ($this->db->dbdriver == "postgre"){
             $schema = $this->db->schema;
             $this->db->query("SET search_path TO {$schema};");
-            $sql =  "SET lc_time = 'id_ID.UTF-8';";
+            if (ENVIRONMENT !== "production"){
+                $sql =  "SET lc_time = 'id_ID.UTF-8';";
+                $query = $this->db->query($sql);
+            }
         }else{
             $sql =  "SET lc_time_names = 'id_ID';";
+            $query = $this->db->query($sql);
         }
-        $query = $this->db->query($sql);
     }
 
     
