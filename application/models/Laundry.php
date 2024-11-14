@@ -264,7 +264,7 @@ class Laundry extends CI_Model {
             $found = false;
             if($j < $len){
                 $row = $result0[$j];
-                if($tahun == $row->TAHUN && $bulan == $row->BULAN){
+                if($tahun == $row->tahun && $bulan == $row->BULAN){
                     array_push($result, $row);
                     ++$j;
                     $found = true;
@@ -272,10 +272,10 @@ class Laundry extends CI_Model {
             }
             if(!$found){
                 $dummy = new stdClass();
-                $dummy->TAHUN = $tahun;
+                $dummy->tahun = $tahun;
                 $dummy->BULAN = $bulan;
                 $dummy->JUMLAH = 0;
-                $dummy->TOTAL = 0;
+                $dummy->total = 0;
                 array_push($result, $dummy);
             }
             
@@ -322,7 +322,7 @@ class Laundry extends CI_Model {
             $found = false;
             if($j < $len){
                 $row = $result0[$j];
-                if($tahun == $row->TAHUN && $bulan == $row->BULAN){
+                if($tahun == $row->tahun && $bulan == $row->BULAN){
                     array_push($result, $row);
                     ++$j;
                     $found = true;
@@ -330,7 +330,7 @@ class Laundry extends CI_Model {
             }
             if(!$found){
                 $dummy = new stdClass();
-                $dummy->TAHUN = $tahun;
+                $dummy->tahun = $tahun;
                 $dummy->BULAN = $bulan;
                 $dummy->PEMASUKAN = 0;
                 $dummy->PENGELUARAN = 0;
@@ -380,7 +380,7 @@ class Laundry extends CI_Model {
             $found = false;
             if($j < $len){
                 $row = $result0[$j];
-                if($tahun == $row->TAHUN && $bulan == $row->BULAN){
+                if($tahun == $row->tahun && $bulan == $row->BULAN){
                     array_push($result, $row);
                     ++$j;
                     $found = true;
@@ -388,7 +388,7 @@ class Laundry extends CI_Model {
             }
             if(!$found){
                 $dummy = new stdClass();
-                $dummy->TAHUN = $tahun;
+                $dummy->tahun = $tahun;
                 $dummy->BULAN = $bulan;
                 $dummy->LABA = 0;
                 array_push($result, $dummy);
@@ -418,7 +418,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->TOTAL;
+        return $result->total;
     }
     function getMonthlySpending($month=null){
         $monthDivider = $month ? "/{$month}" : "";
@@ -433,7 +433,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->TOTAL;
+        return $result->total;
     }
     function getCurrentMonthIncome($tanggal="PESANAN",  $lunas=null){
         $tanggal = strtoupper($tanggal);
@@ -452,7 +452,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->TOTAL;
+        return $result->total;
     }
     function getCurrentMonthSpending(){
         $sql = "
@@ -464,7 +464,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->TOTAL;
+        return $result->total;
     }
     
     
@@ -487,7 +487,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->COUNT;
+        return $result->count;
     }
     function getCurrentMonthPesanan($tanggal="PESANAN",  $lunas=null){
         $tanggal = strtoupper($tanggal);
@@ -506,7 +506,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->COUNT;
+        return $result->count;
     }
     function getOutstandingPesanan($belum="LUNAS"){
         $belum = strtoupper($belum);
@@ -520,7 +520,7 @@ class Laundry extends CI_Model {
         $query = $this->db->query($sql);
         
         $result = $query->row();
-        return $result->COUNT;
+        return $result->count;
     }
     
     function getMonthlyPaketSells($tanggal="PESANAN", $lunas=null, $month=null, $idCustomer=null){
