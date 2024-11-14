@@ -74,12 +74,12 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-    'dsn'   => 'pgsql:host=ep-plain-frost-a10yfu67.ap-southeast-1.aws.neon.tech;port=5432;dbname=verceldb;sslmode=require',
-    'hostname' => 'ep-plain-frost-a10yfu67.ap-southeast-1.aws.neon.tech',
-    'port'     => 5432,
-    'username' => 'default',
-    'password' => 'zSwfJ4Yj0vrh',
-    'database' => 'verceldb',
+    'dsn'   => '',
+    'hostname' => 'localhost',
+    //'port'     => 5432,
+    'username' => 'root',
+    'password' => '',
+    'database' => 'raja-laundry',
     'dbdriver' => 'pdo',
     'dbprefix' => '',
     'pconnect' => FALSE,
@@ -95,3 +95,12 @@ $db['default'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
+
+if (ENVIRONMENT == 'production'){
+    $db['default']['hostname'] = getenv('POSTGRES_HOST') ?? $db['default']['hostname'];
+    $db['default']['port']     = 5432;
+    $db['default']['username'] = getenv('POSTGRES_USER') ?? $db['default']['username'];
+    $db['default']['password'] = getenv('POSTGRES_PASSWORD') ?? $db['default']['password'];
+    $db['default']['database'] = getenv('POSTGRES_DATABASE') ?? $db['default']['database'];
+    $db['default']['dsn'] = 'pgsql:host=' . $db['default']['host'] . ';port=' . $db['default']['port'] . ';dbname=' . $db['default']['database'] . ';sslmode=require';
+}
