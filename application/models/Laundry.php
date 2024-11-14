@@ -55,13 +55,9 @@ class Laundry extends CI_Model {
             }
             return implode(', ', $tables);
         }, $query);
-
-        // Step 3: Correctly handle joins and schema to avoid duplication
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+\"' . preg_quote($schema, '/') . '\"\.([a-zA-Z0-9_]+)/i', function($matches) use ($schema) {
-            $table = $matches[2];
-            // Ensure schema is applied correctly without duplication
-            return $matches[1] . ' "' . $schema . '".' . $table;
-        }, $query);
+        // Step 3: Remove duplicate schema occurrences like "raja-laundry"."raja-laundry" -> "raja-laundry"
+        $query = str_replace("\"{$schema}\".\"{$schema}\"", "\"{$schema}\"", $query);
+        $query = str_replace("\"{$schema}\".\"{$schema}\"", "\"{$schema}\"", $query);
 
         // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
         $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
