@@ -41,7 +41,7 @@ class Grocery_crud_model  extends CI_Model  {
         if (ENVIRONMENT == 'production'){
             $schema = $this->db->schema;
             echo 'gc setting search_path to schema ' . $schema;
-            $this->db->query('SET search_path=' . $schema);
+            $this->db->query('SET search_path TO ' . $schema);
             echo 'done';
         }
     }
