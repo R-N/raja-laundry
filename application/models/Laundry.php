@@ -36,14 +36,15 @@ class Laundry extends CI_Model {
         //\"{$this->db->schema}\"
         $schema = $this->db->schema;  // Replace with your dynamic schema name
 
-        // Add schema name to all table names (assuming schema is dynamic)
+// Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
+        // Apply schema to tables in the FROM, JOIN, etc.
         $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) use ($schema) {
             $table = $matches[2];
-            // Add dynamic schema prefix only once to table names
+            // Add schema prefix only once to table names
             return $matches[1] . ' "' . $schema . '".' . $table;
         }, $query);
-        
-        // Now handle comma-separated tables and add dynamic schema to each table (only once)
+
+        // Step 2: Handle the comma-separated tables and add dynamic schema to each table (only once)
         $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) use ($schema) {
             // Split comma-separated tables
             $tables = explode(',', $matches[1]);
@@ -53,6 +54,13 @@ class Laundry extends CI_Model {
                 $table = '"' . $schema . '".' . $table;
             }
             return implode(', ', $tables);
+        }, $query);
+
+        // Step 3: Correctly handle joins and schema to avoid duplication
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+\"' . preg_quote($schema, '/') . '\"\.([a-zA-Z0-9_]+)/i', function($matches) use ($schema) {
+            $table = $matches[2];
+            // Ensure schema is applied correctly without duplication
+            return $matches[1] . ' "' . $schema . '".' . $table;
         }, $query);
 
         // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
