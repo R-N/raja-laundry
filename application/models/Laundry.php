@@ -35,7 +35,7 @@ class Laundry extends CI_Model {
             return "INTERVAL '{$matches[1]} $unit'";
         }, $query);
         // Add schema name if not present (assuming schema is "public")
-        $query = preg_replace('/\bFROM\s+(\w+)\b/i', "FROM {$this->db->schema}.$1", $query);
+        $query = preg_replace('/\bFROM\s+(\w+)\b/i', "FROM \"{$this->db->schema}\".\"$1\"", $query);
 
         return $query;
     }
