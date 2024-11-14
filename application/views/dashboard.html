@@ -128,7 +128,7 @@
                                         <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Pemasukan bulanan</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
                                             <span>
-                                                Rp <?=number_format($stats->pemasukanBulanan, "0", ",", ".");?>
+                                                Rp <?=number_format($stats->pemasukanBulanan ? $stats->pemasukanBulanan : 0, "0", ",", ".");?>
                                             </span>
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                         <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Pemasukan bulan ini</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
                                             <span>
-                                                Rp <?=number_format($stats->pemasukanBulanIni, "0", ",", ".");?>
+                                                Rp <?=number_format($stats->pemasukanBulanIni ? $stats->pemasukanBulanIni : 0, "0", ",", ".");?>
                                             </span>
                                         </div>
                                     </div>
@@ -162,7 +162,7 @@
                                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>PEngeluaran bulanan</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
                                             <span>
-                                                Rp <?=number_format($stats->pengeluaranBulanan, "0", ",", ".");?>
+                                                Rp <?=number_format($stats->pengeluaranBulanan ? $stats->pengeluaranBulanan : 0, "0", ",", ".");?>
                                             </span>
                                         </div>
                                     </div>
@@ -179,7 +179,7 @@
                                         <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pengeluaran bulan ini</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
                                             <span>
-                                                Rp <?=number_format($stats->pengeluaranBulanIni, "0", ",", ".");?>
+                                                Rp <?=number_format($stats->pengeluaranBulanIni ? $stats->pengeluaranBulanIni : 0, "0", ",", ".");?>
                                             </span>
                                         </div>
                                     </div>
