@@ -38,6 +38,8 @@ class Laundry extends CI_Model {
         $query = preg_replace('/\bFROM\s+(\w+)\b/i', "FROM \"{$this->db->schema}\".\"$1\"", $query);
         // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
         $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
+        // Replace MONTH(<column>) with EXTRACT(MONTH FROM <column>)
+        $query = preg_replace('/MONTH\(([^)]+)\)/i', 'EXTRACT(MONTH FROM $1)', $query);
 
         return $query;
     }
