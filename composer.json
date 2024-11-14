@@ -46,9 +46,7 @@
     "nguyenanhung/basic-firewall": "^2.0",
     "ext-pgsql": "*",
     "ext-pdo_pgsql": "*",
-    "lib-pgsql-libpq": "*",
-    "vlucas/phpdotenv": "^5.6",
-    "symfony/dotenv": "^7.1"
+    "lib-pgsql-libpq": "*"
   },
   "autoload": {
     "psr-4": {
