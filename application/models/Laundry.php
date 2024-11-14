@@ -32,16 +32,16 @@ class Laundry extends CI_Model {
             }
             return "INTERVAL '{$matches[1]} $unit'";
         }, $query);
+        //\"{$this->db->schema}\"
         // Add schema name to all table names (assuming schema is "raja-laundry")
         // Handle FROM, JOIN, LEFT JOIN, RIGHT JOIN, and comma-separated tables
         $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) {
-            // This will match table names (without aliases) after FROM, JOIN, LEFT JOIN, RIGHT JOIN
+            // Match and add schema only to the table names, not aliases
             $table = $matches[2];
-            // Add schema prefix only to the table name
-            return $matches[1] . " \"{$this->db->schema}\"." . $table;
+            return $matches[1] . " \"{$this->db->schema}\"." . $table; // Add schema prefix
         }, $query);
-        
-        // Now, handle the case for comma-separated tables and join tables
+
+        // Add schema name to tables in the comma-separated lists (FROM, WHERE, etc.)
         $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) {
             // Split comma-separated tables
             $tables = explode(',', $matches[1]);
@@ -52,7 +52,7 @@ class Laundry extends CI_Model {
             }
             return implode(', ', $tables);
         }, $query);
-        
+
         // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
         $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
         // Replace MONTH(<column>) with EXTRACT(MONTH FROM <column>)
