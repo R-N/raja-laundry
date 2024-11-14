@@ -16,7 +16,7 @@
  * @package    	grocery CRUD
  * @copyright  	Copyright (c) 2010 through 2014, John Skoumbourdis
  * @license    	https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
- * @version    	1.6.1
+ * @version    	1.6.4
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
  */
 
@@ -135,65 +135,92 @@ class grocery_CRUD_Field_Types
 			}
 		}
 
-		if(!empty($this->add_fields))
-			foreach($this->add_fields as $field_object)
-			{
-				$field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
+		if (!empty($this->add_fields)) {
+            foreach ($this->add_fields as $field_object) {
+                $field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
 
-				if(!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
-				{
-					$extras = false;
-					if($this->change_field_type !== null && isset($this->change_field_type[$field_name]))
-					{
-						$field_type = $this->change_field_type[$field_name];
-						$extras 	=  $field_type->extras;
-					}
+                if (!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
+                {
+                    $extras = false;
+                    if ($this->change_field_type !== null && isset($this->change_field_type[$field_name])) {
+                        $field_type = $this->change_field_type[$field_name];
+                        $extras = $field_type->extras;
+                    }
 
-					$field_info = (object)array(
-						'name' => $field_name,
-						'crud_type' => $this->change_field_type !== null && isset($this->change_field_type[$field_name]) ?
-											$this->change_field_type[$field_name]->type :
-											'string',
-						'display_as' => isset($this->display_as[$field_name]) ?
-												$this->display_as[$field_name] :
-												ucfirst(str_replace("_"," ",$field_name)),
-						'required'	=> !empty($this->required_fields) && in_array($field_name,$this->required_fields) ? true : false,
-						'extras'	=> $extras
-					);
+                    $field_info = (object)array(
+                        'name' => $field_name,
+                        'crud_type' => $this->change_field_type !== null && isset($this->change_field_type[$field_name]) ?
+                            $this->change_field_type[$field_name]->type :
+                            'string',
+                        'display_as' => isset($this->display_as[$field_name]) ?
+                            $this->display_as[$field_name] :
+                            ucfirst(str_replace("_", " ", $field_name)),
+                        'required' => !empty($this->required_fields) && in_array($field_name, $this->required_fields) ? true : false,
+                        'extras' => $extras
+                    );
 
-					$types[$field_name] = $field_info;
-				}
-			}
+                    $types[$field_name] = $field_info;
+                }
+            }
+        }
 
-		if(!empty($this->edit_fields))
-			foreach($this->edit_fields as $field_object)
-			{
-				$field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
+		if (!empty($this->edit_fields)) {
+            foreach ($this->edit_fields as $field_object) {
+                $field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
 
-				if(!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
-				{
-					$extras = false;
-					if($this->change_field_type !== null && isset($this->change_field_type[$field_name]))
-					{
-						$field_type = $this->change_field_type[$field_name];
-						$extras 	=  $field_type->extras;
-					}
+                if (!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
+                {
+                    $extras = false;
+                    if ($this->change_field_type !== null && isset($this->change_field_type[$field_name])) {
+                        $field_type = $this->change_field_type[$field_name];
+                        $extras = $field_type->extras;
+                    }
 
-					$field_info = (object)array(
-						'name' => $field_name,
-						'crud_type' => $this->change_field_type !== null && isset($this->change_field_type[$field_name]) ?
-											$this->change_field_type[$field_name]->type :
-											'string',
-						'display_as' => isset($this->display_as[$field_name]) ?
-												$this->display_as[$field_name] :
-												ucfirst(str_replace("_"," ",$field_name)),
-						'required'	=> in_array($field_name,$this->required_fields) ? true : false,
-						'extras'	=> $extras
-					);
+                    $field_info = (object)array(
+                        'name' => $field_name,
+                        'crud_type' => $this->change_field_type !== null && isset($this->change_field_type[$field_name]) ?
+                            $this->change_field_type[$field_name]->type :
+                            'string',
+                        'display_as' => isset($this->display_as[$field_name]) ?
+                            $this->display_as[$field_name] :
+                            ucfirst(str_replace("_", " ", $field_name)),
+                        'required' => in_array($field_name, $this->required_fields) ? true : false,
+                        'extras' => $extras
+                    );
 
-					$types[$field_name] = $field_info;
-				}
-			}
+                    $types[$field_name] = $field_info;
+                }
+            }
+        }
+
+        if (!empty($this->read_fields)) {
+            foreach ($this->read_fields as $field_object) {
+                $field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
+
+                if (!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
+                {
+                    $extras = false;
+                    if ($this->change_field_type !== null && isset($this->change_field_type[$field_name])) {
+                        $field_type = $this->change_field_type[$field_name];
+                        $extras = $field_type->extras;
+                    }
+
+                    $field_info = (object)array(
+                        'name' => $field_name,
+                        'crud_type' => $this->change_field_type !== null && isset($this->change_field_type[$field_name]) ?
+                            $this->change_field_type[$field_name]->type :
+                            'string',
+                        'display_as' => isset($this->display_as[$field_name]) ?
+                            $this->display_as[$field_name] :
+                            ucfirst(str_replace("_", " ", $field_name)),
+                        'required' => !empty($this->required_fields) && in_array($field_name, $this->required_fields) ? true : false,
+                        'extras' => $extras
+                    );
+
+                    $types[$field_name] = $field_info;
+                }
+            }
+        }
 
 		$this->field_types = $types;
 
@@ -468,7 +495,7 @@ class grocery_CRUD_Field_Types
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.6.1
+ * @version    	1.6.4
  * @link		http://www.grocerycrud.com/documentation
  */
 class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
@@ -1595,7 +1622,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.6.1
+ * @version    	1.6.4
  */
 class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 {
@@ -1661,6 +1688,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
 
+		$data->jquery_js            = grocery_CRUD::JQUERY;
+
 		$default_per_page = $this->config->default_per_page;
 		$data->paging_options = $this->config->paging_options;
 		$data->default_per_page		= is_numeric($default_per_page) && $default_per_page >1 && in_array($default_per_page,$data->paging_options)? $default_per_page : 25;
@@ -1685,7 +1714,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			$this->_add_js_vars(array('dialog_forms' => $this->config->dialog_forms));
 
 			$data->list_view = $this->_theme_view('list.php',$data,true);
-			$this->_theme_view('list_template.php',$data);
+			$this->_theme_view('list_template.php', $data);
 		}
 		else
 		{
@@ -3102,7 +3131,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
  *
  * @package    	grocery CRUD
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
- * @version    	1.6.1
+ * @version    	1.6.4
  */
 class grocery_CRUD_States extends grocery_CRUD_Layout
 {
@@ -3554,7 +3583,7 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
  * @package    	grocery CRUD
  * @copyright  	Copyright (c) 2010 through 2014, John Skoumbourdis
  * @license    	https://github.com/scoumbourdis/grocery-crud/blob/master/license-grocery-crud.txt
- * @version    	1.6.1
+ * @version    	1.6.4
  * @author     	John Skoumbourdis <scoumbourdisj@gmail.com>
  */
 
@@ -3577,9 +3606,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 *
 	 * @var	string
 	 */
-	const	VERSION = "1.6.1";
+	const	VERSION = "1.6.4";
 
-	const	JQUERY 			= "jquery-1.11.1.min.js";
+	const	JQUERY 			= "jquery-2.2.4.min.js";
 	const	JQUERY_UI_JS 	= "jquery-ui-1.10.3.custom.min.js";
 	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css";
 
@@ -4469,9 +4498,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 				foreach($this->read_fields as $field_num => $field)
 				{
 					if(isset($this->display_as[$field]))
-						$this->read_fields[$field_num] = (object)array('field_name' => $field, 'display_as' => $this->display_as[$field]);
+                        $this->read_fields[$field_num] = (object)array('field_name' => $field, 'display_as' => $this->display_as[$field]);
 					else
-						$this->read_fields[$field_num] = (object)array('field_name' => $field, 'display_as' => $field_types[$field]->display_as);
+                        $this->read_fields[$field_num] = (object)array('field_name' => $field, 'display_as' => $field_types[$field]->display_as);
 				}
 			}
 			else
