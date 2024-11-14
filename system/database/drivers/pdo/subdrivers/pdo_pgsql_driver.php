@@ -118,7 +118,7 @@ class CI_DB_pdo_pgsql_driver extends CI_DB_pdo_driver {
 
         if (is_object($this->conn_id) && ! empty($this->schema))
         {
-            $this->simple_query('SET search_path TO \''.$this->schema.',public\';');
+            $this->simple_query("SET search_path TO '{$this->schema},public';");
         }
 
         return $this->conn_id;

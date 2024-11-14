@@ -163,7 +163,7 @@ class CI_DB_postgre_driver extends CI_DB {
                 return FALSE;
             }
 
-            empty($this->schema) OR $this->simple_query('SET search_path TO \''.$this->schema.',public\';');
+            empty($this->schema) OR $this->simple_query("SET search_path TO '{$this->schema},public';");
         }
 
         return $this->conn_id;
