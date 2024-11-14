@@ -41,7 +41,7 @@ class Laundry extends CI_Model {
         //[\"?a-zA-Z0-9\-_,\.\s]
         
         echo $query;
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"?a-zA-Z0-9\-_,\.\s]+)(?=\s(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s)/i', function($matches) use ($schema) {
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"a-zA-Z0-9\-_,\.\s]+?)(?=\s(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s)/i', function($matches) use ($schema) {
             // Split comma-separated tables
             $tables = explode(',', $matches[2]);
             foreach ($tables as &$table) {
