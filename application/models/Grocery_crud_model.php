@@ -38,11 +38,9 @@ class Grocery_crud_model  extends CI_Model  {
     function __construct()
     {
         parent::__construct();
-        if (ENVIRONMENT == 'production'){
+        if ($this->db->dbdriver == "postgre"){
             $schema = $this->db->schema;
-            echo "gc setting search_path to schema {$schema}";
             $this->db->query("SET search_path TO {$schema};");
-            echo 'done';
         }
     }
 
