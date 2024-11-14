@@ -96,6 +96,7 @@ $db['default'] = array(
     'save_queries' => TRUE
 );
 
+$db['default']['schema'] = $db['default']['database'];
 if (ENVIRONMENT == 'production'){
     $db['default']['hostname'] = getenv('POSTGRES_HOST') ?? $db['default']['hostname'];
     $db['default']['port']     = 5432;
