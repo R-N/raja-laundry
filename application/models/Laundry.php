@@ -32,8 +32,16 @@ class Laundry extends CI_Model {
             }
             return "INTERVAL '{$matches[1]} $unit'";
         }, $query);
-        // Add schema name if not present (assuming schema is "public")
-        $query = preg_replace('/\bFROM\s+(\w+)\b/i', "FROM \"{$this->db->schema}\".\"$1\"", $query);
+        // Add schema name to all table names (assuming schema is "public")
+        // Handle FROM, JOIN, LEFT JOIN, RIGHT JOIN, etc.
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)(?=\s*(?:,|\s|\b))/i', function($matches) {
+            // Match and replace table names in the FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses
+            $tables = array_merge(explode(',', $matches[2]), explode(',', $matches[2])); // Split comma-separated tables
+            foreach ($tables as &$table) {
+                $table = "{$this->db->schema}." . trim($table); // Add schema prefix
+            }
+            return $matches[1] . ' ' . implode(', ', $tables); // Return the JOIN clause with schema-prefixed tables
+        }, $query);
         // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
         $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
         // Replace MONTH(<column>) with EXTRACT(MONTH FROM <column>)
