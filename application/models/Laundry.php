@@ -36,6 +36,8 @@ class Laundry extends CI_Model {
         }, $query);
         // Add schema name if not present (assuming schema is "public")
         $query = preg_replace('/\bFROM\s+(\w+)\b/i', "FROM \"{$this->db->schema}\".\"$1\"", $query);
+        // Replace YEAR(<column>) with EXTRACT(YEAR FROM <column>)
+        $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
 
         return $query;
     }
