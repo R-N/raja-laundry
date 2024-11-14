@@ -40,6 +40,8 @@ class Laundry extends CI_Model {
         $query = preg_replace('/YEAR\(([^)]+)\)/i', 'EXTRACT(YEAR FROM $1)', $query);
         // Replace MONTH(<column>) with EXTRACT(MONTH FROM <column>)
         $query = preg_replace('/MONTH\(([^)]+)\)/i', 'EXTRACT(MONTH FROM $1)', $query);
+        // Replace DAYNAME(<column>) with TO_CHAR(<column>, 'Day')
+        $query = preg_replace('/DAYNAME\(([^)]+)\)/i', "TO_CHAR($1, 'Day')", $query);
 
         return $query;
     }
