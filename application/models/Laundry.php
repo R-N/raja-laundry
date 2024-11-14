@@ -36,25 +36,24 @@ class Laundry extends CI_Model {
         //\"{$this->db->schema}\"
         $schema = $this->db->schema;  // Replace with your dynamic schema name
 
-// Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
-        // Apply schema to tables in the FROM, JOIN, etc.
+
+        // Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
         $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) use ($schema) {
-            $table = $matches[2];
-            // Add schema prefix only once to table names
-            return $matches[1] . ' "' . $schema . '".' . $table;
+            return $matches[1] . ' "' . $schema . '".' . $matches[2];
         }, $query);
 
         // Step 2: Handle the comma-separated tables and add dynamic schema to each table (only once)
         $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) use ($schema) {
             // Split comma-separated tables
-            $tables = explode(',', $matches[1]);
+            $tables = explode(',', $matches[2]);
             foreach ($tables as &$table) {
                 // Trim spaces and add schema to each table name
                 $table = trim($table);
                 $table = '"' . $schema . '".' . $table;
             }
-            return implode(', ', $tables);
+            return $matches[1] . " " . implode(', ', $tables);
         }, $query);
+
         // Step 3: Remove duplicate schema occurrences like "raja-laundry"."raja-laundry" -> "raja-laundry"
         $query = str_replace("\"{$schema}\".\"{$schema}\"", "\"{$schema}\"", $query);
         $query = str_replace("\"{$schema}\".\"{$schema}\"", "\"{$schema}\"", $query);
