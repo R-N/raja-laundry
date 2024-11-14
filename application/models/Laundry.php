@@ -40,7 +40,7 @@ class Laundry extends CI_Model {
         // Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
         //[\"?a-zA-Z0-9\-_,\.\s]
         
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"?a-zA-Z0-9\-_,\.\s]+)(?=\s(ON|WHERE|HAVING|LIMIT|OFFSET)\s)/i', function($matches) use ($schema) {
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"?a-zA-Z0-9\-_,\.\s]+)(?=\s(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s)/i', function($matches) use ($schema) {
             // Split comma-separated tables
             echo $matches[2];
             $tables = explode(',', $matches[2]);
