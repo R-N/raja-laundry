@@ -36,10 +36,12 @@ class Laundry extends CI_Model {
         // Handle FROM, JOIN, LEFT JOIN, RIGHT JOIN, and comma-separated tables
         $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([a-zA-Z0-9_]+)(?=\s*(?:\s|\b|\s+ON|\s+WHERE))/i', function($matches) {
             // This will match table names (without aliases) after FROM, JOIN, LEFT JOIN, RIGHT JOIN
-            return $matches[1] . ' ' . "\"{$this->db->schema}\"." . $matches[2]; // Add schema prefix
+            $table = $matches[2];
+            // Add schema prefix only to the table name
+            return $matches[1] . " \"{$this->db->schema}\"." . $table;
         }, $query);
         
-        // Add schema name to tables in the comma-separated lists (FROM, WHERE, etc.)
+        // Now, handle the case for comma-separated tables and join tables
         $query = preg_replace_callback('/\b(?:FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([^,]+)/i', function($matches) {
             // Split comma-separated tables
             $tables = explode(',', $matches[1]);
