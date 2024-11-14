@@ -20,6 +20,23 @@ class Laundry extends CI_Model {
         }
     }
 
+    function adjustPostgres($query){
+        if ($this->db->dbdriver !== "postgre")
+            return $query;
+        // Replace CURDATE() with CURRENT_DATE
+        $query = preg_replace('/\bCURDATE\(\)/i', 'CURRENT_DATE', $query);
+        // Replace INTERVAL X UNIT with INTERVAL 'X units', ensuring unit is plural
+        $query = preg_replace_callback('/INTERVAL\s+(\d+)\s+(\w+)/i', function($matches) {
+            $unit = strtolower($matches[2]);
+            // Ensure unit is plural for PostgreSQL
+            if (substr($unit, -1) !== 's') {
+                $unit .= 's';
+            }
+            return "INTERVAL '{$matches[1]} $unit'";
+        }, $query);
+
+        return $query;
+    }
     
     function getIdCustomerPesanan($idPesanan){
         $sql =  "SELECT ID_CUSTOMER FROM pesanan WHERE ID_PESANAN=?;";
@@ -104,6 +121,7 @@ class Laundry extends CI_Model {
                 {$monthQuery}
             GROUP BY WEEKDAY(TANGGAL_{$tanggal}), DAYNAME(TANGGAL_{$tanggal})
             ORDER BY WEEKDAY(TANGGAL_{$tanggal})";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -130,6 +148,7 @@ class Laundry extends CI_Model {
             GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER
             ORDER BY COUNT(*){$monthDivider} DESC
             {$limitQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -156,6 +175,7 @@ class Laundry extends CI_Model {
             GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER
             ORDER BY SUM(P.TOTAL){$monthDivider} DESC
             {$limitQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->result();
@@ -349,6 +369,7 @@ class Laundry extends CI_Model {
             WHERE TRUE
                 {$monthQuery}
                 {$lunasQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -363,6 +384,7 @@ class Laundry extends CI_Model {
             FROM pengeluaran PL
             WHERE TRUE  
             {$monthQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -381,6 +403,7 @@ class Laundry extends CI_Model {
             WHERE YEAR(P.TANGGAL_{$tanggal})=YEAR(CURDATE())
                 AND MONTH(P.TANGGAL_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -392,6 +415,7 @@ class Laundry extends CI_Model {
             FROM pengeluaran PL
             WHERE YEAR(PL.TANGGAL_PENGELUARAN)=YEAR(CURDATE())
                 AND MONTH(PL.TANGGAL_PENGELUARAN)=MONTH(CURDATE())";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -414,6 +438,7 @@ class Laundry extends CI_Model {
             WHERE TRUE
                 {$monthQuery}
                 {$lunasQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -432,6 +457,7 @@ class Laundry extends CI_Model {
             WHERE YEAR(P.TANGGAL_{$tanggal})=YEAR(CURDATE())
                 AND MONTH(P.TANGGAL_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -474,6 +500,7 @@ class Laundry extends CI_Model {
                 {$lunasQuery}
             GROUP BY PK.ID_PAKET, PK.PAKET
             ORDER BY PK.ID_PAKET";
+        $sql = $this->adjustPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->result();
