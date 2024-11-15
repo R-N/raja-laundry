@@ -56,7 +56,7 @@ if (!function_exists('mysqlToPostgres')) {
 
 if (!function_exists('fixPath')) {
     function fixPath($path){
-        if (!isset($_SERVER['DOCUMENT_ROOT'])){
+        if (!isset($_SERVER['DOCUMENT_ROOT']) || ENVIRONMENT !== 'production'){
             return $path;
         }
         return $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $path;
