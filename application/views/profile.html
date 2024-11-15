@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="<?=base_url();?>assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="<?=base_url();?>assets/fonts/fontawesome-all.min.css">
-	<?php 
-	foreach($css_files as $file): ?>
-		<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-	<?php endforeach; ?>
+    <?php 
+    foreach($css_files as $file): ?>
+        <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
+    <?php endforeach; ?>
     <link rel="stylesheet" href="<?=base_url();?>assets/css/style.css">
 </head>
 
@@ -46,43 +46,43 @@
                                 <div class="card-header">
                                     <h4  class="text-primary d-inline-block"><?=$title;?></h4>
                                     <div class="dropdown float-right">
-										<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Data <?=$bulan;?> Bulan Terakhir</button>
-										<div class="dropdown-menu" role="menu">
-											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>1">1 Bulan</a>
-											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>2">2 Bulan</a>
-											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>3">3 Bulan</a>
-											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>6">6 Bulan</a>
-											<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>12">12 Bulan</a>
-										</div>
+                                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Data <?=$bulan;?> Bulan Terakhir</button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>1">1 Bulan</a>
+                                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>2">2 Bulan</a>
+                                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>3">3 Bulan</a>
+                                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>6">6 Bulan</a>
+                                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>12">12 Bulan</a>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
-									<?=$output;?>
-								</div>
+                                    <?=$output;?>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-						<div class="col-lg-7 col-xl-8">
-							<div class="card shadow mb-4">
-								<div class="card-header d-flex justify-content-between align-items-center">
-									<h6 class="text-primary font-weight-bold m-0">Pesanan Harian</h6>
-								</div>
-								<div class="card-body">
-									<div class="chart-area"><canvas id="chart-pesanan-harian"></canvas></div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-5 col-xl-4">
-							<div class="card shadow mb-4">
-								<div class="card-header d-flex justify-content-between align-items-center">
-									<h6 class="text-primary font-weight-bold m-0">Pesanan Paket</h6>
-								</div>
-								<div class="card-body">
-									<div class="chart-area"><canvas id="chart-pesanan-paket"></canvas></div>
-								</div>
-							</div>
-						</div>
+                        <div class="col-lg-7 col-xl-8">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary font-weight-bold m-0">Pesanan Harian</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area"><canvas id="chart-pesanan-harian"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-xl-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary font-weight-bold m-0">Pesanan Paket</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area"><canvas id="chart-pesanan-paket"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xl-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -121,126 +121,126 @@
     <?php foreach($js_files as $file): ?>
         <script src="<?php echo $file; ?>"></script>
     <?php endforeach; ?>
-	<script>
-		var dataChartPesananHarian = {
-		  "type": "bar",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->HARI;'), $dataPesananHarian));?>,
-			"datasets": [
-			  {
-				"label": "Pesanan Bulanan",
-				"backgroundColor": "#0041ff",
-				"borderColor": "rgba(78, 115, 223, 1)",
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesananHarian));?>
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			},
-			"scales": {
-			  "xAxes": [
-				{
-				  "ticks": {
-					"beginAtZero": true
-				  }
-				}
-			  ],
-			  "yAxes": [
-				{
-				  "ticks": {
-					"beginAtZero": true
-				  }
-				}
-			  ]
-			}
-		  }
-		};
-		var dataChartPesananPaket = {
-		  "type": "doughnut",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->PAKET;'), $dataPesananPaket));?>,
-			"datasets": [
-			  {
-				"label": "Penjualan",
-				"backgroundColor": [
-				  "#4e73df",
-				  "#1cc88a",
-				  "#36b9cc",
-				  "#d38e3c",
-				  "#c94242"
-				],
-				"borderColor": [
-				  "#ffffff",
-				  "#ffffff",
-				  "#ffffff",
-				  "#ffffff",
-				  "#ffffff"
-				],
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPesananPaket));?>
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": true,
-			  "position": "bottom"
-			},
-			"title": {}
-		  }
-		};
-		var dataChartPesanan = {
-		  "type": "line",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPesanan));?>,
-			"datasets": [
-			  {
-				"label": "Pesanan",
-				"fill": true,
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesanan));?>,
-				"backgroundColor": "rgba(0,65,255,0.18)",
-				"borderColor": "rgba(78, 115, 223, 1)"
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			}
-		  }
-		};
-		var dataChartPembayaran = {
-		  "type": "line",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPembayaran));?>,
-			"datasets": [
-			  {
-				"label": "Pemasukan",
-				"fill": true,
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPembayaran));?>,
-				"backgroundColor": "rgba(255,214,0,0.18)",
-				"borderColor": "rgb(223,182,78)"
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			},
-		  }
-		};
-		$(document).ready(function(){
-			var chartPesananHarian = new Chart($("#chart-pesanan-harian"), dataChartPesananHarian);
-			var chartPesananPaket = new Chart($("#chart-pesanan-paket"), dataChartPesananPaket);
-			var chartPesanan = new Chart($("#chart-pesanan"), dataChartPesanan);
-			var chartPembayaran = new Chart($("#chart-pembayaran"), dataChartPembayaran);
-		});
-	</script>
+    <script>
+        var dataChartPesananHarian = {
+          "type": "bar",
+          "data": {
+            "labels": <?=json_encode(array_map(function($o) { return $o->HARI; }, $dataPesananHarian));?>,
+            "datasets": [
+              {
+                "label": "Pesanan Bulanan",
+                "backgroundColor": "#0041ff",
+                "borderColor": "rgba(78, 115, 223, 1)",
+                "data": <?=json_encode(array_map(function($o) { return $o->JUMLAH; }, $dataPesananHarian));?>
+              }
+            ]
+          },
+          "options": {
+            "maintainAspectRatio": false,
+            "legend": {
+              "display": false
+            },
+            "scales": {
+              "xAxes": [
+                {
+                  "ticks": {
+                    "beginAtZero": true
+                  }
+                }
+              ],
+              "yAxes": [
+                {
+                  "ticks": {
+                    "beginAtZero": true
+                  }
+                }
+              ]
+            }
+          }
+        };
+        var dataChartPesananPaket = {
+          "type": "doughnut",
+          "data": {
+            "labels": <?=json_encode(array_map(function($o) { return $o->PAKET; }, $dataPesananPaket));?>,
+            "datasets": [
+              {
+                "label": "Penjualan",
+                "backgroundColor": [
+                  "#4e73df",
+                  "#1cc88a",
+                  "#36b9cc",
+                  "#d38e3c",
+                  "#c94242"
+                ],
+                "borderColor": [
+                  "#ffffff",
+                  "#ffffff",
+                  "#ffffff",
+                  "#ffffff",
+                  "#ffffff"
+                ],
+                "data": <?=json_encode(array_map(function($o) { return $o->TOTAL; }, $dataPesananPaket));?>
+              }
+            ]
+          },
+          "options": {
+            "maintainAspectRatio": false,
+            "legend": {
+              "display": true,
+              "position": "bottom"
+            },
+            "title": {}
+          }
+        };
+        var dataChartPesanan = {
+          "type": "line",
+          "data": {
+            "labels": <?=json_encode(array_map(function($o) { return $o->tahun."/".sprintf("%02d",$o->BULAN); }, $dataPesanan));?>,
+            "datasets": [
+              {
+                "label": "Pesanan",
+                "fill": true,
+                "data": <?=json_encode(array_map(function($o) { return $o->JUMLAH; }, $dataPesanan));?>,
+                "backgroundColor": "rgba(0,65,255,0.18)",
+                "borderColor": "rgba(78, 115, 223, 1)"
+              }
+            ]
+          },
+          "options": {
+            "maintainAspectRatio": false,
+            "legend": {
+              "display": false
+            }
+          }
+        };
+        var dataChartPembayaran = {
+          "type": "line",
+          "data": {
+            "labels": <?=json_encode(array_map(function($o) { return $o->tahun."/".sprintf("%02d",$o->BULAN); }, $dataPembayaran));?>,
+            "datasets": [
+              {
+                "label": "Pemasukan",
+                "fill": true,
+                "data": <?=json_encode(array_map(function($o) { return $o->TOTAL; }, $dataPembayaran));?>,
+                "backgroundColor": "rgba(255,214,0,0.18)",
+                "borderColor": "rgb(223,182,78)"
+              }
+            ]
+          },
+          "options": {
+            "maintainAspectRatio": false,
+            "legend": {
+              "display": false
+            },
+          }
+        };
+        $(document).ready(function(){
+            var chartPesananHarian = new Chart($("#chart-pesanan-harian"), dataChartPesananHarian);
+            var chartPesananPaket = new Chart($("#chart-pesanan-paket"), dataChartPesananPaket);
+            var chartPesanan = new Chart($("#chart-pesanan"), dataChartPesanan);
+            var chartPembayaran = new Chart($("#chart-pembayaran"), dataChartPembayaran);
+        });
+    </script>
 </body>
 
 </html>

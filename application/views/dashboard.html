@@ -269,13 +269,13 @@
       var dataChartPesananHarian = {
         "type": "bar",
         "data": {
-          "labels": <?=json_encode(array_map(create_function('$o', 'return $o->HARI;'), $dataPesananHarian));?>,
+          "labels": <?=json_encode(array_map(function($o) { return $o->HARI; }, $dataPesananHarian));?>,
           "datasets": [
             {
               "label": "Pesanan Bulanan",
               "backgroundColor": "#0041ff",
               "borderColor": "rgba(78, 115, 223, 1)",
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesananHarian));?>
+              "data": <?=json_encode(array_map(function($o) { return $o->JUMLAH; }, $dataPesananHarian));?>
             }
           ]
         },
@@ -305,7 +305,7 @@
       var dataChartPenjualanPaket = {
         "type": "doughnut",
         "data": {
-          "labels": <?=json_encode(array_map(create_function('$o', 'return $o->PAKET;'), $dataPenjualanPaket));?>,
+          "labels": <?=json_encode(array_map(function($o) { return $o->PAKET; }, $dataPenjualanPaket));?>,
           "datasets": [
             {
               "label": "Penjualan",
@@ -323,7 +323,7 @@
                 "#ffffff",
                 "#ffffff"
               ],
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPenjualanPaket));?>
+              "data": <?=json_encode(array_map(function($o) { return $o->TOTAL; }, $dataPenjualanPaket));?>
             }
           ]
         },
@@ -339,13 +339,13 @@
       var dataChartTopPemesan = {
         "type": "horizontalBar",
         "data": {
-          "labels": <?=json_encode(array_map(create_function('$o', 'return $o->NAMA_CUSTOMER;'), $dataTopPemesan));?>,
+          "labels": <?=json_encode(array_map(function($o) { return $o->NAMA_CUSTOMER; }, $dataTopPemesan));?>,
           "datasets": [
             {
               "label": "Pesanan Bulanan",
               "backgroundColor": "#0041ff",
               "borderColor": "rgba(78, 115, 223, 1)",
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH_PESANAN;'), $dataTopPemesan));?>
+              "data": <?=json_encode(array_map(function($o) { return $o->JUMLAH_PESANAN; }, $dataTopPemesan));?>
             }
           ]
         },
@@ -359,13 +359,13 @@
       var dataChartTopPembayar = {
         "type": "horizontalBar",
         "data": {
-          "labels": <?=json_encode(array_map(create_function('$o', 'return $o->NAMA_CUSTOMER;'), $dataTopPembayar));?>,
+          "labels": <?=json_encode(array_map(function($o) { return $o->NAMA_CUSTOMER; }, $dataTopPembayar));?>,
           "datasets": [
             {
               "label": "Pembayaran Bulanan",
               "backgroundColor": "#0041ff",
               "borderColor": "rgba(78, 115, 223, 1)",
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL_PEMBAYARAN;'), $dataTopPembayar));?>
+              "data": <?=json_encode(array_map(function($o) { return $o->TOTAL_PEMBAYARAN; }, $dataTopPembayar));?>
             }
           ]
         },
@@ -379,19 +379,19 @@
       var dataChartPemasukanPengeluaran = {
         "type": "line",
         "data": {
-          "labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPemasukanPengeluaran));?>,
+          "labels": <?=json_encode(array_map(function($o) { return $o->tahun."/".sprintf("%02d",$o->BULAN); }, $dataPemasukanPengeluaran));?>,
           "datasets": [
             {
               "label": "Pemasukan",
               "fill": true,
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->PEMASUKAN;'), $dataPemasukanPengeluaran));?>,
+              "data": <?=json_encode(array_map(function($o) { return $o->PEMASUKAN; }, $dataPemasukanPengeluaran));?>,
               "backgroundColor": "rgba(0,65,255,0.18)",
               "borderColor": "rgba(78, 115, 223, 1)"
             },
             {
               "label": "Pengeluaran",
               "fill": true,
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->PENGELUARAN;'), $dataPemasukanPengeluaran));?>,
+              "data": <?=json_encode(array_map(function($o) { return $o->PENGELUARAN; }, $dataPemasukanPengeluaran));?>,
               "backgroundColor": "rgba(255,199,0,0.1)",
               "borderColor": "#ffb800"
             }
@@ -407,12 +407,12 @@
       var dataChartLabaRugi = {
         "type": "line",
         "data": {
-          "labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataLabaRugi));?>,
+          "labels": <?=json_encode(array_map(function($o) { return $o->tahun."/".sprintf("%02d",$o->BULAN); }, $dataLabaRugi));?>,
           "datasets": [
             {
               "label": "Laba/Rugi",
               "fill": true,
-              "data": <?=json_encode(array_map(create_function('$o', 'return $o->LABA;'), $dataLabaRugi));?>,
+              "data": <?=json_encode(array_map(function($o) { return $o->LABA; }, $dataLabaRugi));?>,
               "backgroundColor": "rgba(255,214,0,0.18)",
               "borderColor": "rgb(223,182,78)"
             }
