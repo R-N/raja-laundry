@@ -88,10 +88,14 @@ switch (ENVIRONMENT) {
  * This variable must contain the name of your "system" directory.
  * Set the path if it is not in the same directory as this file.
  */
-$system_path = 'system';
 //$system_path = dirname(__DIR__) . '/vendor/nguyenanhung/codeigniter-framework/system';
-$system_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'system';
 $system_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'vendor/nguyenanhung/codeigniter-framework/system';
+if (!is_dir($system_path)){
+    $system_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'system';
+}
+if (!is_dir($system_path)){
+    $system_path = 'system';
+}
 
 /*
  *---------------------------------------------------------------
@@ -108,8 +112,10 @@ $system_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'vendor/nguyena
  *
  * NO TRAILING SLASH!
  */
-$application_folder = 'application';
 $application_folder = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'application';
+if (!is_dir($application_folder)){
+    $application_folder = 'application';
+}
 
 /*
  *---------------------------------------------------------------
