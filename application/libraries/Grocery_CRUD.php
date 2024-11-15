@@ -3724,8 +3724,8 @@ class Grocery_CRUD extends grocery_CRUD_States
     {
         if (isset($_SERVER['DOCUMENT_ROOT'])){
             $this->default_assets_path = fixPath($this->default_assets_path);
-            $this->default_config_path = fixPath($this->default_assets_path);
-            $this->default_language_path = fixPath($this->default_assets_path);
+            $this->default_config_path = fixPath($this->default_config_path);
+            $this->default_language_path = fixPath($this->default_language_path);
         }
     }
 
