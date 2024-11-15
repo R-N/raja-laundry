@@ -42,8 +42,6 @@ if (!function_exists('mysqlToPostgres')) {
             WHERE 
                 c.table_schema = '{$schema}' 
                 AND c.table_name = '$1';
-            ORDER BY 
-                c.ordinal_position;
             ", 
             $query
         );
