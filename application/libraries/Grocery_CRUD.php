@@ -3722,7 +3722,9 @@ class Grocery_CRUD extends grocery_CRUD_States
      */
     public function __construct()
     {
-
+        $this->default_assets_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $this->default_assets_path;
+        $this->default_config_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $this->default_config_path;
+        $this->default_language_path = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $this->default_language_path;
     }
 
     /**
