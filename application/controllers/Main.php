@@ -109,70 +109,68 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_table('pesanan');
             $crud->set_subject('Pesanan');
             
-            $crud->display_as('ID_PESANAN', "ID");
-            $crud->display_as('ID_CUSTOMER', "CUSTOMER");
+            $crud->display_as('id_pesanan', "ID");
+            $crud->display_as('id_customer', "Customer");
             if($op == 'add'){
-                $crud->change_field_type('ID_PESANAN', 'integer');
-                $crud->change_field_type('SUBTOTAL', 'hidden', 0);
-                $crud->change_field_type('TOTAL', 'hidden', 0);
-                $crud->add_fields("ID_PESANAN", "ID_CUSTOMER", "NOTA", "TANGGAL_PESANAN", "TANGGAL_LUNAS", "TANGGAL_AMBIL", "KETERANGAN");
+                $crud->change_field_type('id_pesanan', 'integer');
+                $crud->change_field_type('subtotal', 'hidden', 0);
+                $crud->change_field_type('total', 'hidden', 0);
+                $crud->add_fields('id_pesanan', "id_customer", "nota", "tanggal_pesanan", "tanggal_lunas", "tanggal_ambil", "keterangan");
             }else if ($op == '' || $op == 'success'){
-                $crud->display_as('ID_CUSTOMER', "CUST");
-                $crud->display_as('NOTA', "NO");
-                $crud->display_as('TANGGAL_PESANAN', "PESAN");
-                $crud->display_as('TANGGAL_LUNAS', "LUNAS");
-                $crud->display_as('TANGGAL_AMBIL', "AMBIL");
+                $crud->display_as('id_customer', "Cust");
+                $crud->display_as('nota', "No");
+                $crud->display_as('tanggal_pesanan', "Pesan");
+                $crud->display_as('tanggal_lunas', "Lunas");
+                $crud->display_as('tanggal_ambil', "Ambil");
             }
             if($idCustomer){
-                $crud->columns('ID_PESANAN', 'NOTA', 'TANGGAL_PESANAN', 'TANGGAL_LUNAS', 'TANGGAL_AMBIL', 'SUBTOTAL', 'TOTAL');
+                $crud->columns('id_pesanan', 'nota', 'tanggal_pesanan', 'tanggal_lunas', 'tanggal_ambil', 'subtotal', 'total');
                 
-                $crud->where("ID_CUSTOMER", $idCustomer);
+                $crud->where('id_customer', $idCustomer);
                 if ($op == 'add'){
-                   $crud->change_field_type('ID_CUSTOMER', 'hidden', $idCustomer);
+                   $crud->change_field_type('id_customer', 'hidden', $idCustomer);
                 }else if ($op == 'read'){
-                    $crud->callback_read_field('ID_CUSTOMER', function ($value, $primary_key) {
+                    $crud->callback_read_field('id_customer', function ($value, $primary_key) {
                         $idCustomer = $value;
-                        $customer = $this->Laundry->getCustomer($idCustomer);
+                        $customer = $this->laundry->getCustomer($idCustomer);
                         $urlCustomer = $this->url_customer($idCustomer);
-                        return "<a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$idCustomer})</a>";
+                        return "<a href='{$urlCustomer}'>{$customer->nama_customer} ({$idCustomer})</a>";
                     });
                 }
             }else{
-                $crud->required_fields('ID_CUSTOMER');
-                $crud->columns('ID_PESANAN', 'ID_CUSTOMER',  'NOTA', 'TANGGAL_PESANAN', 'TANGGAL_LUNAS', 'TANGGAL_AMBIL', 'TOTAL');
-                
-                
+                $crud->required_fields('id_customer');
+                $crud->columns('id_pesanan', 'id_customer',  'nota', 'tanggal_pesanan', 'tanggal_lunas', 'tanggal_ambil', 'total');
                 
                 if($op == ''){
-                    $crud->callback_column('ID_CUSTOMER',array($this,'_callback_pesanan_customer_url'));
+                    $crud->callback_column('id_customer',array($this,'_callback_pesanan_customer_url'));
                 }else if ($op == 'read'){
-                    $crud->callback_read_field('ID_CUSTOMER', function ($value, $primary_key) {
+                    $crud->callback_read_field('id_customer', function ($value, $primary_key) {
                         $idCustomer = $value;
-                        $customer = $this->Laundry->getCustomer($idCustomer);
+                        $customer = $this->laundry->getCustomer($idCustomer);
                         $urlCustomer = $this->url_customer($idCustomer);
-                        return "<a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$idCustomer})</a>";
+                        return "<a href='{$urlCustomer}'>{$customer->nama_customer} ({$idCustomer})</a>";
                     });
                 }else{
-                    $crud->set_relation('ID_CUSTOMER','CUSTOMER','{NAMA_CUSTOMER} ({ID_CUSTOMER})');
+                    $crud->set_relation('id_customer','customer','{nama_customer} ({id_customer})');
                 }
             }
             
             
-            $crud->add_action('Items', '', '','ui-icon-plus',array($this,'_callback_item_pesanan_action'));
-            $crud->add_action('Kupon', '', '','ui-icon-plus',array($this,'_callback_kupon_pesanan_action'));
+            $crud->add_action('items', '', '','ui-icon-plus',array($this,'_callback_item_pesanan_action'));
+            $crud->add_action('kupon', '', '','ui-icon-plus',array($this,'_callback_kupon_pesanan_action'));
             $crud->unset_clone();
 
             $output = $crud->render();
-            $output->title = "Pesanan";
-            $output->titlePlain = "Pesanan";
+            $output->title = "pesanan";
+            $output->titlePlain = "pesanan";
             if($idCustomer == '' && $idPesanan != ''){
-                $idCustomer = $this->Laundry->getIdCustomerPesanan($idPesanan);
+                $idCustomer = $this->laundry->getIdCustomerPesanan($idPesanan);
             }
             if($idCustomer != ''){
-                $customer = $this->Laundry->getCustomer($idCustomer);
+                $customer = $this->laundry->getCustomer($idCustomer);
                 $url = $this->url_customer($idCustomer);
-                $output->title = $output->title . " Milik <a href='{$url}'>{$customer->NAMA_CUSTOMER} ({$idCustomer})</a>";
-                $output->titlePlain = $output->titlePlain . " Milik {$customer->NAMA_CUSTOMER} ({$idCustomer})";
+                $output->title = $output->title . " milik <a href='{$url}'>{$customer->nama_customer} ({$idCustomer})</a>";
+                $output->titlePlain = $output->titlePlain . " milik {$customer->nama_customer} ({$idCustomer})";
             }
 
             $this->_example_output($output);
@@ -192,13 +190,13 @@ class Main extends HungNG_CI_Base_Controllers {
     }
     function _callback_pesanan_customer_action($primary_key , $row)
     {
-        return $this->url_pesanan_customer($row->ID_CUSTOMER);
+        return $this->url_pesanan_customer($row->id_customer);
     }
     public function _callback_pesanan_customer_url($value, $row)
     {
-        $cust = $this->Laundry->getCustomer($row->ID_CUSTOMER);
-        $url = $this->url_pesanan_customer($row->ID_CUSTOMER);
-        $el = "<a href='{$url}'>{$cust->NAMA_CUSTOMER}</a>";
+        $cust = $this->Laundry->getCustomer($row->id_customer);
+        $url = $this->url_pesanan_customer($row->id_customer);
+        $el = "<a href='{$url}'>{$cust->nama_customer}</a>";
         return $el;
     }
 
@@ -215,10 +213,10 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_theme('datatables');
             $crud->set_table('item_pesanan');
             $crud->set_subject('Item Pesanan');
-            $crud->required_fields('PAKET', 'HARGA');
-            $crud->columns('ID_ITEM', 'ID_PAKET', 'ID_UNIT', 'QTY', 'HARGA');
-            $crud->set_relation("ID_PAKET", "paket", "PAKET");
-            $crud->set_relation("ID_UNIT", "unit", "UNIT");
+            $crud->required_fields('paket', 'harga');
+            $crud->columns('id_item', 'id_paket', 'id_unit', 'qty', 'harga');
+            $crud->set_relation("id_paket", "paket", "paket");
+            $crud->set_relation("id_unit", "unit", "unit");
             
             $crud->where("ID_PESANAN", $idPesanan);
             
@@ -230,14 +228,14 @@ class Main extends HungNG_CI_Base_Controllers {
             $output = $crud->render();
             if($idPesanan == '' && $idItem != '') $idPesanan = $this->Laundry->getIdPesananItem($idPesanan);
             $pesanan = $this->Laundry->getPesanan($idPesanan);
-            $customer = $this->Laundry->getCustomer($pesanan->ID_CUSTOMER);
-            $urlCustomer = $this->url_pesanan_customer($pesanan->ID_CUSTOMER);
+            $customer = $this->Laundry->getCustomer($pesanan->id_customer);
+            $urlCustomer = $this->url_pesanan_customer($pesanan->id_customer);
             $urlPesanan = $this->url_pesanan($idPesanan);
             $output->title = "Item Milik <a href='{$urlPesanan}'>Pesanan {$idPesanan}</a>";
             $output->titlePlan = "Item Milik {$idPesanan}";
             $output->info = "
                 <p>
-                    Customer: <a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$customer->ID_CUSTOMER})</a></br>
+                    Customer: <a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$customer->id_customer})</a></br>
                     Tanggal Pesan: {$pesanan->TANGGAL_PESANAN}
                 </p>";
 

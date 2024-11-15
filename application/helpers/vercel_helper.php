@@ -28,7 +28,11 @@ if (!function_exists('mysqlToPostgres')) {
                 CASE 
                     WHEN c.is_identity = 'YES' THEN 'auto_increment'
                     ELSE ''
-                END AS \"Extra\"
+                END AS \"Extra\",
+                CASE 
+                    WHEN tc.constraint_type = 'PRIMARY KEY' THEN TRUE
+                    ELSE FALSE
+                END AS \"primary_key\"
             FROM 
                 information_schema.columns c
             LEFT JOIN 
@@ -48,20 +52,20 @@ if (!function_exists('mysqlToPostgres')) {
 
 
         // Wrap select column name in quotation marks
-        $query = preg_replace_callback('/\bSELECT\s+([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)(?=$|\;|\s+(FROM|\;|$))/i', function($matches) use ($schema) {
-            // Split comma-separated cols
-            $cols = explode(',', $matches[1]);
-            foreach ($cols as &$col) {
-                $col = trim($col);
-                //add quotation mark to the last word
-                $col = preg_replace('/\b\"?([A-Za-z_][A-Za-z0-9_]*)\"?\b(?=\s*$)/i', '"$1"', $col);
-            }
-            $cols = implode(', ', $cols);
-            $rest = '';
-            //$rest = $matches[2] ? "{$matches[2]} {$rest}" : $rest;
-            //$rest = $matches[3] ? "{$matches[3]} {$rest}" : $rest;
-            return "SELECT {$cols} {$rest}";
-        }, $query);
+        // $query = preg_replace_callback('/\bSELECT\s+([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)(?=$|\;|\s+(FROM|\;|$))/i', function($matches) use ($schema) {
+        //     // Split comma-separated cols
+        //     $cols = explode(',', $matches[1]);
+        //     foreach ($cols as &$col) {
+        //         $col = trim($col);
+        //         //add quotation mark to the last word
+        //         $col = preg_replace('/\b\"?([A-Za-z_][A-Za-z0-9_]*)\"?\b(?=\s*$)/i', '"$1"', $col);
+        //     }
+        //     $cols = implode(', ', $cols);
+        //     $rest = '';
+        //     //$rest = $matches[2] ? "{$matches[2]} {$rest}" : $rest;
+        //     //$rest = $matches[3] ? "{$matches[3]} {$rest}" : $rest;
+        //     return "SELECT {$cols} {$rest}";
+        // }, $query);
 
 
         // Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)

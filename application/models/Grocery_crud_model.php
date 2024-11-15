@@ -54,7 +54,7 @@ class Grocery_crud_model  extends CI_Model  {
         if($this->table_name === null)
             return false;
 
-        $select = "\"{$this->table_name}\".*";
+        $select = "{$this->table_name}.*";
 
         //set_relation special queries
         if(!empty($this->relation))
@@ -437,7 +437,7 @@ class Grocery_crud_model  extends CI_Model  {
     function get_field_types_basic_table()
     {
         $db_field_types = array();
-        $sql = "SHOW COLUMNS FROM \"{$this->table_name}\"";
+        $sql = "SHOW COLUMNS FROM {$this->table_name}";
         $sql = mysqlToPostgres($sql);
         foreach($this->db->query($sql)->result() as $db_field_type)
         {
@@ -464,6 +464,7 @@ class Grocery_crud_model  extends CI_Model  {
             $db_field_types[$db_field_type->Field]['db_type'] = $db_type;
             $db_field_types[$db_field_type->Field]['db_null'] = $db_field_type->Null == 'YES' ? true : false;
             $db_field_types[$db_field_type->Field]['db_extra'] = $db_field_type->Extra;
+            $db_field_types[$db_field_type->Field]['primary_key'] = $db_field_type->Key == "PRI";
         }
 
         $results = $this->db->field_data($this->table_name);
