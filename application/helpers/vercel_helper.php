@@ -14,7 +14,7 @@ if (!function_exists('mysqlToPostgres')) {
         $query = preg_replace(
             '/SHOW\s+COLUMNS\s+FROM\s+\"?([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)\"?(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', 
             "
-            SELECT 
+            SELECT DISTINCT
                 c.column_name AS \"Field\",
                 c.data_type AS \"Type\",
                 c.is_nullable AS \"Null\",
