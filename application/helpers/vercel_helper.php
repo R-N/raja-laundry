@@ -1,6 +1,6 @@
 <?php
 
-class MY_DB extends CI_DB {
+if (!function_exists('mysqlToPostgres')) {
     function mysqlToPostgres($query){
         if ($this->db->dbdriver !== "postgre")
             return $query;
@@ -17,8 +17,7 @@ class MY_DB extends CI_DB {
         }, $query);
 
         //\"{$this->db->schema}\"
-        $schema = $this->schema;  // Replace with your dynamic schema name
-
+        $schema = &get_instance()->db->schema;  // Replace with your dynamic schema name
 
         // Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
         //[\"?a-zA-Z0-9\-_,\.\s]
@@ -52,5 +51,13 @@ class MY_DB extends CI_DB {
 
         return $query;
     }
+}
 
+if (!function_exists('fixPath')) {
+    function fixPath($path){
+        if (!isset($_SERVER['DOCUMENT_ROOT'])){
+            return $path;
+        }
+        return $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $path;
+    }
 }
