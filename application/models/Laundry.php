@@ -23,7 +23,7 @@ class Laundry extends CI_Model {
     
     function getIdCustomerPesanan($idPesanan){
         $sql =  "SELECT ID_CUSTOMER FROM pesanan WHERE ID_PESANAN=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -37,7 +37,7 @@ class Laundry extends CI_Model {
     }
     function getCustomer($idCustomer){
         $sql =  "SELECT * FROM customer WHERE ID_CUSTOMER=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idCustomer));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -46,7 +46,7 @@ class Laundry extends CI_Model {
     }
     function getIdPesananItem($idItem){
         $sql =  "SELECT ID_PESANAN FROM pesanan WHERE ID_ITEM=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idItem));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -55,7 +55,7 @@ class Laundry extends CI_Model {
     }
     function getIdPesananKupon($idKupon){
         $sql =  "SELECT ID_PESANAN FROM kupon WHERE ID_KUPON=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idKupon));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -64,7 +64,7 @@ class Laundry extends CI_Model {
     }
     function getPesanan($idPesanan){
         $sql =  "SELECT * FROM pesanan WHERE ID_PESANAN=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -73,7 +73,7 @@ class Laundry extends CI_Model {
     }
     function getIdKuponItem($idItem){
         $sql =  "SELECT ID_KUPON FROM item_kupon WHERE ID_PESANAN=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idItem));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -82,7 +82,7 @@ class Laundry extends CI_Model {
     }
     function getKupon($idKupon){
         $sql =  "SELECT * FROM kupon WHERE ID_KUPON=?;";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -111,7 +111,7 @@ class Laundry extends CI_Model {
                 {$monthQuery}
             GROUP BY WEEKDAY(TANGGAL_{$tanggal}), DAYNAME(TANGGAL_{$tanggal})
             ORDER BY WEEKDAY(TANGGAL_{$tanggal})";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -138,7 +138,7 @@ class Laundry extends CI_Model {
             GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER
             ORDER BY COUNT(*){$monthDivider} DESC
             {$limitQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -165,7 +165,7 @@ class Laundry extends CI_Model {
             GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER
             ORDER BY SUM(P.TOTAL){$monthDivider} DESC
             {$limitQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->result();
@@ -194,7 +194,7 @@ class Laundry extends CI_Model {
             GROUP BY YEAR(P.TANGGAL_{$tanggal}),MONTH(P.TANGGAL_{$tanggal})
             ORDER BY YEAR(P.TANGGAL_{$tanggal})ASC,MONTH(P.TANGGAL_{$tanggal}) ASC
             {$limitQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result0 = $query->result();
         $result = array();
@@ -252,7 +252,7 @@ class Laundry extends CI_Model {
             WHERE P.TAHUN IS NULL
             ORDER BY TAHUN ASC, BULAN ASC
             {$limitQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result0 = $query->result();
         $result = array();
@@ -308,7 +308,7 @@ class Laundry extends CI_Model {
             WHERE P.TAHUN IS NULL
             ORDER BY TAHUN ASC, BULAN ASC
             {$limitQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result0 = $query->result();
         
@@ -362,7 +362,7 @@ class Laundry extends CI_Model {
             WHERE TRUE
                 {$monthQuery}
                 {$lunasQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -377,7 +377,7 @@ class Laundry extends CI_Model {
             FROM pengeluaran PL
             WHERE TRUE  
             {$monthQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -396,7 +396,7 @@ class Laundry extends CI_Model {
             WHERE YEAR(P.TANGGAL_{$tanggal})=YEAR(CURDATE())
                 AND MONTH(P.TANGGAL_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -408,7 +408,7 @@ class Laundry extends CI_Model {
             FROM pengeluaran PL
             WHERE YEAR(PL.TANGGAL_PENGELUARAN)=YEAR(CURDATE())
                 AND MONTH(PL.TANGGAL_PENGELUARAN)=MONTH(CURDATE())";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -431,7 +431,7 @@ class Laundry extends CI_Model {
             WHERE TRUE
                 {$monthQuery}
                 {$lunasQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -450,7 +450,7 @@ class Laundry extends CI_Model {
             WHERE YEAR(P.TANGGAL_{$tanggal})=YEAR(CURDATE())
                 AND MONTH(P.TANGGAL_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -464,7 +464,7 @@ class Laundry extends CI_Model {
             SELECT COUNT(*) AS COUNT
             FROM pesanan P
             WHERE TANGGAL_{$belum} IS NULL";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -494,7 +494,7 @@ class Laundry extends CI_Model {
                 {$lunasQuery}
             GROUP BY PK.ID_PAKET, PK.PAKET
             ORDER BY PK.ID_PAKET";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
         $result = $query->result();
@@ -519,7 +519,7 @@ class Laundry extends CI_Model {
                 AND YEAR(P.TANGGAL_PESANAN) = ?
                 AND MONTH(P.TANGGAL_PESANAN) = ?
             GROUP BY PK.ID_PAKET, PK.PAKET, U.ID_UNIT";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
         return $result;
@@ -542,7 +542,7 @@ class Laundry extends CI_Model {
                 AND YEAR(P.TANGGAL_PESANAN) = ?
                 AND MONTH(P.TANGGAL_PESANAN) = ?
             GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
         return $result;
@@ -560,7 +560,7 @@ class Laundry extends CI_Model {
             WHERE P.ID_CUSTOMER=C.ID_CUSTOMER
                 AND YEAR(P.TANGGAL_PESANAN) = ?
                 AND MONTH(P.TANGGAL_PESANAN) = ?";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
         return $result;
@@ -577,7 +577,7 @@ class Laundry extends CI_Model {
             FROM pesanan P
             WHERE TRUE
                 {$lunasQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -593,7 +593,7 @@ class Laundry extends CI_Model {
             FROM pesanan P
             WHERE YEAR(P.TANGGAL_{$tanggal}) = ?
                 {$lunasQuery}";
-        $sql = $this->db->mysqlToPostgres($sql);
+        $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($year));
         $result = $query->result();
         return $result;
