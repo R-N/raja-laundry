@@ -32,7 +32,9 @@ $req_uri = $_SERVER['REQUEST_URI'];
 $path = substr($req_uri,0,strrpos($req_uri,'/'));
 
 $config['base_url'] = $root;
-$config['base_url'] = 'https://raja-laundry.vercel.app/';
+if (ENVIRONMENT == "production"){
+    $config['base_url'] = 'https://raja-laundry.vercel.app/';
+}
 
 /*
 |--------------------------------------------------------------------------

@@ -1,13 +1,5 @@
-# Laundry CRM
+Grocery CRUD
+=============
+Grocery CRUD is a PHP and Codeigniter Framework library that creates a full functional CRUD system without the need to customise JavaScript or CSS.
 
-Transaction system and CRM in form of analytics and dashboard
-
-Default config in application/config/config.php:
-- $config['base_url'] = 'http://localhost/raja-laundry';
-
-Default database credentials in application/config/database.php:
-- 'hostname' => 'localhost',
-- 'username' => 'root',
-- 'password' => '',
-- 'database' => 'raja-laundry',
-- 'dbdriver' => 'mysqli',
+For more information, visit http://www.grocerycrud.com

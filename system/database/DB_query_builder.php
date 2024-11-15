@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -46,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/userguide3/database/
  */
 
 abstract class CI_DB_query_builder extends CI_DB_driver {
@@ -270,6 +271,13 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 */
 	protected $qb_cache_no_escape			= array();
 
+	/**
+	 * Strings that determine if a string represents a literal value or a field name
+	 *
+	 * @var string[]
+	 */
+	protected $is_literal_str = array();
+
 	// --------------------------------------------------------------------
 
 	/**
@@ -398,7 +406,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 			$this->display_error('db_invalid_query');
 		}
 
-		$type = strtoupper($type);
+		$type = strtoupper((string) $type);
 
 		if ( ! in_array($type, array('MAX', 'MIN', 'AVG', 'SUM')))
 		{
@@ -527,9 +535,9 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	{
 		if ($type !== '')
 		{
-			$type = strtoupper(trim($type));
+			$type = strtoupper(trim((string) $type));
 
-			if ( ! in_array($type, array('LEFT', 'RIGHT', 'OUTER', 'INNER', 'LEFT OUTER', 'RIGHT OUTER'), TRUE))
+			if ( ! in_array($type, array('LEFT', 'RIGHT', 'OUTER', 'INNER', 'LEFT OUTER', 'RIGHT OUTER', 'FULL OUTER', 'FULL'), TRUE))
 			{
 				$type = '';
 			}
@@ -698,11 +706,11 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 				$k = substr($k, 0, $match[0][1]).($match[1][0] === '=' ? ' IS NULL' : ' IS NOT NULL');
 			}
 
-			${$qb_key} = array('condition' => $prefix.$k, 'value' => $v, 'escape' => $escape);
-			$this->{$qb_key}[] = ${$qb_key};
+			$$qb_key = array('condition' => $prefix.$k, 'value' => $v, 'escape' => $escape);
+			$this->{$qb_key}[] = $$qb_key;
 			if ($this->qb_caching === TRUE)
 			{
-				$this->{$qb_cache_key}[] = ${$qb_key};
+				$this->{$qb_cache_key}[] = $$qb_key;
 				$this->qb_cache_exists[] = substr($qb_key, 3);
 			}
 
@@ -934,6 +942,10 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 * @used-by	or_like()
 	 * @used-by	not_like()
 	 * @used-by	or_not_like()
+	 * @used-by	having_like()
+	 * @used-by	or_having_like()
+	 * @used-by	not_having_like()
+	 * @used-by	or_having_not_like()
 	 *
 	 * @param	mixed	$field
 	 * @param	string	$match
@@ -942,8 +954,9 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	 * @param	string	$not
 	 * @param	bool	$escape
 	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
 	 */
-	protected function _like($field, $match = '', $type = 'AND ', $side = 'both', $not = '', $escape = NULL)
+	protected function _like($field, $match = '', $type = 'AND ', $side = 'both', $not = '', $escape = NULL, $clause = 'where')
 	{
 		if ( ! is_array($field))
 		{
@@ -987,12 +1000,36 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 				$v .= sprintf($this->_like_escape_str, $this->_like_escape_chr);
 			}
 
-			$qb_where = array('condition' => "{$prefix} {$k} {$not} LIKE {$v}", 'value' => NULL, 'escape' => $escape);
-			$this->qb_where[] = $qb_where;
-			if ($this->qb_caching === TRUE)
+			/**
+			 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+			 */
+			switch ($clause)
 			{
-				$this->qb_cache_where[] = $qb_where;
-				$this->qb_cache_exists[] = 'where';
+				case 'having':
+					$prefix = (count($this->qb_having) === 0 && count($this->qb_cache_having) === 0)
+						? $this->_group_get_type('') : $this->_group_get_type($type);
+
+					$qb_having = array('condition' => "{$prefix} {$k} {$not} LIKE {$v}", 'value' => NULL, 'escape' => $escape);
+					$this->qb_having[] = $qb_having;
+					if ($this->qb_caching === TRUE)
+					{
+						$this->qb_cache_having[] = $qb_having;
+						$this->qb_cache_exists[] = 'having';
+					}
+					break;
+				case 'where':
+				default:
+					$prefix = (count($this->qb_where) === 0 && count($this->qb_cache_where) === 0)
+						? $this->_group_get_type('') : $this->_group_get_type($type);
+
+					$qb_where = array('condition' => "{$prefix} {$k} {$not} LIKE {$v}", 'value' => NULL, 'escape' => $escape);
+					$this->qb_where[] = $qb_where;
+					if ($this->qb_caching === TRUE)
+					{
+						$this->qb_cache_where[] = $qb_where;
+						$this->qb_cache_exists[] = 'where';
+					}
+					break;
 			}
 		}
 
@@ -1119,7 +1156,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	/**
 	 * GROUP BY
 	 *
-	 * @param	string	$by
+	 * @param	mixed	$by
 	 * @param	bool	$escape
 	 * @return	CI_DB_query_builder
 	 */
@@ -1412,7 +1449,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		$qb_cache_orderby = $this->qb_cache_orderby;
 		$this->qb_orderby = $this->qb_cache_orderby = array();
 
-		$result = ($this->qb_distinct === TRUE OR ! empty($this->qb_groupby) OR ! empty($this->qb_cache_groupby) OR $this->qb_limit OR $this->qb_offset)
+		$result = ($this->qb_distinct === TRUE OR ! empty($this->qb_groupby) OR ! empty($this->qb_cache_groupby) OR ! empty($this->qb_having) OR $this->qb_limit OR $this->qb_offset)
 			? $this->query($this->_count_string.$this->protect_identifiers('numrows')."\nFROM (\n".$this->_compile_select()."\n) CI_count_all_results")
 			: $this->query($this->_compile_select($this->_count_string.$this->protect_identifiers('numrows')));
 
@@ -1495,7 +1532,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		{
 			if (empty($set))
 			{
-				return ($this->db_debug) ? $this->display_error('insert_batch() called with no data') : FALSE;
+				return ($this->db_debug) ? $this->display_error('db_data_required', 'insert_batch()') : FALSE;
 			}
 
 			$this->set_insert_batch($set, '', $escape);
@@ -1912,7 +1949,7 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		{
 			if (empty($set))
 			{
-				return ($this->db_debug) ? $this->display_error('update_batch() called with no data') : FALSE;
+				return ($this->db_debug) ? $this->display_error('db_data_required', 'update_batch()') : FALSE;
 			}
 
 			$this->set_update_batch($set, $index);
@@ -2709,20 +2746,18 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 	{
 		$str = trim($str);
 
-		if (empty($str) OR ctype_digit($str) OR (string) (float) $str === $str OR in_array(strtoupper($str), array('TRUE', 'FALSE'), TRUE))
+		if (empty($str) OR ctype_digit((string) $str) OR (string) (float) $str === $str OR in_array(strtoupper($str), array('TRUE', 'FALSE'), TRUE))
 		{
 			return TRUE;
 		}
 
-		static $_str;
-
-		if (empty($_str))
+		if (empty($this->is_literal_str))
 		{
-			$_str = ($this->_escape_char !== '"')
+			$this->is_literal_str = ($this->_escape_char !== '"')
 				? array('"', "'") : array("'");
 		}
 
-		return in_array($str[0], $_str, TRUE);
+		return in_array($str[0], $this->is_literal_str, TRUE);
 	}
 
 	// --------------------------------------------------------------------
@@ -2805,4 +2840,182 @@ abstract class CI_DB_query_builder extends CI_DB_driver {
 		));
 	}
 
+
+	// --------------------------------------------------------------------
+	// https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	/**
+	 * Starts a query group for HAVING clause.
+	 *
+	 * @param	string	$not	(Internal use only)
+	 * @param	string	$type	(Internal use only)
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function having_group_start($not = '', $type = 'AND ')
+	{
+		$type = $this->_group_get_type($type);
+
+		$this->qb_where_group_started = TRUE;
+		$prefix = (count($this->qb_having) === 0 && count($this->qb_cache_having) === 0) ? '' : $type;
+		$having = array(
+			'condition' => $prefix.$not.str_repeat(' ', ++$this->qb_where_group_count).' (',
+			'value' => NULL,
+			'escape' => FALSE
+		);
+
+		$this->qb_having[] = $having;
+		if ($this->qb_caching)
+		{
+			$this->qb_cache_having[] = $having;
+		}
+
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Starts a query group for HAVING clause, but ORs the group.
+	 *
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function or_having_group_start()
+	{
+		return $this->having_group_start('', 'OR ');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Starts a query group for HAVING clause, but NOTs the group.
+	 *
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function not_having_group_start()
+	{
+		return $this->having_group_start('NOT ', 'AND ');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Starts a query group for HAVING clause, but OR NOTs the group.
+	 *
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function or_not_having_group_start()
+	{
+		return $this->having_group_start('NOT ', 'OR ');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Ends a query group for HAVING clause.
+	 *
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function having_group_end()
+	{
+		$this->qb_where_group_started = FALSE;
+		$having = array(
+			'condition' => str_repeat(' ', $this->qb_where_group_count--).')',
+			'value' => NULL,
+			'escape' => FALSE
+		);
+
+		$this->qb_having[] = $having;
+		if ($this->qb_caching)
+		{
+			$this->qb_cache_having[] = $having;
+		}
+
+		return $this;
+	}
+
+	// --------------------------------------------------------------------
+	// --------------------------------------------------------------------
+
+	/**
+	 * LIKE with HAVING clause
+	 *
+	 * Generates a %LIKE% portion of the query.
+	 * Separates multiple calls with 'AND'.
+	 *
+	 * @param	mixed	$field
+	 * @param	string	$match
+	 * @param	string	$side
+	 * @param	bool	$escape
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function having_like($field, $match = '', $side = 'both', $escape = NULL)
+	{
+		return $this->_like($field, $match, 'AND ', $side, '', $escape, 'having');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * NOT LIKE with HAVING clause
+	 *
+	 * Generates a NOT LIKE portion of the query.
+	 * Separates multiple calls with 'AND'.
+	 *
+	 * @param	mixed	$field
+	 * @param	string	$match
+	 * @param	string	$side
+	 * @param	bool	$escape
+	 * @return	CI_DB_query_builder
+	 */
+	public function not_having_like($field, $match = '', $side = 'both', $escape = NULL)
+	{
+		return $this->_like($field, $match, 'AND ', $side, 'NOT', $escape, 'having');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * OR LIKE with HAVING clause
+	 *
+	 * Generates a %LIKE% portion of the query.
+	 * Separates multiple calls with 'OR'.
+	 *
+	 * @param	mixed	$field
+	 * @param	string	$match
+	 * @param	string	$side
+	 * @param	bool	$escape
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function or_having_like($field, $match = '', $side = 'both', $escape = NULL)
+	{
+		return $this->_like($field, $match, 'OR ', $side, '', $escape, 'having');
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * OR NOT LIKE with HAVING clause
+	 *
+	 * Generates a NOT LIKE portion of the query.
+	 * Separates multiple calls with 'OR'.
+	 *
+	 * @param	mixed	$field
+	 * @param	string	$match
+	 * @param	string	$side
+	 * @param	bool	$escape
+	 * @return	CI_DB_query_builder
+	 * @see https://github.com/bcit-ci/CodeIgniter/pull/5643/files
+	 */
+	public function or_having_not_like($field, $match = '', $side = 'both', $escape = NULL)
+	{
+		return $this->_like($field, $match, 'OR ', $side, 'NOT', $escape, 'having');
+	}
+
+	// --------------------------------------------------------------------
 }

@@ -1,34 +1,34 @@
 /*
-SQLyog Ultimate v13.1.1 (64 bit)
-MySQL - 10.1.34-MariaDB : Database - raja-laundry
+sqlyog ultimate v13.1.1 (64 bit)
+mysql - 10.1.34-mariadb : database - raja-laundry
 *********************************************************************
 */
 
-/*!40101 SET NAMES utf8 */;
+/*!40101 set names utf8 */;
 
-/*!40101 SET SQL_MODE=''*/;
+/*!40101 set sql_mode=''*/;
 
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`raja-laundry` /*!40100 DEFAULT CHARACTER SET latin1 */;
+/*!40014 set @old_unique_checks=@@unique_checks, unique_checks=0 */;
+/*!40014 set @old_foreign_key_checks=@@foreign_key_checks, foreign_key_checks=0 */;
+/*!40101 set @old_sql_mode=@@sql_mode, sql_mode='no_auto_value_on_zero' */;
+/*!40111 set @old_sql_notes=@@sql_notes, sql_notes=0 */;
+create database /*!32312 if not exists*/`raja-laundry` /*!40100 default character set latin1 */;
 
-USE `raja-laundry`;
+use `raja-laundry`;
 
-/*Table structure for table `customer` */
+/*table structure for table `customer` */
 
-CREATE TABLE `customer` (
-  `ID_CUSTOMER` int(11) NOT NULL AUTO_INCREMENT,
-  `NAMA_CUSTOMER` varchar(50) NOT NULL,
-  `ALAMAT_CUSTOMER` varchar(100) DEFAULT NULL,
-  `TELEPON_CUSTOMER` varchar(16) DEFAULT NULL,
-  PRIMARY KEY (`ID_CUSTOMER`)
-) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=latin1;
+create table `customer` (
+  `id_customer` int(11) not null auto_increment,
+  `nama_customer` varchar(50) not null,
+  `alamat_customer` varchar(100) default null,
+  `telepon_customer` varchar(16) default null,
+  primary key (`id_customer`)
+) engine=innodb auto_increment=196 default charset=latin1;
 
-/*Data for the table `customer` */
+/*data for the table `customer` */
 
-insert  into `customer`(`ID_CUSTOMER`,`NAMA_CUSTOMER`,`ALAMAT_CUSTOMER`,`TELEPON_CUSTOMER`) values 
+insert  into `customer`(`id_customer`,`nama_customer`,`alamat_customer`,`telepon_customer`) values 
 (1,'??',NULL,NULL),
 (2,'Aan',NULL,NULL),
 (3,'Adiu',NULL,NULL),
@@ -225,40 +225,40 @@ insert  into `customer`(`ID_CUSTOMER`,`NAMA_CUSTOMER`,`ALAMAT_CUSTOMER`,`TELEPON
 (194,'Yuni',NULL,NULL),
 (195,'Yusuf',NULL,NULL);
 
-/*Table structure for table `item_kupon` */
+/*table structure for table `item_kupon` */
 
-CREATE TABLE `item_kupon` (
-  `ID_PESANAN` int(11) NOT NULL,
-  `ID_KUPON` int(11) NOT NULL,
-  PRIMARY KEY (`ID_PESANAN`),
-  KEY `FK_ITEM_KUP_RELATIONS_KUPON` (`ID_KUPON`),
-  CONSTRAINT `FK_ITEM_KUP_MERUPAKAN_PESANAN` FOREIGN KEY (`ID_PESANAN`) REFERENCES `pesanan` (`ID_PESANAN`),
-  CONSTRAINT `FK_ITEM_KUP_RELATIONS_KUPON` FOREIGN KEY (`ID_KUPON`) REFERENCES `kupon` (`ID_KUPON`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table `item_kupon` (
+  `id_pesanan` int(11) not null,
+  `id_kupon` int(11) not null,
+  primary key (`id_pesanan`),
+  key `fk_item_kup_relations_kupon` (`id_kupon`),
+  constraint `fk_item_kup_merupakan_pesanan` foreign key (`id_pesanan`) references `pesanan` (`id_pesanan`),
+  constraint `fk_item_kup_relations_kupon` foreign key (`id_kupon`) references `kupon` (`id_kupon`)
+) engine=innodb default charset=latin1;
 
-/*Data for the table `item_kupon` */
+/*data for the table `item_kupon` */
 
-/*Table structure for table `item_pesanan` */
+/*table structure for table `item_pesanan` */
 
-CREATE TABLE `item_pesanan` (
-  `ID_ITEM` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_PESANAN` int(11) NOT NULL,
-  `ID_PAKET` int(16) NOT NULL,
-  `ID_UNIT` int(16) DEFAULT '10',
-  `QTY` int(11) DEFAULT '1',
-  `HARGA` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`ID_ITEM`),
-  KEY `FK_ITEM_PES_MEMILIKI__PESANAN` (`ID_PESANAN`),
-  KEY `FK_PAKET` (`ID_PAKET`),
-  KEY `FK_UNIT` (`ID_UNIT`),
-  CONSTRAINT `FK_ITEM_PES_MEMILIKI__PESANAN` FOREIGN KEY (`ID_PESANAN`) REFERENCES `pesanan` (`ID_PESANAN`),
-  CONSTRAINT `FK_PAKET` FOREIGN KEY (`ID_PAKET`) REFERENCES `paket` (`ID_PAKET`),
-  CONSTRAINT `FK_UNIT` FOREIGN KEY (`ID_UNIT`) REFERENCES `unit` (`ID_UNIT`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=latin1;
+create table `item_pesanan` (
+  `id_item` int(11) not null auto_increment,
+  `id_pesanan` int(11) not null,
+  `id_paket` int(16) not null,
+  `id_unit` int(16) default '10',
+  `qty` int(11) default '1',
+  `harga` int(11) not null default '0',
+  primary key (`id_item`),
+  key `fk_item_pes_memiliki__pesanan` (`id_pesanan`),
+  key `fk_paket` (`id_paket`),
+  key `fk_unit` (`id_unit`),
+  constraint `fk_item_pes_memiliki__pesanan` foreign key (`id_pesanan`) references `pesanan` (`id_pesanan`),
+  constraint `fk_paket` foreign key (`id_paket`) references `paket` (`id_paket`),
+  constraint `fk_unit` foreign key (`id_unit`) references `unit` (`id_unit`)
+) engine=innodb auto_increment=259 default charset=latin1;
 
-/*Data for the table `item_pesanan` */
+/*data for the table `item_pesanan` */
 
-insert  into `item_pesanan`(`ID_ITEM`,`ID_PESANAN`,`ID_PAKET`,`ID_UNIT`,`QTY`,`HARGA`) values 
+insert  into `item_pesanan`(`id_item`,`id_pesanan`,`id_paket`,`id_unit`,`qty`,`harga`) values 
 (1,1,6,10,1,0),
 (2,2,7,17,1,0),
 (3,3,6,10,1,0),
@@ -518,34 +518,34 @@ insert  into `item_pesanan`(`ID_ITEM`,`ID_PESANAN`,`ID_PAKET`,`ID_UNIT`,`QTY`,`H
 (257,239,9,10,9,30000),
 (258,240,9,10,10,40000);
 
-/*Table structure for table `kupon` */
+/*table structure for table `kupon` */
 
-CREATE TABLE `kupon` (
-  `ID_KUPON` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_PESANAN` int(11) DEFAULT NULL,
-  `ID_CUSTOMER` int(11) DEFAULT NULL,
-  `POTONGAN` int(11) NOT NULL,
-  PRIMARY KEY (`ID_KUPON`),
-  KEY `FK_KUPON_DIPAKAI_P_PESANAN` (`ID_PESANAN`),
-  KEY `FK_KUPON_MEMILIKI__CUSTOMER` (`ID_CUSTOMER`),
-  CONSTRAINT `FK_KUPON_DIPAKAI_P_PESANAN` FOREIGN KEY (`ID_PESANAN`) REFERENCES `pesanan` (`ID_PESANAN`),
-  CONSTRAINT `FK_KUPON_MEMILIKI__CUSTOMER` FOREIGN KEY (`ID_CUSTOMER`) REFERENCES `customer` (`ID_CUSTOMER`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+create table `kupon` (
+  `id_kupon` int(11) not null auto_increment,
+  `id_pesanan` int(11) default null,
+  `id_customer` int(11) default null,
+  `potongan` int(11) not null,
+  primary key (`id_kupon`),
+  key `fk_kupon_dipakai_p_pesanan` (`id_pesanan`),
+  key `fk_kupon_memiliki__customer` (`id_customer`),
+  constraint `fk_kupon_dipakai_p_pesanan` foreign key (`id_pesanan`) references `pesanan` (`id_pesanan`),
+  constraint `fk_kupon_memiliki__customer` foreign key (`id_customer`) references `customer` (`id_customer`)
+) engine=innodb auto_increment=2 default charset=latin1;
 
-/*Data for the table `kupon` */
+/*data for the table `kupon` */
 
-/*Table structure for table `paket` */
+/*table structure for table `paket` */
 
-CREATE TABLE `paket` (
-  `ID_PAKET` int(11) NOT NULL AUTO_INCREMENT,
-  `PAKET` varchar(16) NOT NULL,
-  PRIMARY KEY (`ID_PAKET`),
-  UNIQUE KEY `UNIQUE_PAKET` (`PAKET`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+create table `paket` (
+  `id_paket` int(11) not null auto_increment,
+  `paket` varchar(16) not null,
+  primary key (`id_paket`),
+  unique key `unique_paket` (`paket`)
+) engine=innodb auto_increment=12 default charset=latin1;
 
-/*Data for the table `paket` */
+/*data for the table `paket` */
 
-insert  into `paket`(`ID_PAKET`,`PAKET`) values 
+insert  into `paket`(`id_paket`,`paket`) values 
 (2,'3X/EX'),
 (3,'9S'),
 (1,'?'),
@@ -558,19 +558,19 @@ insert  into `paket`(`ID_PAKET`,`PAKET`) values
 (10,'SL'),
 (11,'Toe n Tas');
 
-/*Table structure for table `pengeluaran` */
+/*table structure for table `pengeluaran` */
 
-CREATE TABLE `pengeluaran` (
-  `ID_PENGELUARAN` int(11) NOT NULL AUTO_INCREMENT,
-  `TANGGAL_PENGELUARAN` date NOT NULL,
-  `ITEM_PENGELUARAN` varchar(50) NOT NULL,
-  `JUMLAH_PENGELUARAN` int(11) NOT NULL,
-  PRIMARY KEY (`ID_PENGELUARAN`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+create table `pengeluaran` (
+  `id_pengeluaran` int(11) not null auto_increment,
+  `tanggal_pengeluaran` date not null,
+  `item_pengeluaran` varchar(50) not null,
+  `jumlah_pengeluaran` int(11) not null,
+  primary key (`id_pengeluaran`)
+) engine=innodb auto_increment=45 default charset=latin1;
 
-/*Data for the table `pengeluaran` */
+/*data for the table `pengeluaran` */
 
-insert  into `pengeluaran`(`ID_PENGELUARAN`,`TANGGAL_PENGELUARAN`,`ITEM_PENGELUARAN`,`JUMLAH_PENGELUARAN`) values 
+insert  into `pengeluaran`(`id_pengeluaran`,`tanggal_pengeluaran`,`item_pengeluaran`,`jumlah_pengeluaran`) values 
 (1,'2019-10-01','Elpiji? + aqua',37000),
 (2,'2019-10-01','Dry clean',77000),
 (3,'2019-10-02','Proklin',20000),
@@ -616,26 +616,26 @@ insert  into `pengeluaran`(`ID_PENGELUARAN`,`TANGGAL_PENGELUARAN`,`ITEM_PENGELUA
 (43,'2019-11-02','Kresek?',75000),
 (44,'2019-11-03','Proklin + Sunlight',25000);
 
-/*Table structure for table `pesanan` */
+/*table structure for table `pesanan` */
 
-CREATE TABLE `pesanan` (
-  `ID_PESANAN` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_CUSTOMER` int(11) NOT NULL,
-  `NOTA` int(11) DEFAULT NULL,
-  `TANGGAL_PESANAN` date DEFAULT NULL,
-  `TANGGAL_LUNAS` date DEFAULT NULL,
-  `TANGGAL_AMBIL` date DEFAULT NULL,
-  `SUBTOTAL` int(11) NOT NULL DEFAULT '0',
-  `TOTAL` int(11) NOT NULL DEFAULT '0',
-  `KETERANGAN` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_PESANAN`),
-  KEY `FK_PESANAN_MEMILIKI__CUSTOMER` (`ID_CUSTOMER`),
-  CONSTRAINT `FK_PESANAN_MEMILIKI__CUSTOMER` FOREIGN KEY (`ID_CUSTOMER`) REFERENCES `customer` (`ID_CUSTOMER`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=latin1;
+create table `pesanan` (
+  `id_pesanan` int(11) not null auto_increment,
+  `id_customer` int(11) not null,
+  `nota` int(11) default null,
+  `tanggal_pesanan` date default null,
+  `tanggal_lunas` date default null,
+  `tanggal_ambil` date default null,
+  `subtotal` int(11) not null default '0',
+  `total` int(11) not null default '0',
+  `keterangan` varchar(255) default null,
+  primary key (`id_pesanan`),
+  key `fk_pesanan_memiliki__customer` (`id_customer`),
+  constraint `fk_pesanan_memiliki__customer` foreign key (`id_customer`) references `customer` (`id_customer`)
+) engine=innodb auto_increment=241 default charset=latin1;
 
-/*Data for the table `pesanan` */
+/*data for the table `pesanan` */
 
-insert  into `pesanan`(`ID_PESANAN`,`ID_CUSTOMER`,`NOTA`,`TANGGAL_PESANAN`,`TANGGAL_LUNAS`,`TANGGAL_AMBIL`,`SUBTOTAL`,`TOTAL`,`KETERANGAN`) values 
+insert  into `pesanan`(`id_pesanan`,`id_customer`,`nota`,`tanggal_pesanan`,`tanggal_lunas`,`tanggal_ambil`,`subtotal`,`total`,`keterangan`) values 
 (1,79,NULL,'2019-10-01','2019-10-04','2019-10-04',0,0,''),
 (2,90,NULL,'2019-10-01','2019-10-14','2019-10-14',0,0,''),
 (3,4,NULL,'2019-10-01','2019-10-10','2019-10-10',0,0,''),
@@ -877,18 +877,18 @@ insert  into `pesanan`(`ID_PESANAN`,`ID_CUSTOMER`,`NOTA`,`TANGGAL_PESANAN`,`TANG
 (239,70,51,'2019-11-05','2019-11-08','2019-11-08',30000,30000,''),
 (240,96,52,'2019-11-05','2019-11-08','2019-11-08',40000,40000,'');
 
-/*Table structure for table `unit` */
+/*table structure for table `unit` */
 
-CREATE TABLE `unit` (
-  `ID_UNIT` int(11) NOT NULL AUTO_INCREMENT,
-  `UNIT` varchar(16) NOT NULL,
-  PRIMARY KEY (`ID_UNIT`),
-  UNIQUE KEY `UNIQUE_UNIT` (`UNIT`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+create table `unit` (
+  `id_unit` int(11) not null auto_increment,
+  `unit` varchar(16) not null,
+  primary key (`id_unit`),
+  unique key `unique_unit` (`unit`)
+) engine=innodb auto_increment=18 default charset=latin1;
 
-/*Data for the table `unit` */
+/*data for the table `unit` */
 
-insert  into `unit`(`ID_UNIT`,`UNIT`) values 
+insert  into `unit`(`id_unit`,`unit`) values 
 (1,'Bed Cover'),
 (2,'CPR'),
 (3,'Da'),
@@ -907,227 +907,227 @@ insert  into `unit`(`ID_UNIT`,`UNIT`) values
 (16,'Tas'),
 (17,'Tikar');
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_INSERT_ITEM_KUPON` BEFORE INSERT ON `item_kupon` FOR EACH ROW BEGIN
-	IF EXISTS(
-		SELECT TRUE 
-		FROM pesanan P, kupon K 
-		WHERE P.ID_PESANAN=K.ID_PESANAN
-			AND P.ID_PESANAN=NEW.ID_PESANAN
-			AND K.ID_KUPON=NEW.ID_KUPON) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Pesanan tidak boleh menjadi kupon pesanan itu sendiri";
-	END IF;
-	IF NOT EXISTS(
-		SELECT TRUE 
-		FROM pesanan P
-		WHERE P.ID_PESANAN=NEW.ID_PESANAN
-			AND P.TANGGAL_LUNAS IS NOT NULL) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Kwitansi tidak ditemukan";
-	END IF;
-    END */$$
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_insert_item_kupon` before insert on `item_kupon` for each row begin
+    if exists(
+        select true 
+        from pesanan p, kupon k 
+        where p.id_pesanan=k.id_pesanan
+            and p.id_pesanan=new.id_pesanan
+            and k.id_kupon=new.id_kupon) then
+        signal sqlstate '45000' set message_text = "pesanan tidak boleh menjadi kupon pesanan itu sendiri";
+    end if;
+    if not exists(
+        select true 
+        from pesanan p
+        where p.id_pesanan=new.id_pesanan
+            and p.tanggal_lunas is not null) then
+        signal sqlstate '45000' set message_text = "kwitansi tidak ditemukan";
+    end if;
+    end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_INSERT_KUPON` AFTER INSERT ON `item_kupon` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(NEW.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_insert_kupon` after insert on `item_kupon` for each row begin
+    call recalculate_total_item(new.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_UPDATE_ITEM_KUPON` BEFORE UPDATE ON `item_kupon` FOR EACH ROW BEGIN
-	IF EXISTS(
-		SELECT TRUE 
-		FROM pesanan P, kupon K 
-		WHERE P.ID_PESANAN=K.ID_PESANAN
-			AND P.ID_PESANAN=NEW.ID_PESANAN
-			AND K.ID_KUPON=NEW.ID_KUPON) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Pesanan tidak boleh menjadi kupon pesanan itu sendiri";
-	END IF;
-	IF NOT EXISTS(
-		SELECT TRUE 
-		FROM pesanan P
-		WHERE P.ID_PESANAN=NEW.ID_PESANAN
-			AND P.TANGGAL_LUNAS IS NOT NULL) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Kwitansi tidak ditemukan";
-	END IF;
-    END */$$
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_update_item_kupon` before update on `item_kupon` for each row begin
+    if exists(
+        select true 
+        from pesanan p, kupon k 
+        where p.id_pesanan=k.id_pesanan
+            and p.id_pesanan=new.id_pesanan
+            and k.id_kupon=new.id_kupon) then
+        signal sqlstate '45000' set message_text = "pesanan tidak boleh menjadi kupon pesanan itu sendiri";
+    end if;
+    if not exists(
+        select true 
+        from pesanan p
+        where p.id_pesanan=new.id_pesanan
+            and p.tanggal_lunas is not null) then
+        signal sqlstate '45000' set message_text = "kwitansi tidak ditemukan";
+    end if;
+    end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_UPDATE_KUPON` AFTER UPDATE ON `item_kupon` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(NEW.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_update_kupon` after update on `item_kupon` for each row begin
+    call recalculate_total_item(new.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_DELETE_KUPON` AFTER DELETE ON `item_kupon` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(OLD.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_delete_kupon` after delete on `item_kupon` for each row begin
+    call recalculate_total_item(old.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_pesanan` */
+/* trigger structure for table `item_pesanan` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_INSERT_ITEM_PESANAN` AFTER INSERT ON `item_pesanan` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(NEW.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_insert_item_pesanan` after insert on `item_pesanan` for each row begin
+    call recalculate_total_item(new.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_pesanan` */
+/* trigger structure for table `item_pesanan` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_UPDATE_ITEM_PESANAN` AFTER UPDATE ON `item_pesanan` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(NEW.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_update_item_pesanan` after update on `item_pesanan` for each row begin
+    call recalculate_total_item(new.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_pesanan` */
+/* trigger structure for table `item_pesanan` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_DELETE_ITEM_PESANAN` AFTER DELETE ON `item_pesanan` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(OLD.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_delete_item_pesanan` after delete on `item_pesanan` for each row begin
+    call recalculate_total_item(old.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `pengeluaran` */
+/* trigger structure for table `pengeluaran` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `pengeluaran_default_date` BEFORE INSERT ON `pengeluaran` FOR EACH ROW 
-if ( isnull(new.TANGGAL_PENGELUARAN) ) then
- set new.TANGGAL_PENGELUARAN=curdate();
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `pengeluaran_default_date` before insert on `pengeluaran` for each row 
+if ( isnull(new.tanggal_pengeluaran) ) then
+ set new.tanggal_pengeluaran=curdate();
 end if */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `pesanan` */
+/* trigger structure for table `pesanan` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `pesanan_default_date` BEFORE INSERT ON `pesanan` FOR EACH ROW 
-if ( isnull(new.TANGGAL_PESANAN) ) then
- set new.TANGGAL_PESANAN=curdate();
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `pesanan_default_date` before insert on `pesanan` for each row 
+if ( isnull(new.tanggal_pesanan) ) then
+ set new.tanggal_pesanan=curdate();
 end if */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Procedure structure for procedure `RECALCULATE_TOTAL_ITEM` */
+/* procedure structure for procedure `recalculate_total_item` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `RECALCULATE_TOTAL_ITEM`(ID_PESANAN INTEGER)
+/*!50003 create definer=`root`@`localhost` procedure `recalculate_total_item`(id_pesanan integer)
 begin
-    UPDATE pesanan p
-    SET p.subtotal = (
-            SELECT SUM(ip.HARGA) 
-            FROM item_pesanan ip 
-            WHERE ip.ID_PESANAN=ID_PESANAN
+    update pesanan p
+    set p.subtotal = (
+            select sum(ip.harga) 
+            from item_pesanan ip 
+            where ip.id_pesanan=id_pesanan
         ),
-        p.total = p.subtotal - IF(
-            EXISTS(
-                SELECT TRUE
-                FROM kupon k
-                WHERE k.ID_PESANAN=ID_PESANAN
+        p.total = p.subtotal - if(
+            exists(
+                select true
+                from kupon k
+                where k.id_pesanan=id_pesanan
             ), (
-                SELECT k.POTONGAN
-                FROM kupon k
-                WHERE k.ID_PESANAN=ID_PESANAN
+                select k.potongan
+                from kupon k
+                where k.id_pesanan=id_pesanan
             ), 0
         )
-    WHERE p.ID_PESANAN=ID_PESANAN;
+    where p.id_pesanan=id_pesanan;
 end */$$
-DELIMITER ;
+delimiter ;
 
-/*Table structure for table `monthly_pemasukan_stats` */
+/*table structure for table `monthly_pemasukan_stats` */
 
-DROP TABLE IF EXISTS `monthly_pemasukan_stats`;
+drop table if exists `monthly_pemasukan_stats`;
 
-/*!50001 CREATE TABLE  `monthly_pemasukan_stats`(
- `TAHUN` int(4) ,
- `BULAN` int(2) ,
- `JUMLAH` bigint(21) ,
- `TOTAL` decimal(32,0) 
+/*!50001 create table  `monthly_pemasukan_stats`(
+ `tahun` int(4) ,
+ `bulan` int(2) ,
+ `jumlah` bigint(21) ,
+ `total` decimal(32,0) 
 )*/;
 
-/*Table structure for table `monthly_pengeluaran_stats` */
+/*table structure for table `monthly_pengeluaran_stats` */
 
-DROP TABLE IF EXISTS `monthly_pengeluaran_stats`;
+drop table if exists `monthly_pengeluaran_stats`;
 
-/*!50001 CREATE TABLE  `monthly_pengeluaran_stats`(
- `TAHUN` int(4) ,
- `BULAN` int(2) ,
- `JUMLAH` bigint(21) ,
- `TOTAL` decimal(32,0) 
+/*!50001 create table  `monthly_pengeluaran_stats`(
+ `tahun` int(4) ,
+ `bulan` int(2) ,
+ `jumlah` bigint(21) ,
+ `total` decimal(32,0) 
 )*/;
 
-/*Table structure for table `pesanan_customer` */
+/*table structure for table `pesanan_customer` */
 
-DROP TABLE IF EXISTS `pesanan_customer`;
+drop table if exists `pesanan_customer`;
 
-/*!50001 CREATE TABLE  `pesanan_customer`(
- `ID_PESANAN` int(11) ,
- `ID_CUSTOMER` int(11) ,
- `TANGGAL_PESANAN` date ,
- `TANGGAL_LUNAS` date ,
- `TANGGAL_AMBIL` date ,
- `SUBTOTAL` int(11) ,
- `TOTAL` int(11) ,
- `KETERANGAN` varchar(255) ,
- `NAMA_CUSTOMER` varchar(50) 
+/*!50001 create table  `pesanan_customer`(
+ `id_pesanan` int(11) ,
+ `id_customer` int(11) ,
+ `tanggal_pesanan` date ,
+ `tanggal_lunas` date ,
+ `tanggal_ambil` date ,
+ `subtotal` int(11) ,
+ `total` int(11) ,
+ `keterangan` varchar(255) ,
+ `nama_customer` varchar(50) 
 )*/;
 
-/*View structure for view monthly_pemasukan_stats */
+/*view structure for view monthly_pemasukan_stats */
 
-/*!50001 DROP TABLE IF EXISTS `monthly_pemasukan_stats` */;
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monthly_pemasukan_stats` AS (select year(`p`.`TANGGAL_LUNAS`) AS `TAHUN`,month(`p`.`TANGGAL_LUNAS`) AS `BULAN`,count(0) AS `JUMLAH`,sum(`p`.`TOTAL`) AS `TOTAL` from `pesanan` `p` where (`p`.`TANGGAL_LUNAS` is not null) group by year(`p`.`TANGGAL_LUNAS`),month(`p`.`TANGGAL_LUNAS`) order by year(`p`.`TANGGAL_LUNAS`) desc,month(`p`.`TANGGAL_LUNAS`) desc) */;
+/*!50001 drop table if exists `monthly_pemasukan_stats` */;
+/*!50001 create algorithm=undefined definer=`root`@`localhost` sql security definer view `monthly_pemasukan_stats` as (select year(`p`.`tanggal_lunas`) as `tahun`,month(`p`.`tanggal_lunas`) as `bulan`,count(0) as `jumlah`,sum(`p`.`total`) as `total` from `pesanan` `p` where (`p`.`tanggal_lunas` is not null) group by year(`p`.`tanggal_lunas`),month(`p`.`tanggal_lunas`) order by year(`p`.`tanggal_lunas`) desc,month(`p`.`tanggal_lunas`) desc) */;
 
-/*View structure for view monthly_pengeluaran_stats */
+/*view structure for view monthly_pengeluaran_stats */
 
-/*!50001 DROP TABLE IF EXISTS `monthly_pengeluaran_stats` */;
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `monthly_pengeluaran_stats` AS (select year(`pl`.`TANGGAL_PENGELUARAN`) AS `TAHUN`,month(`pl`.`TANGGAL_PENGELUARAN`) AS `BULAN`,count(0) AS `JUMLAH`,sum(`pl`.`JUMLAH_PENGELUARAN`) AS `TOTAL` from `pengeluaran` `pl` group by year(`pl`.`TANGGAL_PENGELUARAN`),month(`pl`.`TANGGAL_PENGELUARAN`) order by year(`pl`.`TANGGAL_PENGELUARAN`) desc,month(`pl`.`TANGGAL_PENGELUARAN`) desc) */;
+/*!50001 drop table if exists `monthly_pengeluaran_stats` */;
+/*!50001 create algorithm=undefined definer=`root`@`localhost` sql security definer view `monthly_pengeluaran_stats` as (select year(`pl`.`tanggal_pengeluaran`) as `tahun`,month(`pl`.`tanggal_pengeluaran`) as `bulan`,count(0) as `jumlah`,sum(`pl`.`jumlah_pengeluaran`) as `total` from `pengeluaran` `pl` group by year(`pl`.`tanggal_pengeluaran`),month(`pl`.`tanggal_pengeluaran`) order by year(`pl`.`tanggal_pengeluaran`) desc,month(`pl`.`tanggal_pengeluaran`) desc) */;
 
-/*View structure for view pesanan_customer */
+/*view structure for view pesanan_customer */
 
-/*!50001 DROP TABLE IF EXISTS `pesanan_customer` */;
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pesanan_customer` AS (select `p`.`ID_PESANAN` AS `ID_PESANAN`,`p`.`ID_CUSTOMER` AS `ID_CUSTOMER`,`p`.`TANGGAL_PESANAN` AS `TANGGAL_PESANAN`,`p`.`TANGGAL_LUNAS` AS `TANGGAL_LUNAS`,`p`.`TANGGAL_AMBIL` AS `TANGGAL_AMBIL`,`p`.`SUBTOTAL` AS `SUBTOTAL`,`p`.`TOTAL` AS `TOTAL`,`p`.`KETERANGAN` AS `KETERANGAN`,`c`.`NAMA_CUSTOMER` AS `NAMA_CUSTOMER` from (`pesanan` `p` join `customer` `c`) where (`p`.`ID_CUSTOMER` = `c`.`ID_CUSTOMER`)) */;
+/*!50001 drop table if exists `pesanan_customer` */;
+/*!50001 create algorithm=undefined definer=`root`@`localhost` sql security definer view `pesanan_customer` as (select `p`.`id_pesanan` as `id_pesanan`,`p`.`id_customer` as `id_customer`,`p`.`tanggal_pesanan` as `tanggal_pesanan`,`p`.`tanggal_lunas` as `tanggal_lunas`,`p`.`tanggal_ambil` as `tanggal_ambil`,`p`.`subtotal` as `subtotal`,`p`.`total` as `total`,`p`.`keterangan` as `keterangan`,`c`.`nama_customer` as `nama_customer` from (`pesanan` `p` join `customer` `c`) where (`p`.`id_customer` = `c`.`id_customer`)) */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 set sql_mode=@old_sql_mode */;
+/*!40014 set foreign_key_checks=@old_foreign_key_checks */;
+/*!40014 set unique_checks=@old_unique_checks */;
+/*!40111 set sql_notes=@old_sql_notes */;

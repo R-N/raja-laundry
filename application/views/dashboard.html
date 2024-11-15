@@ -39,14 +39,14 @@
                 <div class="d-sm-flex justify-content-between align-items-center mb-4">
                     <h3 class="text-dark mb-0">Dashboard</h3>
                     <div class="dropdown">
-						<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Data <?=$month;?> Bulan Terakhir</button>
+                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">Data <?=$month;?> Bulan Terakhir</button>
                         <div class="dropdown-menu" role="menu">
-							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>1">1 Bulan</a>
-							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>2">2 Bulan</a>
-							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>3">3 Bulan</a>
-							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>6">6 Bulan</a>
-							<a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>12">12 Bulan</a>
-						</div>
+                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>1">1 Bulan</a>
+                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>2">2 Bulan</a>
+                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>3">3 Bulan</a>
+                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>6">6 Bulan</a>
+                            <a class="dropdown-item" role="presentation" href="<?=$baseUrl;?>12">12 Bulan</a>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -57,10 +57,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Pesanan bulanan</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												<?=intval($stats->pesananBulanan);?>
-											</span>
-										</div>
+                                            <span>
+                                                <?=intval($stats->pesananBulanan);?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
                                 </div>
@@ -74,10 +74,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>pesanan bulan ini</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												<?=$stats->pesananBulanIni;?>
-											</span>
-										</div>
+                                            <span>
+                                                <?=$stats->pesananBulanIni;?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
                                 </div>
@@ -91,10 +91,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Pesanan Belum lunas</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												<?=$stats->pesananBelumLunas;?>
-											</span>
-										</div>
+                                            <span>
+                                                <?=$stats->pesananBelumLunas;?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
                                 </div>
@@ -108,10 +108,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pesanan belum diambil</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												<?=$stats->pesananBelumDiambil;?>
-											</span>
-										</div>
+                                            <span>
+                                                <?=$stats->pesananBelumDiambil;?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-clipboard-list fa-2x text-gray-300"></i></div>
                                 </div>
@@ -127,10 +127,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Pemasukan bulanan</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												Rp <?=number_format($stats->pemasukanBulanan, "0", ",", ".");?>
-											</span>
-										</div>
+                                            <span>
+                                                Rp <?=number_format($stats->pemasukanBulanan ? $stats->pemasukanBulanan : 0, "0", ",", ".");?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                                 </div>
@@ -144,10 +144,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>Pemasukan bulan ini</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												Rp <?=number_format($stats->pemasukanBulanIni, "0", ",", ".");?>
-											</span>
-										</div>
+                                            <span>
+                                                Rp <?=number_format($stats->pemasukanBulanIni ? $stats->pemasukanBulanIni : 0, "0", ",", ".");?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                                 </div>
@@ -161,10 +161,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>PEngeluaran bulanan</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												Rp <?=number_format($stats->pengeluaranBulanan, "0", ",", ".");?>
-											</span>
-										</div>
+                                            <span>
+                                                Rp <?=number_format($stats->pengeluaranBulanan ? $stats->pengeluaranBulanan : 0, "0", ",", ".");?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                                 </div>
@@ -178,10 +178,10 @@
                                     <div class="col mr-2">
                                         <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pengeluaran bulan ini</span></div>
                                         <div class="text-dark font-weight-bold h5 mb-0">
-											<span>
-												Rp <?=number_format($stats->pengeluaranBulanIni, "0", ",", ".");?>
-											</span>
-										</div>
+                                            <span>
+                                                Rp <?=number_format($stats->pengeluaranBulanIni ? $stats->pengeluaranBulanIni : 0, "0", ",", ".");?>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                                 </div>
@@ -265,175 +265,175 @@
     <script src="<?=base_url();?>assets/js/bs-charts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="<?=base_url();?>assets/js/theme.js"></script>
-	<script>
-		var dataChartPesananHarian = {
-		  "type": "bar",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->HARI;'), $dataPesananHarian));?>,
-			"datasets": [
-			  {
-				"label": "Pesanan Bulanan",
-				"backgroundColor": "#0041ff",
-				"borderColor": "rgba(78, 115, 223, 1)",
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH;'), $dataPesananHarian));?>
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			},
-			"scales": {
-			  "xAxes": [
-				{
-				  "ticks": {
-					"beginAtZero": true
-				  }
-				}
-			  ],
-			  "yAxes": [
-				{
-				  "ticks": {
-					"beginAtZero": true
-				  }
-				}
-			  ]
-			}
-		  }
-		};
-		var dataChartPenjualanPaket = {
-		  "type": "doughnut",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->PAKET;'), $dataPenjualanPaket));?>,
-			"datasets": [
-			  {
-				"label": "Penjualan",
-				"backgroundColor": [
-				  "#4e73df",
-				  "#1cc88a",
-				  "#36b9cc",
-				  "#d38e3c",
-				  "#c94242"
-				],
-				"borderColor": [
-				  "#ffffff",
-				  "#ffffff",
-				  "#ffffff",
-				  "#ffffff",
-				  "#ffffff"
-				],
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL;'), $dataPenjualanPaket));?>
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": true,
-			  "position": "bottom"
-			},
-			"title": {}
-		  }
-		};
-		var dataChartTopPemesan = {
-		  "type": "horizontalBar",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->NAMA_CUSTOMER;'), $dataTopPemesan));?>,
-			"datasets": [
-			  {
-				"label": "Pesanan Bulanan",
-				"backgroundColor": "#0041ff",
-				"borderColor": "rgba(78, 115, 223, 1)",
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->JUMLAH_PESANAN;'), $dataTopPemesan));?>
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			}
-		  }
-		};
-		var dataChartTopPembayar = {
-		  "type": "horizontalBar",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->NAMA_CUSTOMER;'), $dataTopPembayar));?>,
-			"datasets": [
-			  {
-				"label": "Pembayaran Bulanan",
-				"backgroundColor": "#0041ff",
-				"borderColor": "rgba(78, 115, 223, 1)",
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->TOTAL_PEMBAYARAN;'), $dataTopPembayar));?>
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			}
-		  }
-		};
-		var dataChartPemasukanPengeluaran = {
-		  "type": "line",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataPemasukanPengeluaran));?>,
-			"datasets": [
-			  {
-				"label": "Pemasukan",
-				"fill": true,
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->PEMASUKAN;'), $dataPemasukanPengeluaran));?>,
-				"backgroundColor": "rgba(0,65,255,0.18)",
-				"borderColor": "rgba(78, 115, 223, 1)"
-			  },
-			  {
-				"label": "Pengeluaran",
-				"fill": true,
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->PENGELUARAN;'), $dataPemasukanPengeluaran));?>,
-				"backgroundColor": "rgba(255,199,0,0.1)",
-				"borderColor": "#ffb800"
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			}
-		  }
-		};
-		var dataChartLabaRugi = {
-		  "type": "line",
-		  "data": {
-			"labels": <?=json_encode(array_map(create_function('$o', 'return $o->TAHUN."/".sprintf("%02d",$o->BULAN);'), $dataLabaRugi));?>,
-			"datasets": [
-			  {
-				"label": "Laba/Rugi",
-				"fill": true,
-				"data": <?=json_encode(array_map(create_function('$o', 'return $o->LABA;'), $dataLabaRugi));?>,
-				"backgroundColor": "rgba(255,214,0,0.18)",
-				"borderColor": "rgb(223,182,78)"
-			  }
-			]
-		  },
-		  "options": {
-			"maintainAspectRatio": false,
-			"legend": {
-			  "display": false
-			}
-		  }
-		};
-		$(document).ready(function(){
-			var chartPesananHarian = new Chart($("#chart-pesanan-harian"), dataChartPesananHarian);
-			var chartPenjualanPaket = new Chart($("#chart-penjualan-paket"), dataChartPenjualanPaket);
-			var chartTopPemesan = new Chart($("#chart-top-pemesan"), dataChartTopPemesan);
-			var chartTopPembayar = new Chart($("#chart-top-pembayar"), dataChartTopPembayar);
-			var chartPemasukanPengeluaran = new Chart($("#chart-pemasukan-pengeluaran"), dataChartPemasukanPengeluaran);
-			var chartLabaRugi = new Chart($("#chart-laba-rugi"), dataChartLabaRugi);
-		});
-	</script>
+    <script>
+      var dataChartPesananHarian = {
+        "type": "bar",
+        "data": {
+          "labels": <?=json_encode(array_map(function($o) { return $o->hari; }, $dataPesananHarian));?>,
+          "datasets": [
+            {
+              "label": "Pesanan Bulanan",
+              "backgroundColor": "#0041ff",
+              "borderColor": "rgba(78, 115, 223, 1)",
+              "data": <?=json_encode(array_map(function($o) { return $o->jumlah; }, $dataPesananHarian));?>
+            }
+          ]
+        },
+        "options": {
+          "maintainAspectRatio": false,
+          "legend": {
+            "display": false
+          },
+          "scales": {
+            "xAxes": [
+              {
+                "ticks": {
+                  "beginAtZero": true
+                }
+              }
+            ],
+            "yAxes": [
+              {
+                "ticks": {
+                  "beginAtZero": true
+                }
+              }
+            ]
+          }
+        }
+      };
+      var dataChartPenjualanPaket = {
+        "type": "doughnut",
+        "data": {
+          "labels": <?=json_encode(array_map(function($o) { return $o->paket; }, $dataPenjualanPaket));?>,
+          "datasets": [
+            {
+              "label": "Penjualan",
+              "backgroundColor": [
+                "#4e73df",
+                "#1cc88a",
+                "#36b9cc",
+                "#d38e3c",
+                "#c94242"
+              ],
+              "borderColor": [
+                "#ffffff",
+                "#ffffff",
+                "#ffffff",
+                "#ffffff",
+                "#ffffff"
+              ],
+              "data": <?=json_encode(array_map(function($o) { return $o->total; }, $dataPenjualanPaket));?>
+            }
+          ]
+        },
+        "options": {
+          "maintainAspectRatio": false,
+          "legend": {
+            "display": true,
+            "position": "bottom"
+          },
+          "title": {}
+        }
+      };
+      var dataChartTopPemesan = {
+        "type": "horizontalBar",
+        "data": {
+          "labels": <?=json_encode(array_map(function($o) { return $o->nama_customer; }, $dataTopPemesan));?>,
+          "datasets": [
+            {
+              "label": "Pesanan Bulanan",
+              "backgroundColor": "#0041ff",
+              "borderColor": "rgba(78, 115, 223, 1)",
+              "data": <?=json_encode(array_map(function($o) { return $o->jumlah_pesanan; }, $dataTopPemesan));?>
+            }
+          ]
+        },
+        "options": {
+          "maintainAspectRatio": false,
+          "legend": {
+            "display": false
+          }
+        }
+      };
+      var dataChartTopPembayar = {
+        "type": "horizontalBar",
+        "data": {
+          "labels": <?=json_encode(array_map(function($o) { return $o->nama_customer; }, $dataTopPembayar));?>,
+          "datasets": [
+            {
+              "label": "Pembayaran Bulanan",
+              "backgroundColor": "#0041ff",
+              "borderColor": "rgba(78, 115, 223, 1)",
+              "data": <?=json_encode(array_map(function($o) { return $o->total_pembayaran; }, $dataTopPembayar));?>
+            }
+          ]
+        },
+        "options": {
+          "maintainAspectRatio": false,
+          "legend": {
+            "display": false
+          }
+        }
+      };
+      var dataChartPemasukanPengeluaran = {
+        "type": "line",
+        "data": {
+          "labels": <?=json_encode(array_map(function($o) { return $o->tahun."/".sprintf("%02d",$o->bulan); }, $dataPemasukanPengeluaran));?>,
+          "datasets": [
+            {
+              "label": "Pemasukan",
+              "fill": true,
+              "data": <?=json_encode(array_map(function($o) { return $o->pemasukan; }, $dataPemasukanPengeluaran));?>,
+              "backgroundColor": "rgba(0,65,255,0.18)",
+              "borderColor": "rgba(78, 115, 223, 1)"
+            },
+            {
+              "label": "Pengeluaran",
+              "fill": true,
+              "data": <?=json_encode(array_map(function($o) { return $o->pengeluaran; }, $dataPemasukanPengeluaran));?>,
+              "backgroundColor": "rgba(255,199,0,0.1)",
+              "borderColor": "#ffb800"
+            }
+          ]
+        },
+        "options": {
+          "maintainAspectRatio": false,
+          "legend": {
+            "display": false
+          }
+        }
+      };
+      var dataChartLabaRugi = {
+        "type": "line",
+        "data": {
+          "labels": <?=json_encode(array_map(function($o) { return $o->tahun."/".sprintf("%02d",$o->bulan); }, $dataLabaRugi));?>,
+          "datasets": [
+            {
+              "label": "Laba/Rugi",
+              "fill": true,
+              "data": <?=json_encode(array_map(function($o) { return $o->laba; }, $dataLabaRugi));?>,
+              "backgroundColor": "rgba(255,214,0,0.18)",
+              "borderColor": "rgb(223,182,78)"
+            }
+          ]
+        },
+        "options": {
+          "maintainAspectRatio": false,
+          "legend": {
+            "display": false
+          }
+        }
+      };
+      $(document).ready(function(){
+        var chartPesananHarian = new Chart($("#chart-pesanan-harian"), dataChartPesananHarian);
+        var chartPenjualanPaket = new Chart($("#chart-penjualan-paket"), dataChartPenjualanPaket);
+        var chartTopPemesan = new Chart($("#chart-top-pemesan"), dataChartTopPemesan);
+        var chartTopPembayar = new Chart($("#chart-top-pembayar"), dataChartTopPembayar);
+        var chartPemasukanPengeluaran = new Chart($("#chart-pemasukan-pengeluaran"), dataChartPemasukanPengeluaran);
+        var chartLabaRugi = new Chart($("#chart-laba-rugi"), dataChartLabaRugi);
+      });
+    </script>
 </body>
 
 </html>

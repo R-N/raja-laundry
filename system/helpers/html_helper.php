@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -44,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/html_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/html_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -132,7 +133,6 @@ if ( ! function_exists('_list'))
 		$out = str_repeat(' ', $depth)
 			// Write the opening list tag
 			.'<'.$type._stringify_attributes($attributes).">\n";
-
 
 		// Cycle through the list elements.  If an array is
 		// encountered we will recursively call _list()
@@ -235,6 +235,10 @@ if ( ! function_exists('doctype'))
 
 		if ( ! is_array($doctypes))
 		{
+			if (file_exists(__DIR__.'/../../config/doctypes.php'))
+			{
+				include(__DIR__.'/../../config/doctypes.php');
+			}
 			if (file_exists(APPPATH.'config/doctypes.php'))
 			{
 				include(APPPATH.'config/doctypes.php');
@@ -368,7 +372,58 @@ if ( ! function_exists('meta'))
 			$content	= isset($meta['content'])				? $meta['content'] : '';
 			$newline	= isset($meta['newline'])				? $meta['newline'] : "\n";
 
+			// Remove XSS or HTML Tags in Meta Name or Meta Content
+			$name = strip_tags($name);
+			$content = strip_tags($content);
+			$type = strip_tags($content);
+
 			$str .= '<meta '.$type.'="'.$name.'" content="'.$content.'" />'.$newline;
+		}
+
+		return $str;
+	}
+}
+
+// ------------------------------------------------------------------------
+
+if (!function_exists('meta_property')) {
+	/**
+	 * Function meta_property
+	 *
+	 * @param string|array $property
+	 * @param string       $content
+	 * @param string       $type
+	 * @param string       $newline
+	 *
+	 * @return string
+	 * @author   : 713uk13m <dev@nguyenanhung.com>
+	 * @copyright: 713uk13m <dev@nguyenanhung.com>
+	 * @time     : 12/10/2020 31:45
+	 */
+	function meta_property($property = '', $content = '', $type = 'property', $newline = "\n")
+	{
+		// Since we allow the data to be passes as a string, a simple array
+		// or a multidimensional one, we need to do a little prepping.
+		if (!is_array($property)) {
+			$property = array(
+				array(
+					'property' => $property,
+					'content'  => $content,
+					'type'     => $type,
+					'newline'  => $newline
+				)
+			);
+		} elseif (isset($property['property'])) {
+			// Turn single array into multidimensional
+			$property = array($property);
+		}
+		$str = '';
+		foreach ($property as $meta) {
+			$type     = (isset($meta['type']) && $meta['type'] !== 'property') ? 'itemprop' : 'property';
+			$property = isset($meta['property']) ? $meta['property'] : '';
+			$content  = isset($meta['content']) ? $meta['content'] : '';
+			$newline  = isset($meta['newline']) ? $meta['newline'] : "\n";
+			$str      .= '<meta ' . $type . '="' . $property . '" content="' . $content . '" />' . $newline;
 		}
 
 		return $str;
@@ -406,5 +461,49 @@ if ( ! function_exists('nbs'))
 	function nbs($num = 1)
 	{
 		return str_repeat('&nbsp;', $num);
+	}
+}
+
+// ------------------------------------------------------------------------
+
+if ( ! function_exists('html_tag'))
+{
+	/**
+	 * Create a XHTML tag
+	 *
+	 * @param	string			$tag		The tag name
+	 * @param	array|string	$attr		The tag attributes
+	 * @param	string|bool		$content	The content to place in the tag, or false for no closing tag
+	 * @return	string
+	 */
+	function html_tag($tag, $attr = array(), $content = false)
+	{
+		// list of void elements (tags that can not have content)
+		static $void_elements = array(
+			// html4
+			"area","base","br","col","hr","img","input","link","meta","param",
+			// html5
+			"command","embed","keygen","source","track","wbr",
+			// html5.1
+			"menuitem",
+		);
+
+		// construct the HTML
+		$html = '<'.$tag;
+		$html .= ( ! empty($attr)) ? ' '.(is_array($attr) ? array_to_attr($attr) : $attr) : '';
+
+		// a void element?
+		if (in_array(strtolower($tag), $void_elements))
+		{
+			// these can not have content
+			$html .= ' />';
+		}
+		else
+		{
+			// add the content and close the tag
+			$html .= '>'.$content.'</'.$tag.'>';
+		}
+
+		return $html;
 	}
 }

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -44,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/string_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/string_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -192,47 +193,128 @@ if ( ! function_exists('reduce_multiples'))
 
 // ------------------------------------------------------------------------
 
-if ( ! function_exists('random_string'))
-{
+if (!function_exists('random_string')) {
 	/**
-	 * Create a "Random" String
+	 * Creates a random string of characters
 	 *
-	 * @param	string	type of random string.  basic, alpha, alnum, numeric, nozero, unique, md5, encrypt and sha1
-	 * @param	int	number of characters
-	 * @return	string
+	 * From FuelPHP
+	 *
+	 * @param string $type   the type of string
+	 * @param int    $length the number of characters
+	 *
+	 * @return  string  the random string
 	 */
-	function random_string($type = 'alnum', $len = 8)
+	function random_string($type = 'alnum', $length = 16)
 	{
-		switch ($type)
-		{
+		switch ($type) {
 			case 'basic':
-				return mt_rand();
+				return mt_random_int();
+				break;
+
+			default:
 			case 'alnum':
 			case 'numeric':
 			case 'nozero':
 			case 'alpha':
-				switch ($type)
-				{
+			case 'distinct':
+			case 'hexdec':
+				switch ($type) {
 					case 'alpha':
 						$pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 						break;
+
+					default:
 					case 'alnum':
 						$pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 						break;
+
 					case 'numeric':
 						$pool = '0123456789';
 						break;
+
 					case 'nozero':
 						$pool = '123456789';
 						break;
+
+					case 'distinct':
+						$pool = '2345679ACDEFHJKLMNPRSTUVWXYZ';
+						break;
+
+					case 'hexdec':
+						$pool = '0123456789abcdef';
+						break;
 				}
-				return substr(str_shuffle(str_repeat($pool, ceil($len / strlen($pool)))), 0, $len);
-			case 'unique': // todo: remove in 3.1+
+
+				$str = '';
+				for ($i = 0; $i < $length; $i++) {
+					$str .= substr($pool, mt_random_int(0, strlen($pool) - 1), 1);
+				}
+
+				return $str;
+				break;
+
 			case 'md5':
-				return md5(uniqid(mt_rand()));
-			case 'encrypt': // todo: remove in 3.1+
-			case 'sha1':
-				return sha1(uniqid(mt_rand(), TRUE));
+			case 'unique':
+				return md5(uniqid(mt_random_int(), true));
+				break;
+			case 'base64':
+				return base64_encode(md5(uniqid(mt_random_int(), true)));
+				break;
+			case 'sha1' :
+				return sha1(uniqid(mt_random_int(), true));
+				break;
+			case 'sha256' :
+				return hash('sha256', uniqid(mt_random_int(), true));
+				break;
+			case 'sha384' :
+				return hash('sha384', uniqid(mt_random_int(), true));
+				break;
+			case 'sha512' :
+				return hash('sha512', uniqid(mt_random_int(), true));
+				break;
+			case 'whirlpool' :
+				return hash('whirlpool', uniqid(mt_random_int(), true));
+				break;
+			case 'uuid':
+				$pool = array('8', '9', 'a', 'b');
+
+				return sprintf('%s-%s-4%s-%s%s-%s',
+							   random_string('hexdec', 8),
+							   random_string('hexdec', 4),
+							   random_string('hexdec', 3),
+							   $pool[array_rand($pool)],
+							   random_string('hexdec', 3),
+							   random_string('hexdec', 12)
+				);
+				break;
+			case 'binary':
+				if (function_exists('random_bytes')) {
+					try {
+						return random_bytes($length);
+					}catch (\Exception $e){
+						log_message('debug', 'Error Code: '.$e->getCode().' - File: '.$e->getFile().' - Line: '.$e->getLine().' - Message: '.$e->getMessage());
+						return null;
+					}
+				} else {
+					return null;
+				}
+				break;
+			case 'hex':
+			case 'crypto':
+				if ($length % 2 !== 0) {
+					throw new InvalidArgumentException('You must set an even number to the second parameter when you use `crypto`.');
+				}
+				if (function_exists('random_bytes')) {
+					try {
+						return bin2hex(random_bytes($length / 2));
+					}catch (\Exception $e){
+						log_message('debug', 'Error Code: '.$e->getCode().' - File: '.$e->getFile().' - Line: '.$e->getLine().' - Message: '.$e->getMessage());
+						return null;
+					}
+				} else {
+					return null;
+				}
+				break;
 		}
 	}
 }

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 2.0.0
@@ -46,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	UTF-8
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/utf8.html
+ * @link		https://codeigniter.com/userguide3/libraries/utf8.html
  */
 class CI_Utf8 {
 
@@ -62,7 +63,7 @@ class CI_Utf8 {
 		if (
 			defined('PREG_BAD_UTF8_ERROR')				// PCRE must support UTF-8
 			&& (ICONV_ENABLED === TRUE OR MB_ENABLED === TRUE)	// iconv or mbstring must be installed
-			&& strtoupper(config_item('charset')) === 'UTF-8'	// Application charset must be UTF-8
+			&& strtoupper((string) config_item('charset')) === 'UTF-8'	// Application charset must be UTF-8
 			)
 		{
 			define('UTF8_ENABLED', TRUE);
@@ -134,12 +135,11 @@ class CI_Utf8 {
 	 */
 	public function convert_to_utf8($str, $encoding)
 	{
-		if (MB_ENABLED)
-		{
+		if (MB_ENABLED) {
 			return mb_convert_encoding($str, 'UTF-8', $encoding);
 		}
-		elseif (ICONV_ENABLED)
-		{
+
+		if (ICONV_ENABLED) {
 			return @iconv($encoding, 'UTF-8', $str);
 		}
 

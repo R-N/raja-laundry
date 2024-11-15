@@ -221,3 +221,5 @@ storage/tmp/*
 pull.bat
 .vercel
 .editorconfig
+.env.development.local
+certs.ps1

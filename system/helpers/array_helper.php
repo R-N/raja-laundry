@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
+ * Copyright (c) 2019 - 2022, CodeIgniter Foundation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
  * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
+ * @copyright	Copyright (c) 2019 - 2022, CodeIgniter Foundation (https://codeigniter.com/)
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -44,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Helpers
  * @category	Helpers
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/helpers/array_helper.html
+ * @link		https://codeigniter.com/userguide3/helpers/array_helper.html
  */
 
 // ------------------------------------------------------------------------
@@ -111,5 +112,75 @@ if ( ! function_exists('elements'))
 		}
 
 		return $return;
+	}
+}
+
+// --------------------------------------------------------------------
+
+if (!function_exists('array_to_object')) {
+	/**
+	 * Function array_to_object
+	 *
+	 * @param array|mixed $array
+	 *
+	 * @return array|false|\stdClass
+	 * @author   : 713uk13m <dev@nguyenanhung.com>
+	 * @copyright: 713uk13m <dev@nguyenanhung.com>
+	 * @time     : 07/27/2021 36:10
+	 */
+	function array_to_object($array = array())
+	{
+		if (!is_array($array)) {
+			return $array;
+		}
+		$object = new stdClass();
+		$countArray = count($array);
+		if ($countArray > 0) {
+			foreach ($array as $name => $value) {
+				if (!empty($name)) {
+					$object->$name = array_to_object($value);
+				}
+			}
+
+			return $object;
+		}
+
+		return false;
+	}
+}
+
+// --------------------------------------------------------------------
+
+if ( ! function_exists('array_to_attr'))
+{
+	/**
+	 * Takes an array of attributes and turns it into a string for an html tag
+	 *
+	 * @param	array	$attr
+	 * @return	string
+	 */
+	function array_to_attr($attr)
+	{
+		$attr_str = '';
+
+		foreach ((array) $attr as $property => $value)
+		{
+			// Ignore null/false
+			if ($value === null or $value === false)
+			{
+				continue;
+			}
+
+			// If the key is numeric then it must be something like selected="selected"
+			if (is_numeric($property))
+			{
+				$property = $value;
+			}
+
+			$attr_str .= $property.'="'.str_replace('"', '&quot;', $value).'" ';
+		}
+
+		// We strip off the last space for return
+		return trim($attr_str);
 	}
 }
