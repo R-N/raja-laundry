@@ -24,18 +24,18 @@ class Main extends HungNG_CI_Base_Controllers {
         $q = 0;
         $lineMonth = max($month, 6);
         $stats = new stdClass();
-        $stats->pesananBulanan = $this->Laundry->getMonthlyPesanan("PESANAN", null, $month);
-        $stats->pesananBulanIni = $this->Laundry->getCurrentMonthPesanan("PESANAN", null, $month);
-        $stats->pesananBelumLunas = $this->Laundry->getOutstandingPesanan("LUNAS");
-        $stats->pesananBelumDiambil = $this->Laundry->getOutstandingPesanan("AMBIL");
-        $stats->pemasukanBulanan = $this->Laundry->getMonthlyIncome("LUNAS", true, $month);
-        $stats->pemasukanBulanIni = $this->Laundry->getCurrentMonthIncome("LUNAS", true);
+        $stats->pesananBulanan = $this->Laundry->getMonthlyPesanan("pesanan", null, $month);
+        $stats->pesananBulanIni = $this->Laundry->getCurrentMonthPesanan("pesanan", null, $month);
+        $stats->pesananBelumLunas = $this->Laundry->getOutstandingPesanan("lunas");
+        $stats->pesananBelumDiambil = $this->Laundry->getOutstandingPesanan("ambil");
+        $stats->pemasukanBulanan = $this->Laundry->getMonthlyIncome("lunas", true, $month);
+        $stats->pemasukanBulanIni = $this->Laundry->getCurrentMonthIncome("lunas", true);
         $stats->pengeluaranBulanan = $this->Laundry->getMonthlySpending($month);
         $stats->pengeluaranBulanIni = $this->Laundry->getCurrentMonthSpending();
-        $dataPesananHarian = $this->Laundry->getWeekdayStats("PESANAN", null, $month);
-        $dataPenjualanPaket = $this->Laundry->getMonthlyPaketSells("PESANAN", null, $month);
-        $dataTopPemesan = $this->Laundry->getTopCountStatsCustomer("PESANAN", null, $month, 10);
-        $dataTopPembayar = $this->Laundry->getTopAmountStatsCustomer("LUNAS", null, $month, 10);
+        $dataPesananHarian = $this->Laundry->getWeekdayStats("pesanan", null, $month);
+        $dataPenjualanPaket = $this->Laundry->getMonthlyPaketSells("pesanan", null, $month);
+        $dataTopPemesan = $this->Laundry->getTopCountStatsCustomer("pesanan", null, $month, 10);
+        $dataTopPembayar = $this->Laundry->getTopAmountStatsCustomer("lunas", null, $month, 10);
         $dataPemasukanPengeluaran = $this->Laundry->getMonthlyCashflowStats($lineMonth);
         $dataLabaRugi = $this->Laundry->getMonthlyProfitStats($lineMonth);
         $data = array(
@@ -60,14 +60,14 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_theme('datatables');
             $crud->set_table('customer');
             $crud->set_subject('Customer');
-            $crud->required_fields('NAMA_CUSTOMER');
-            $crud->columns('ID_CUSTOMER', 'NAMA_CUSTOMER', 'ALAMAT_CUSTOMER', 'TELEPON_CUSTOMER');
+            $crud->required_fields('nama_customer');
+            $crud->columns('id_customer', 'nama_customer', 'alamat_customer', 'telepon_customer');
             
             $crud->add_action('Pesanan', '', '','ui-icon-plus',array($this,'_callback_pesanan_customer_action'));
-            $crud->display_as("ID_CUSTOMER", "ID");
-            $crud->display_as("NAMA_CUSTOMER", " NAMA");
-            $crud->display_as("ALAMAT_CUSTOMER", "ALAMAT");
-            $crud->display_as("TELEPON_CUSTOMER", "TELEPON");
+            $crud->display_as("id_customer", "ID");
+            $crud->display_as("nama_customer", " NAMA");
+            $crud->display_as("alamat_customer", "ALAMAT");
+            $crud->display_as("telepon_customer", "TELEPON");
 
             $output = $crud->render();
             $output->title = "Customer";
@@ -79,10 +79,10 @@ class Main extends HungNG_CI_Base_Controllers {
                 $output->bulan = $month;
                 $output->lineMonth=$lineMonth;
                 $output->baseUrl = base_url()."customer/read/" . $idCustomer."/";
-                $output->dataPesananHarian = $this->Laundry->getWeekdayStats("PESANAN", null, $month, $idCustomer);
-                $output->dataPesananPaket = $this->Laundry->getMonthlyPaketSells("PESANAN", null, $month, $idCustomer);
-                $output->dataPesanan = $this->Laundry->getMonthlyPesananStats("PESANAN", null, $lineMonth, $idCustomer);
-                $output->dataPembayaran = $this->Laundry->getMonthlyPesananStats("LUNAS", null, $lineMonth, $idCustomer);
+                $output->dataPesananHarian = $this->Laundry->getWeekdayStats("pesanan", null, $month, $idCustomer);
+                $output->dataPesananPaket = $this->Laundry->getMonthlyPaketSells("pesanan", null, $month, $idCustomer);
+                $output->dataPesanan = $this->Laundry->getMonthlyPesananStats("pesanan", null, $lineMonth, $idCustomer);
+                $output->dataPembayaran = $this->Laundry->getMonthlyPesananStats("lunas", null, $lineMonth, $idCustomer);
                 
                 $this->load->view('profile.html',(array)$output);
             }else{
@@ -218,10 +218,10 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_relation("id_paket", "paket", "paket");
             $crud->set_relation("id_unit", "unit", "unit");
             
-            $crud->where("ID_PESANAN", $idPesanan);
+            $crud->where("id_pesanan", $idPesanan);
             
             if ($op == 'add'){
-               $crud->change_field_type('ID_PESANAN', 'hidden', $idPesanan);
+               $crud->change_field_type('id_pesanan', 'hidden', $idPesanan);
             }
             
 
@@ -235,8 +235,8 @@ class Main extends HungNG_CI_Base_Controllers {
             $output->titlePlan = "Item Milik {$idPesanan}";
             $output->info = "
                 <p>
-                    Customer: <a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$customer->id_customer})</a></br>
-                    Tanggal Pesan: {$pesanan->TANGGAL_PESANAN}
+                    Customer: <a href='{$urlCustomer}'>{$customer->nama_customer} ({$customer->id_customer})</a></br>
+                    Tanggal Pesan: {$pesanan->tanggal_pesanan}
                 </p>";
 
             $this->_example_output($output);
@@ -259,10 +259,10 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_theme('datatables');
             $crud->set_table('kupon');
             $crud->set_subject('Kupon');
-            $crud->required_fields('POTONGAN');
-            $crud->columns('ID_KUPON', 'POTONGAN');
+            $crud->required_fields('potongan');
+            $crud->columns('id_kupon', 'potongan');
             
-            $crud->where("ID_PESANAN", $idPesanan);
+            $crud->where("id_pesanan", $idPesanan);
             
             if($idPesanan == '' && $idKupon != '') $idPesanan = $this->Laundry->getIdPesananKupon($idKupon);
             $idCustomer = $this->Laundry->getIdCustomerPesanan($idPesanan);
@@ -271,26 +271,26 @@ class Main extends HungNG_CI_Base_Controllers {
                 return;
             }
             if ($op == 'add'){
-               $crud->change_field_type('ID_PESANAN', 'hidden', $idPesanan);
-               $crud->change_field_type('ID_CUSTOMER', 'hidden', $idCustomer);
+               $crud->change_field_type('id_pesanan', 'hidden', $idPesanan);
+               $crud->change_field_type('id_customer', 'hidden', $idCustomer);
             }else{
-                $crud->callback_column('ID_CUSTOMER',array($this,'_callback_customer_url'));
-                $crud->display_as('ID_CUSTOMER', "CUSTOMER");
+                $crud->callback_column('id_customer',array($this,'_callback_customer_url'));
+                $crud->display_as('id_customer', "customer");
             }
             
             $crud->add_action('Kwitansi', '', '','ui-icon-plus',array($this,'_callback_item_kupon_action'));
 
             $output = $crud->render();
             $pesanan = $this->Laundry->getPesanan($idPesanan);
-            $customer = $this->Laundry->getCustomer($pesanan->ID_CUSTOMER);
-            $urlCustomer = $this->url_pesanan_customer($pesanan->ID_CUSTOMER);
+            $customer = $this->Laundry->getCustomer($pesanan->id_customer);
+            $urlCustomer = $this->url_pesanan_customer($pesanan->id_customer);
             $urlPesanan = $this->url_pesanan($idPesanan);
             $output->title = "Kupon Milik <a href='{$urlPesanan}'>Pesanan {$idPesanan}</a>";
             $output->titlePlain = "Kupon Milik Pesanan {$idPesanan}";
             $output->info = "
                 <p>
-                    Customer: <a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$customer->ID_CUSTOMER})</a></br>
-                    Tanggal Pesan: {$pesanan->TANGGAL_PESANAN}
+                    Customer: <a href='{$urlCustomer}'>{$customer->nama_customer} ({$customer->id_customer})</a></br>
+                    Tanggal Pesan: {$pesanan->tanggal_pesanan}
                 </p>";
 
             $this->_example_output($output);
@@ -327,10 +327,10 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_theme('datatables');
             $crud->set_table('item_kupon');
             $crud->set_subject('Kwitansi Kupon');
-            $crud->required_fields('ID_PESANAN');
-            $crud->columns('ID_KUPON', 'ID_PESANAN');
+            $crud->required_fields('id_pesanan');
+            $crud->columns('id_kupon', 'id_pesanan');
             
-            $crud->where("ID_KUPON", $idKupon);
+            $crud->where("id_kupon", $idKupon);
             
             if($idKupon == '' && $idItem != '') $idKupon = $this->Laundry->getIdKuponItem($idItem);
             $urlKupon = $this->url_kupon($idKupon);
@@ -339,16 +339,16 @@ class Main extends HungNG_CI_Base_Controllers {
             $idCustomer = $pesanan->ID_CUSTOMER;
             
             $relationWhere = array(
-                "ID_CUSTOMER"=> $idCustomer
+                "id_customer"=> $idCustomer
             );
             
             if ($op == 'add'){
-                $crud->change_field_type('ID_KUPON', 'hidden', $idKupon);
+                $crud->change_field_type('id_kupon', 'hidden', $idKupon);
                 
             }
             
             
-            $crud->set_relation('ID_PESANAN','pesanan','{ID_PESANAN}: {TANGGAL_PESANAN}: {TOTAL}', $relationWhere);
+            $crud->set_relation('id_pesanan','pesanan','{id_pesanan}: {tanggal_pesanan}: {total}', $relationWhere);
             
             $output = $crud->render();
             
@@ -359,9 +359,9 @@ class Main extends HungNG_CI_Base_Controllers {
             $output->titlePlain = "Kwitansi Milik Kupon {$idKupon}";
             $output->info = "
                 <p>
-                    Customer: <a href='{$urlCustomer}'>{$customer->NAMA_CUSTOMER} ({$customer->ID_CUSTOMER})</a></br>
+                    Customer: <a href='{$urlCustomer}'>{$customer->nama_customer} ({$customer->id_customer})</a></br>
                     Pesanan: <a href='{$urlPesanan}'>{$idPesanan}</a><br>
-                    Tanggal Pesan: {$pesanan->TANGGAL_PESANAN}
+                    Tanggal Pesan: {$pesanan->tanggal_pesanan}
                 </p>";
 
             $this->_example_output($output);
@@ -382,12 +382,12 @@ class Main extends HungNG_CI_Base_Controllers {
             $crud->set_theme('datatables');
             $crud->set_table('pengeluaran');
             $crud->set_subject('Pengeluaran');
-            $crud->required_fields('ITEM_PENGELUARAN', 'JUMLAH_PENGELUARAN');
-            $crud->columns('ID_PENGELUARAN', 'TANGGAL_PENGELUARAN', 'ITEM_PENGELUARAN', 'JUMLAH_PENGELUARAN');
-            $crud->display_as("ID_PENGELUARAN", "ID");
-            $crud->display_as("TANGGAL_PENGELUARAN", "TANGGAL");
-            $crud->display_as("ITEM_PENGELUARAN", "ITEM");
-            $crud->display_as("JUMLAH_PENGELUARAN", "JUMLAH");
+            $crud->required_fields('item_pengeluaran', 'jumlah_pengeluaran');
+            $crud->columns('id_pengeluaran', 'tanggal_pengeluaran', 'item_pengeluaran', 'jumlah_pengeluaran');
+            $crud->display_as("id_pengeluaran", "ID");
+            $crud->display_as("tanggal_pengeluaran", "TANGGAL");
+            $crud->display_as("item_pengeluaran", "ITEM");
+            $crud->display_as("jumlah_pengeluaran", "JUMLAH");
             
 
             $output = $crud->render();
@@ -418,11 +418,11 @@ class Main extends HungNG_CI_Base_Controllers {
         }
         $tahuns = $this->Laundry->getYears();
         if(count($tahuns) == 0){
-            $tahuns = array($tahun);
+            $tahuns = array((object)array("tahun" => $tahun));
         }
         $bulans = $this->Laundry->getMonths($tahun);
         if(count($bulans) == 0){
-            $bulans = array($bulan);
+            $bulans = array((object)array("bulan" => $bulan));
         }
         $baseUrl = base_url()."laporan/";
         $data = array(

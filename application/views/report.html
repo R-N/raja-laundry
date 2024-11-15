@@ -4,21 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-	<?php setlocale(LC_ALL, 'id_ID'); ?>
-	<?php $sBulans = array( //asu lah
-		1=>"Januari",
-		2=>"Februari",
-		3=>"Maret",
-		4=>"April",
-		5=>"Mei",
-		6=>"Juni",
-		7=>"Juli",
-		8=>"Agustus",
-		9=>"September",
-		10=>"Oktober",
-		11=>"November",
-		12=>"Desember"
-	); ?>
+    <?php setlocale(LC_ALL, 'id_ID'); ?>
+    <?php $sBulans = array( //asu lah
+        1=>"Januari",
+        2=>"Februari",
+        3=>"Maret",
+        4=>"April",
+        5=>"Mei",
+        6=>"Juni",
+        7=>"Juli",
+        8=>"Agustus",
+        9=>"September",
+        10=>"Oktober",
+        11=>"November",
+        12=>"Desember"
+    ); ?>
     <title>Laporan <?=ucwords($laporan)." ".$sBulans[$bulan]." ".$tahun;?> - Raja Laundry</title>
     <link rel="stylesheet" href="<?=base_url();?>assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -57,42 +57,42 @@
                             <div class="card">
                                 <div class="card-header d-xl-flex align-items-xl-center clearfix">
                                     <h4 class="text-primary d-inline-block d-flex align-items-center align-middle h-100">Laporan</h4>
-									<div class="btn-group  ml-3">
-										<div class="dropdown d-inline-block btn-group">
-											<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?=ucwords($laporan);?></button>
-											<div class="dropdown-menu" role="menu">
-												<a class="dropdown-item" role="presentation" href="<?="{$baseUrl}pesanan/{$tahun}/{$bulan}";?>">Pesanan</a>
-												<a class="dropdown-item" role="presentation" href="<?="{$baseUrl}customer/{$tahun}/{$bulan}";?>">Customer</a>
-												<a class="dropdown-item" role="presentation" href="<?="{$baseUrl}paket/{$tahun}/{$bulan}";?>?>">Paket</a>
-											</div>
-										</div>
-										<div class="dropdown d-inline-block btn-group">
-											<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
-												<?=$sBulans[$bulan];?>
-											</button>
-											<div class="dropdown-menu" role="menu">
-												<?php foreach($bulans as $bulani){ ?>
-													<a class="dropdown-item" role="presentation" href="<?="{$baseUrl}{$laporan}/{$tahun}/{$bulani->BULAN}";?>">
-														<?=$sBulans[$bulani->BULAN];?>
-													</a>
-												<?php } ?>
-											</div>
-										</div>
-										<div class="dropdown d-inline-block btn-group">
-											<button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?=$tahun;?></button>
-											<div class="dropdown-menu" role="menu">
-												<?php foreach($tahuns as $tahuni){ ?>
-													<a class="dropdown-item" role="presentation" href="<?="{$baseUrl}{$laporan}/{$tahuni->TAHUN}/{$bulan}";?>">
-														<?=$tahuni->TAHUN;?>
-													</a>
-												<?php } ?>
-											</div>
-										</div>
-									</div>
-									<div id="table-export-buttons" class="ml-auto clearfix"></div>
+                                    <div class="btn-group  ml-3">
+                                        <div class="dropdown d-inline-block btn-group">
+                                            <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?=ucwords($laporan);?></button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" role="presentation" href="<?="{$baseUrl}pesanan/{$tahun}/{$bulan}";?>">Pesanan</a>
+                                                <a class="dropdown-item" role="presentation" href="<?="{$baseUrl}customer/{$tahun}/{$bulan}";?>">Customer</a>
+                                                <a class="dropdown-item" role="presentation" href="<?="{$baseUrl}paket/{$tahun}/{$bulan}";?>?>">Paket</a>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown d-inline-block btn-group">
+                                            <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
+                                                <?=$sBulans[$bulan];?>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <?php foreach($bulans as $bulani){ ?>
+                                                    <a class="dropdown-item" role="presentation" href="<?="{$baseUrl}{$laporan}/{$tahun}/{$bulani->bulan}";?>">
+                                                        <?=$sBulans[$bulani->bulan];?>
+                                                    </a>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown d-inline-block btn-group">
+                                            <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"><?=$tahun;?></button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <?php foreach($tahuns as $tahuni){ ?>
+                                                    <a class="dropdown-item" role="presentation" href="<?="{$baseUrl}{$laporan}/{$tahuni->tahun}/{$bulan}";?>">
+                                                        <?=$tahuni->tahun;?>
+                                                    </a>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="table-export-buttons" class="ml-auto clearfix"></div>
                                 </div>
                                 <div class="card-body">
-									<?php if($laporan=="pesanan") { ?>
+                                    <?php if($laporan=="pesanan") { ?>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -108,23 +108,23 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-												<?php foreach($items as $item){ ?>
+                                                <?php foreach($items as $item){ ?>
                                                 <tr>
-                                                    <td><?=$item->ID_PESANAN;?></td>
-                                                    <td><?=$item->NAMA_CUSTOMER;?></td>
-                                                    <td><?=$item->NOTA;?></td>
-                                                    <td><?=$item->TANGGAL_PESANAN;?></td>
-                                                    <td><?=$item->TANGGAL_LUNAS;?></td>
-                                                    <td><?=$item->TANGGAL_AMBIL;?></td>
-													<td><?=$item->POTONGAN;?></td>
-													<td><?=$item->TOTAL;?></td>
+                                                    <td><?=$item->id_pesanan;?></td>
+                                                    <td><?=$item->nama_customer;?></td>
+                                                    <td><?=$item->nota;?></td>
+                                                    <td><?=$item->tanggal_pesanan;?></td>
+                                                    <td><?=$item->tanggal_lunas;?></td>
+                                                    <td><?=$item->tanggal_ambil;?></td>
+                                                    <td><?=$item->potongan;?></td>
+                                                    <td><?=$item->total;?></td>
                                                 </tr>
-												<?php } ?>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
-									<?php } ?>
-									<?php if($laporan=="customer"){ ?>
+                                    <?php } ?>
+                                    <?php if($laporan=="customer"){ ?>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -137,20 +137,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-												<?php foreach($items as $item){ ?>
+                                                <?php foreach($items as $item){ ?>
                                                 <tr>
-                                                    <td><?=$item->ID_CUSTOMER;?></td>
-                                                    <td><?=$item->NAMA_CUSTOMER;?></td>
-                                                    <td><?=$item->JUMLAH_PESANAN;?></td>
-                                                    <td><?=$item->TOTAL;?></td>
-                                                    <td><?=$item->KUPON;?></td>
+                                                    <td><?=$item->id_customer;?></td>
+                                                    <td><?=$item->nama_customer;?></td>
+                                                    <td><?=$item->jumlah_pesanan;?></td>
+                                                    <td><?=$item->total;?></td>
+                                                    <td><?=$item->kupon;?></td>
                                                 </tr>
-												<?php } ?>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
-									<?php } ?>
-									<?php if($laporan=="paket"){ ?>
+                                    <?php } ?>
+                                    <?php if($laporan=="paket"){ ?>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -164,20 +164,20 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-												<?php foreach($items as $item){ ?>
+                                                <?php foreach($items as $item){ ?>
                                                 <tr>
-                                                    <td><?=$item->ID_PAKET;?></td>
-                                                    <td><?=$item->PAKET;?></td>
-                                                    <td><?=$item->UNIT;?></td>
-                                                    <td><?=$item->JUMLAH_PESANAN;?></td>
-                                                    <td><?=$item->JUMLAH_ITEM;?></td>
-                                                    <td><?=$item->TOTAL;?></td>
+                                                    <td><?=$item->id_paket;?></td>
+                                                    <td><?=$item->paket;?></td>
+                                                    <td><?=$item->unit;?></td>
+                                                    <td><?=$item->jumlah_pesanan;?></td>
+                                                    <td><?=$item->jumlah_item;?></td>
+                                                    <td><?=$item->total;?></td>
                                                 </tr>
-												<?php } ?>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
-									<?php } ?>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -195,55 +195,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="<?=base_url();?>assets/js/theme.js"></script>
     <script src="<?=base_url();?>assets/js/datatables.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			var dataTable = $("table").DataTable( {
-				buttons: [
-					"csv", "excel", "pdf", "print"
-					/*
-					{
-						extend:    'csv',
-						text:      'CSV',
-						titleAttr: 'CSV',
-						className: 'btn btn-primary btn-sm',
-						exportOptions: {
-							columns: ':visible'
-						}
-					},
-					{
-						extend:    'excel',
-						text:      'Excel',
-						titleAttr: 'Excel',
-						className: 'btn btn-primary btn-sm',
-						exportOptions: {
-							columns: ':visible'
-						}
-					},
-					{
-						extend:    'pdf',
-						text:      'PDF',
-						titleAttr: 'PDF',
-						className: 'btn btn-primary btn-sm',
-						exportOptions: {
-							columns: ':visible'
-						}
-					},
-					{
-						extend:    'print',
-						text:      'Print',
-						titleAttr: 'Print',
-						className: 'btn btn-primary btn-sm',
-						exportOptions: {
-							columns: ':visible'
-						}
-					}*/
-				]
-			} );
-			
-			dataTable.buttons().container()
-				.appendTo( '#table-export-buttons' );
-		});
-	</script>
+    <script>
+        $(document).ready(function(){
+            var dataTable = $("table").DataTable( {
+                buttons: [
+                    "csv", "excel", "pdf", "print"
+                    /*
+                    {
+                        extend:    'csv',
+                        text:      'CSV',
+                        titleAttr: 'CSV',
+                        className: 'btn btn-primary btn-sm',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend:    'excel',
+                        text:      'Excel',
+                        titleAttr: 'Excel',
+                        className: 'btn btn-primary btn-sm',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend:    'pdf',
+                        text:      'PDF',
+                        titleAttr: 'PDF',
+                        className: 'btn btn-primary btn-sm',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend:    'print',
+                        text:      'Print',
+                        titleAttr: 'Print',
+                        className: 'btn btn-primary btn-sm',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    }*/
+                ]
+            } );
+            
+            dataTable.buttons().container()
+                .appendTo( '#table-export-buttons' );
+        });
+    </script>
 </body>
 
 </html>

@@ -22,13 +22,13 @@ class Laundry extends CI_Model {
 
     
     function getIdCustomerPesanan($idPesanan){
-        $sql =  "SELECT ID_CUSTOMER FROM pesanan WHERE ID_PESANAN=?;";
+        $sql =  "SELECT id_customer FROM pesanan WHERE id_pesanan=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
         if(!isset($result) || $result == null) return null;
-        return $result->ID_CUSTOMER;
+        return $result->id_customer;
     }
     function getCustomerPesanan($idPesanan){
         $idCustomer = $this->getIdCustomerPesanan($idPesanan);
@@ -36,7 +36,7 @@ class Laundry extends CI_Model {
         return $this->getCustomer($idPesanan);
     }
     function getCustomer($idCustomer){
-        $sql =  "SELECT * FROM customer WHERE ID_CUSTOMER=?;";
+        $sql =  "SELECT * FROM customer WHERE id_customer=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idCustomer));
         if($query->num_rows() == 0) return null;
@@ -45,25 +45,25 @@ class Laundry extends CI_Model {
         return $result;
     }
     function getIdPesananItem($idItem){
-        $sql =  "SELECT ID_PESANAN FROM pesanan WHERE ID_ITEM=?;";
+        $sql =  "SELECT id_pesanan FROM pesanan WHERE id_item=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idItem));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
         if(!isset($result) || $result == null) return null;
-        return $result->ID_PESANAN;
+        return $result->id_pesanan;
     }
     function getIdPesananKupon($idKupon){
-        $sql =  "SELECT ID_PESANAN FROM kupon WHERE ID_KUPON=?;";
+        $sql =  "SELECT id_pesanan FROM kupon WHERE id_kupon=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idKupon));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
         if(!isset($result) || $result == null) return null;
-        return $result->ID_PESANAN;
+        return $result->id_pesanan;
     }
     function getPesanan($idPesanan){
-        $sql =  "SELECT * FROM pesanan WHERE ID_PESANAN=?;";
+        $sql =  "SELECT * FROM pesanan WHERE id_pesanan=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
@@ -72,16 +72,16 @@ class Laundry extends CI_Model {
         return $result;
     }
     function getIdKuponItem($idItem){
-        $sql =  "SELECT ID_KUPON FROM item_kupon WHERE ID_PESANAN=?;";
+        $sql =  "SELECT id_kupon FROM item_kupon WHERE id_pesanan=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idItem));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
         if(!isset($result) || $result == null) return null;
-        return $result->ID_KUPON;
+        return $result->id_kupon;
     }
     function getKupon($idKupon){
-        $sql =  "SELECT * FROM kupon WHERE ID_KUPON=?;";
+        $sql =  "SELECT * FROM kupon WHERE id_kupon=?;";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
@@ -89,53 +89,53 @@ class Laundry extends CI_Model {
         if(!isset($result) || $result == null) return null;
         return $result;
     }
-    function getWeekdayStats($tanggal = "PESANAN", $lunas=null, $month=null, $idCustomer=null){
+    function getWeekdayStats($tanggal = "pesanan", $lunas=null, $month=null, $idCustomer=null){
         $tanggal = strtoupper($tanggal);
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND P.TANGGAL_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
-        if($tanggal == "LUNAS") $lunas = true;
+        $monthQuery = $month ? " AND P.tanggal_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         $customerQuery = $idCustomer ? " AND P.ID_CUSTOMER={$idCustomer}" : "";
         
         $sql = "
             SELECT 
-                DAYNAME(TANGGAL_{$tanggal}) AS HARI, 
-                COUNT(*){$monthDivider} AS JUMLAH,
-                SUM(TOTAL){$monthDivider} AS TOTAL 
+                DAYNAME(tanggal_{$tanggal}) AS hari, 
+                COUNT(*){$monthDivider} AS jumlah,
+                SUM(total){$monthDivider} AS total 
             FROM pesanan P
             WHERE TRUE
                 {$customerQuery}
                 {$lunasQuery}
                 {$monthQuery}
-            GROUP BY WEEKDAY(TANGGAL_{$tanggal}), DAYNAME(TANGGAL_{$tanggal})
-            ORDER BY WEEKDAY(TANGGAL_{$tanggal})";
+            GROUP BY WEEKDAY(tanggal_{$tanggal}), DAYNAME(tanggal_{$tanggal})
+            ORDER BY WEEKDAY(tanggal_{$tanggal})";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
     }
-    function getTopCountStatsCustomer($tanggal="PESANAN", $lunas=null, $month=null, $limit=null){
+    function getTopCountStatsCustomer($tanggal="pesanan", $lunas=null, $month=null, $limit=null){
         $tanggal = strtoupper($tanggal);
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND P.TANGGAL_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
+        $monthQuery = $month ? " AND P.tanggal_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
         $limitQuery = $limit ? " LIMIT {$limit}" : "";
-        if($tanggal == "LUNAS") $lunas = true;
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         
         $sql = "
             SELECT 
-                C.ID_CUSTOMER, 
-                C.NAMA_CUSTOMER, 
-                COUNT(*){$monthDivider} AS JUMLAH_PESANAN
+                C.id_customer, 
+                C.nama_customer, 
+                COUNT(*){$monthDivider} AS jumlah_pesanan
             FROM customer C, pesanan P
-            WHERE C.`ID_CUSTOMER`=P.`ID_CUSTOMER`
+            WHERE C.`id_customer`=P.`id_customer`
                 {$lunasQuery}
                 {$monthQuery}
-            GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER
+            GROUP BY C.id_customer, C.nama_customer
             ORDER BY COUNT(*){$monthDivider} DESC
             {$limitQuery}";
         $sql = mysqlToPostgres($sql);
@@ -143,27 +143,27 @@ class Laundry extends CI_Model {
         $result = $query->result();
         return $result;
     }
-    function getTopAmountStatsCustomer($tanggal="PESANAN", $lunas=null, $month=null, $limit=null){
+    function getTopAmountStatsCustomer($tanggal="pesanan", $lunas=null, $month=null, $limit=null){
         $tanggal = strtoupper($tanggal);
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND P.TANGGAL_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
+        $monthQuery = $month ? " AND P.tanggal_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
         $limitQuery = $limit ? " LIMIT {$limit}" : "";
         if($tanggal == "LUNAS") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         
         $sql = "
             SELECT 
-                C.ID_CUSTOMER, 
-                C.NAMA_CUSTOMER, 
-                SUM(P.TOTAL){$monthDivider} AS TOTAL_PEMBAYARAN
+                C.id_customer, 
+                C.nama_customer, 
+                SUM(P.total){$monthDivider} AS total_pembayaran
             FROM customer C, pesanan P
-            WHERE C.`ID_CUSTOMER`=P.`ID_CUSTOMER`
+            WHERE C.`id_customer`=P.`id_customer`
                 {$lunasQuery}
                 {$monthQuery}
-            GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER
-            ORDER BY SUM(P.TOTAL){$monthDivider} DESC
+            GROUP BY C.id_customer, C.nama_customer
+            ORDER BY SUM(P.total){$monthDivider} DESC
             {$limitQuery}";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
@@ -171,28 +171,28 @@ class Laundry extends CI_Model {
         $result = $query->result();
         return $result;
     }
-    function getMonthlyPesananStats($tanggal="PESANAN", $lunas=null, $limit=null, $idCustomer=null){
+    function getMonthlyPesananStats($tanggal="pesanan", $lunas=null, $limit=null, $idCustomer=null){
         $tanggal = strtolower($tanggal);
         if($tanggal == "laba") return $this->getMonthlyLabaStats($limit);
         $limitQuery = $limit ? " LIMIT {$limit}" : "";
         if($tanggal == "LUNAS") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " WHERE P.TANGGAL_LUNAS IS NOT NULL"
-                : " WHERE P.TANGGAL_LUNAS IS NULL");
-        $customerQuery = $idCustomer ? " AND P.ID_CUSTOMER={$idCustomer}" : "";
+            ($lunas == true ? " WHERE P.tanggal_lunas IS NOT NULL"
+                : " WHERE P.tanggal_lunas IS NULL");
+        $customerQuery = $idCustomer ? " AND P.id_customer={$idCustomer}" : "";
         
         $sql = "
             SELECT
-                YEAR(P.`TANGGAL_{$tanggal}`) AS `TAHUN`,
-                MONTH(P.`TANGGAL_{$tanggal}`) AS `BULAN`,
-                COUNT(0) AS `JUMLAH`,
-                SUM(P.`TOTAL`) AS `TOTAL`
+                YEAR(P.`tanggal_{$tanggal}`) AS `tahun`,
+                MONTH(P.`tanggal_{$tanggal}`) AS `bulan`,
+                COUNT(0) AS `jumlah`,
+                SUM(P.`total`) AS `total`
             FROM `pesanan` P
             WHERE TRUE
                 {$lunasQuery}   
                 {$customerQuery}
-            GROUP BY YEAR(P.TANGGAL_{$tanggal}),MONTH(P.TANGGAL_{$tanggal})
-            ORDER BY YEAR(P.TANGGAL_{$tanggal})ASC,MONTH(P.TANGGAL_{$tanggal}) ASC
+            GROUP BY YEAR(P.tanggal_{$tanggal}),MONTH(P.tanggal_{$tanggal})
+            ORDER BY YEAR(P.tanggal_{$tanggal})ASC,MONTH(P.tanggal_{$tanggal}) ASC
             {$limitQuery}";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
@@ -212,7 +212,7 @@ class Laundry extends CI_Model {
             $found = false;
             if($j < $len){
                 $row = $result0[$j];
-                if($tahun == $row->tahun && $bulan == $row->BULAN){
+                if($tahun == $row->tahun && $bulan == $row->bulan){
                     array_push($result, $row);
                     ++$j;
                     $found = true;
@@ -221,8 +221,8 @@ class Laundry extends CI_Model {
             if(!$found){
                 $dummy = new stdClass();
                 $dummy->tahun = $tahun;
-                $dummy->BULAN = $bulan;
-                $dummy->JUMLAH = 0;
+                $dummy->bulan = $bulan;
+                $dummy->jumlah = 0;
                 $dummy->total = 0;
                 array_push($result, $dummy);
             }
@@ -235,22 +235,22 @@ class Laundry extends CI_Model {
         $limitQuery = $limit ? " LIMIT {$limit}" : "";
         $sql = "
             SELECT 
-                P.TAHUN, P.BULAN, 
-                COALESCE(P.TOTAL, 0) AS PEMASUKAN,
-                COALESCE(PL.TOTAL, 0) AS PENGELUARAN
+                P.tahun, P.bulan, 
+                COALESCE(P.total, 0) AS pemasukan,
+                COALESCE(PL.total, 0) AS pengeluaran
             FROM monthly_pemasukan_stats P 
                 LEFT JOIN monthly_pengeluaran_stats PL 
-                ON (P.TAHUN=PL.TAHUN AND P.BULAN = PL.BULAN)
+                ON (P.tahun=PL.tahun AND P.bulan = PL.bulan)
             UNION ALL
             SELECT 
-                PL.TAHUN, PL.BULAN, 
-                P.TOTAL AS PEMASUKAN,
-                PL.TOTAL AS PENGELUARAN
+                PL.tahun, PL.bulan, 
+                P.total AS pemasukan,
+                PL.total AS pengeluaran
             FROM monthly_pemasukan_stats P 
                 RIGHT JOIN monthly_pengeluaran_stats PL 
-                ON (P.TAHUN=PL.TAHUN AND P.BULAN = PL.BULAN)
-            WHERE P.TAHUN IS NULL
-            ORDER BY TAHUN ASC, BULAN ASC
+                ON (P.tahun=PL.tahun AND P.bulan = PL.bulan)
+            WHERE P.tahun IS NULL
+            ORDER BY tahun ASC, bulan ASC
             {$limitQuery}";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
@@ -270,7 +270,7 @@ class Laundry extends CI_Model {
             $found = false;
             if($j < $len){
                 $row = $result0[$j];
-                if($tahun == $row->tahun && $bulan == $row->BULAN){
+                if($tahun == $row->tahun && $bulan == $row->bulan){
                     array_push($result, $row);
                     ++$j;
                     $found = true;
@@ -279,9 +279,9 @@ class Laundry extends CI_Model {
             if(!$found){
                 $dummy = new stdClass();
                 $dummy->tahun = $tahun;
-                $dummy->BULAN = $bulan;
-                $dummy->PEMASUKAN = 0;
-                $dummy->PENGELUARAN = 0;
+                $dummy->bulan = $bulan;
+                $dummy->pemasukan = 0;
+                $dummy->pengeluaran = 0;
                 array_push($result, $dummy);
             }
             
@@ -293,20 +293,20 @@ class Laundry extends CI_Model {
         $limitQuery = $limit ? " LIMIT {$limit}" : "";
         $sql = "
             SELECT 
-                P.TAHUN, P.BULAN, 
-                (COALESCE(P.TOTAL, 0)-COALESCE(PL.TOTAL,0)) AS LABA
+                P.tahun, P.bulan, 
+                (COALESCE(P.TOTAL, 0)-COALESCE(PL.TOTAL,0)) AS laba
             FROM monthly_pemasukan_stats P 
                 LEFT JOIN monthly_pengeluaran_stats PL 
-                ON (P.TAHUN=PL.TAHUN AND P.BULAN = PL.BULAN)
+                ON (P.tahun=PL.tahun AND P.bulan = PL.bulan)
             UNION ALL
             SELECT 
-                PL.TAHUN, PL.BULAN, 
-                (COALESCE(P.TOTAL, 0)-COALESCE(PL.TOTAL,0)) AS LABA
+                PL.tahun, PL.bulan, 
+                (COALESCE(P.total, 0)-COALESCE(PL.total,0)) AS laba
             FROM monthly_pemasukan_stats P 
                 RIGHT JOIN monthly_pengeluaran_stats PL 
-                ON (P.TAHUN=PL.TAHUN AND P.BULAN = PL.BULAN)
-            WHERE P.TAHUN IS NULL
-            ORDER BY TAHUN ASC, BULAN ASC
+                ON (P.tahun=PL.tahun AND P.bulan = PL.bulan)
+            WHERE P.tahun IS NULL
+            ORDER BY tahun ASC, bulan ASC
             {$limitQuery}";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
@@ -328,7 +328,7 @@ class Laundry extends CI_Model {
             $found = false;
             if($j < $len){
                 $row = $result0[$j];
-                if($tahun == $row->tahun && $bulan == $row->BULAN){
+                if($tahun == $row->tahun && $bulan == $row->bulan){
                     array_push($result, $row);
                     ++$j;
                     $found = true;
@@ -337,8 +337,8 @@ class Laundry extends CI_Model {
             if(!$found){
                 $dummy = new stdClass();
                 $dummy->tahun = $tahun;
-                $dummy->BULAN = $bulan;
-                $dummy->LABA = 0;
+                $dummy->bulan = $bulan;
+                $dummy->laba = 0;
                 array_push($result, $dummy);
             }
             
@@ -347,17 +347,17 @@ class Laundry extends CI_Model {
         return $result;
     }
     
-    function getMonthlyIncome($tanggal="PESANAN", $lunas=null, $month=null){
+    function getMonthlyIncome($tanggal="pesanan", $lunas=null, $month=null){
         $tanggal = strtoupper($tanggal);
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND P.TANGGAL_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
-        if($tanggal == "LUNAS") $lunas = true;
+        $monthQuery = $month ? " AND P.tanggal_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         
         $sql = "
-            SELECT SUM(P.TOTAL){$monthDivider} AS TOTAL
+            SELECT SUM(P.total){$monthDivider} AS total
             FROM pesanan P
             WHERE TRUE
                 {$monthQuery}
@@ -370,10 +370,10 @@ class Laundry extends CI_Model {
     }
     function getMonthlySpending($month=null){
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND PL.TANGGAL_PENGELUARAN > CURDATE() - INTERVAL {$month} MONTH" : "";
+        $monthQuery = $month ? " AND PL.tanggal_pengeluaran > CURDATE() - INTERVAL {$month} MONTH" : "";
         
         $sql = "
-            SELECT SUM(PL.JUMLAH_PENGELUARAN){$monthDivider} AS TOTAL
+            SELECT SUM(PL.jumlah_pengeluaran){$monthDivider} AS total
             FROM pengeluaran PL
             WHERE TRUE  
             {$monthQuery}";
@@ -383,18 +383,18 @@ class Laundry extends CI_Model {
         $result = $query->row();
         return $result->total;
     }
-    function getCurrentMonthIncome($tanggal="PESANAN",  $lunas=null){
+    function getCurrentMonthIncome($tanggal="pesanan",  $lunas=null){
         $tanggal = strtoupper($tanggal);
-        if($tanggal == "LUNAS") $lunas = true;
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         
         $sql = "
-            SELECT SUM(P.TOTAL) AS TOTAL
+            SELECT SUM(P.total) AS total
             FROM pesanan P
-            WHERE YEAR(P.TANGGAL_{$tanggal})=YEAR(CURDATE())
-                AND MONTH(P.TANGGAL_{$tanggal})=MONTH(CURDATE())
+            WHERE YEAR(P.tanggal_{$tanggal})=YEAR(CURDATE())
+                AND MONTH(P.tanggal_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
@@ -404,10 +404,10 @@ class Laundry extends CI_Model {
     }
     function getCurrentMonthSpending(){
         $sql = "
-            SELECT SUM(PL.JUMLAH_PENGELUARAN) AS TOTAL
+            SELECT SUM(PL.jumlah_pengeluaran) AS total
             FROM pengeluaran PL
-            WHERE YEAR(PL.TANGGAL_PENGELUARAN)=YEAR(CURDATE())
-                AND MONTH(PL.TANGGAL_PENGELUARAN)=MONTH(CURDATE())";
+            WHERE YEAR(PL.tanggal_pengeluaran)=YEAR(CURDATE())
+                AND MONTH(PL.tanggal_pengeluaran)=MONTH(CURDATE())";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
@@ -416,17 +416,17 @@ class Laundry extends CI_Model {
     }
     
     
-    function getMonthlyPesanan($tanggal="PESANAN", $lunas=null, $month=null){
+    function getMonthlyPesanan($tanggal="pesanan", $lunas=null, $month=null){
         $tanggal = strtoupper($tanggal);
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND P.TANGGAL_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
-        if($tanggal == "LUNAS") $lunas = true;
+        $monthQuery = $month ? " AND P.tanggal_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         
         $sql = "
-            SELECT COUNT(*){$monthDivider} AS COUNT
+            SELECT COUNT(*){$monthDivider} AS count
             FROM pesanan P
             WHERE TRUE
                 {$monthQuery}
@@ -437,18 +437,18 @@ class Laundry extends CI_Model {
         $result = $query->row();
         return $result->count;
     }
-    function getCurrentMonthPesanan($tanggal="PESANAN",  $lunas=null){
+    function getCurrentMonthPesanan($tanggal="pesanan",  $lunas=null){
         $tanggal = strtoupper($tanggal);
-        if($tanggal == "LUNAS") $lunas = true;
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         
         $sql = "
-            SELECT COUNT(*) AS COUNT
+            SELECT COUNT(*) AS count
             FROM pesanan P
-            WHERE YEAR(P.TANGGAL_{$tanggal})=YEAR(CURDATE())
-                AND MONTH(P.TANGGAL_{$tanggal})=MONTH(CURDATE())
+            WHERE YEAR(P.tanggal_{$tanggal})=YEAR(CURDATE())
+                AND MONTH(P.tanggal_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
@@ -456,14 +456,14 @@ class Laundry extends CI_Model {
         $result = $query->row();
         return $result->count;
     }
-    function getOutstandingPesanan($belum="LUNAS"){
+    function getOutstandingPesanan($belum="lunas"){
         $belum = strtoupper($belum);
-        if (!$belum) $belum = "LUNAS";
+        if (!$belum) $belum = "lunas";
         
         $sql = "
-            SELECT COUNT(*) AS COUNT
+            SELECT COUNT(*) AS count
             FROM pesanan P
-            WHERE TANGGAL_{$belum} IS NULL";
+            WHERE tanggal_{$belum} IS NULL";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
@@ -471,29 +471,29 @@ class Laundry extends CI_Model {
         return $result->count;
     }
     
-    function getMonthlyPaketSells($tanggal="PESANAN", $lunas=null, $month=null, $idCustomer=null){
+    function getMonthlyPaketSells($tanggal="pesanan", $lunas=null, $month=null, $idCustomer=null){
         $tanggal = strtoupper($tanggal);
         $monthDivider = $month ? "/{$month}" : "";
-        $monthQuery = $month ? " AND P.TANGGAL_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
-        if($tanggal == "LUNAS") $lunas = true;
+        $monthQuery = $month ? " AND P.tanggal_{$tanggal} > CURDATE() - INTERVAL {$month} MONTH" : "";
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
-        $customerQuery = $idCustomer ? " AND P.ID_CUSTOMER={$idCustomer}" : "";
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
+        $customerQuery = $idCustomer ? " AND P.id_customer={$idCustomer}" : "";
         $sql = "
             SELECT 
-                PK.ID_PAKET,
-                PK.PAKET,
-                COUNT(*){$monthDivider} AS JUMLAH,
-                SUM(QTY){$monthDivider} AS TOTAL
+                PK.id_paket,
+                PK.paket,
+                COUNT(*){$monthDivider} AS jumlah,
+                SUM(QTY){$monthDivider} AS total
             FROM item_pesanan IP, paket PK, pesanan P
-            WHERE IP.ID_PAKET=PK.ID_PAKET
-                AND IP.ID_PESANAN=P.ID_PESANAN
+            WHERE IP.id_paket=PK.id_paket
+                AND IP.id_pesanan=P.id_pesanan
                 {$customerQuery}
                 {$monthQuery}
                 {$lunasQuery}
-            GROUP BY PK.ID_PAKET, PK.PAKET
-            ORDER BY PK.ID_PAKET";
+            GROUP BY PK.id_paket, PK.paket
+            ORDER BY PK.id_paket";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql);
         
@@ -506,19 +506,19 @@ class Laundry extends CI_Model {
         $month = escape($month);
         $sql = "
             SELECT
-                PK.ID_PAKET,
-                PK.PAKET,
-                U.UNIT,
-                COUNT(*) AS JUMLAH_PESANAN,
-                SUM(IP.QTY) AS JUMLAH_ITEM,
-                SUM(IP.HARGA) AS TOTAL
+                PK.id_paket,
+                PK.paket,
+                U.unit,
+                COUNT(*) AS jumlah_pesanan,
+                SUM(IP.QTY) AS jumlah_item,
+                SUM(IP.HARGA) AS total
             FROM paket PK, item_pesanan IP, pesanan P, unit U
-            WHERE PK.ID_PAKET=IP.ID_PAKET
-                AND IP.ID_PESANAN=P.ID_PESANAN
-                AND U.ID_UNIT=IP.ID_UNIT
-                AND YEAR(P.TANGGAL_PESANAN) = ?
-                AND MONTH(P.TANGGAL_PESANAN) = ?
-            GROUP BY PK.ID_PAKET, PK.PAKET, U.ID_UNIT";
+            WHERE PK.id_paket=IP.id_paket
+                AND IP.id_pesanan=P.id_pesanan
+                AND U.id_unit=IP.id_unit
+                AND YEAR(P.tanggal_pesanan) = ?
+                AND MONTH(P.tanggal_pesanan) = ?
+            GROUP BY PK.id_paket, PK.paket, U.id_unit";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
@@ -530,18 +530,18 @@ class Laundry extends CI_Model {
         $month = escape($month);
         $sql = "
             SELECT
-                C.ID_CUSTOMER,
-                C.NAMA_CUSTOMER,
-                COUNT(*) AS JUMLAH_PESANAN,
-                SUM(P.TOTAL) AS TOTAL,
-                SUM(COALESCE(K.POTONGAN,0)) AS KUPON
+                C.id_customer,
+                C.nama_customer,
+                COUNT(*) AS jumlah_pesanan,
+                SUM(P.total) AS total,
+                SUM(COALESCE(K.potongan,0)) AS kupon
             FROM customer C, pesanan P
             LEFT JOIN kupon K
-            ON P.ID_PESANAN=K.ID_PESANAN
-            WHERE P.ID_CUSTOMER=C.ID_CUSTOMER
-                AND YEAR(P.TANGGAL_PESANAN) = ?
-                AND MONTH(P.TANGGAL_PESANAN) = ?
-            GROUP BY C.ID_CUSTOMER, C.NAMA_CUSTOMER";
+            ON P.id_pesanan=K.id_pesanan
+            WHERE P.id_customer=C.id_customer
+                AND YEAR(P.tanggal_pesanan) = ?
+                AND MONTH(P.tanggal_pesanan) = ?
+            GROUP BY C.id_customer, C.nama_customer";
         $sql = mysqlToPostgres($sql);
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
