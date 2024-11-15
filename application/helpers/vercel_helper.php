@@ -5,6 +5,8 @@ if (!function_exists('mysqlToPostgres')) {
         $db = &get_instance()->db;
         if ($db->dbdriver !== "postgre")
             return $query;
+        // Replace backticks
+        $query = str_replace('`', '', $query);
         // Replace CURDATE() with CURRENT_DATE
         $query = preg_replace('/\bCURDATE\(\)/i', 'CURRENT_DATE', $query);
         // Replace INTERVAL X UNIT with INTERVAL 'X units', ensuring unit is plural
@@ -23,7 +25,7 @@ if (!function_exists('mysqlToPostgres')) {
         // Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
         //[\"?a-zA-Z0-9\-_,\.\s]
         
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"a-zA-Z0-9\-_,\.\s]+?)(?=\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$|\s))/i', function($matches) use ($schema) {
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"a-zA-Z0-9\-_,\.\s]+?)(?=\s*(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', function($matches) use ($schema) {
             // Split comma-separated tables
             $tables = explode(',', $matches[2]);
             foreach ($tables as &$table) {
@@ -47,8 +49,6 @@ if (!function_exists('mysqlToPostgres')) {
         $query = preg_replace('/DAYNAME\(([^)]+)\)/i', "TO_CHAR($1, 'Day')", $query);
         // Replace WEEKDAY(<column>) with EXTRACT(DOW FROM <column>)
         $query = preg_replace('/WEEKDAY\(([^)]+)\)/i', 'EXTRACT(DOW FROM $1)', $query);
-        // Replace backticks
-        $query = str_replace('`', '', $query);
 
         return $query;
     }
