@@ -54,7 +54,7 @@ class Grocery_crud_model  extends CI_Model  {
         if($this->table_name === null)
             return false;
 
-        $select = "`{$this->table_name}`.*";
+        $select = "\"{$this->table_name}\".*";
 
         //set_relation special queries
         if(!empty($this->relation))
@@ -76,7 +76,7 @@ class Grocery_crud_model  extends CI_Model  {
                 }
 
                 if($this->field_exists($related_field_title))
-                    $select .= ", `{$this->table_name}`.$related_field_title AS '{$this->table_name}.$related_field_title'";
+                    $select .= ", \"{$this->table_name}\".$related_field_title AS '{$this->table_name}.$related_field_title'";
             }
         }
 
@@ -85,6 +85,8 @@ class Grocery_crud_model  extends CI_Model  {
         {
             $select = $this->relation_n_n_queries($select);
         }
+
+        echo $select;
 
         $this->db->select($select, false);
 
@@ -133,7 +135,7 @@ class Grocery_crud_model  extends CI_Model  {
             //Sorry Codeigniter but you cannot help me with the subquery!
             $select .= ", (SELECT GROUP_CONCAT(DISTINCT $field) FROM $selection_table "
                 ."LEFT JOIN $relation_table ON $relation_table.$primary_key_alias_to_selection_table = $selection_table.$primary_key_selection_table "
-                ."WHERE $relation_table.$primary_key_alias_to_this_table = `{$this->table_name}`.$this_table_primary_key GROUP BY $relation_table.$primary_key_alias_to_this_table) AS $field_name";
+                ."WHERE $relation_table.$primary_key_alias_to_this_table = \"{$this->table_name}\".$this_table_primary_key GROUP BY $relation_table.$primary_key_alias_to_this_table) AS $field_name";
         }
 
         return $select;
@@ -437,7 +439,7 @@ class Grocery_crud_model  extends CI_Model  {
     function get_field_types_basic_table()
     {
         $db_field_types = array();
-        $sql = "SHOW COLUMNS FROM `{$this->table_name}`";
+        $sql = "SHOW COLUMNS FROM \"{$this->table_name}\"";
         $sql = mysqlToPostgres($sql);
         foreach($this->db->query($sql)->result() as $db_field_type)
         {

@@ -12,7 +12,7 @@ if (!function_exists('mysqlToPostgres')) {
 
         // Replace Show Columns
         $query = preg_replace(
-            '/SHOW\s+COLUMNS\s+FROM\s+([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', 
+            '/SHOW\s+COLUMNS\s+FROM\s+\"?([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)\"?(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', 
             "
             SELECT 
                 c.column_name AS \"Field\",
@@ -42,6 +42,8 @@ if (!function_exists('mysqlToPostgres')) {
             WHERE 
                 c.table_schema = '{$schema}' 
                 AND c.table_name = '$1';
+            ORDER BY 
+                c.ordinal_position;
             ", 
             $query
         );
@@ -54,7 +56,7 @@ if (!function_exists('mysqlToPostgres')) {
             foreach ($cols as &$col) {
                 $col = trim($col);
                 //add quotation mark to the last word
-                $col = preg_replace('/\b([A-Za-z_][A-Za-z0-9_]*)\b(?=\s*$)/i', '"$1"', $col);
+                $col = preg_replace('/\b\"?([A-Za-z_][A-Za-z0-9_]*)\"?\b(?=\s*$)/i', '"$1"', $col);
             }
             $cols = implode(', ', $cols);
             $rest = '';
