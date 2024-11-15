@@ -560,16 +560,17 @@ insert  into `paket`(`id_paket`,`paket`) values
 
 /*table structure for table `pengeluaran` */
 
-  `ID_PENGELUARAN` int(11) NOT NULL AUTO_INCREMENT,
-  `TANGGAL_PENGELUARAN` date NOT NULL,
-  `ITEM_PENGELUARAN` varchar(50) NOT NULL,
-  `JUMLAH_PENGELUARAN` int(11) NOT NULL,
-  PRIMARY KEY (`ID_PENGELUARAN`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+create table `pengeluaran` (
+  `id_pengeluaran` int(11) not null auto_increment,
+  `tanggal_pengeluaran` date not null,
+  `item_pengeluaran` varchar(50) not null,
+  `jumlah_pengeluaran` int(11) not null,
+  primary key (`id_pengeluaran`)
+) engine=innodb auto_increment=45 default charset=latin1;
 
-/*Data for the table `pengeluaran` */
+/*data for the table `pengeluaran` */
 
-insert  into `pengeluaran`(`ID_PENGELUARAN`,`TANGGAL_PENGELUARAN`,`ITEM_PENGELUARAN`,`JUMLAH_PENGELUARAN`) values 
+insert  into `pengeluaran`(`id_pengeluaran`,`tanggal_pengeluaran`,`item_pengeluaran`,`jumlah_pengeluaran`) values 
 (1,'2019-10-01','Elpiji? + aqua',37000),
 (2,'2019-10-01','Dry clean',77000),
 (3,'2019-10-02','Proklin',20000),
@@ -615,26 +616,26 @@ insert  into `pengeluaran`(`ID_PENGELUARAN`,`TANGGAL_PENGELUARAN`,`ITEM_PENGELUA
 (43,'2019-11-02','Kresek?',75000),
 (44,'2019-11-03','Proklin + Sunlight',25000);
 
-/*Table structure for table `pesanan` */
+/*table structure for table `pesanan` */
 
-CREATE TABLE `pesanan` (
-  `ID_PESANAN` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_CUSTOMER` int(11) NOT NULL,
-  `NOTA` int(11) DEFAULT NULL,
-  `TANGGAL_PESANAN` date DEFAULT NULL,
-  `TANGGAL_LUNAS` date DEFAULT NULL,
-  `TANGGAL_AMBIL` date DEFAULT NULL,
-  `SUBTOTAL` int(11) NOT NULL DEFAULT '0',
-  `TOTAL` int(11) NOT NULL DEFAULT '0',
-  `KETERANGAN` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID_PESANAN`),
-  KEY `FK_PESANAN_MEMILIKI__CUSTOMER` (`ID_CUSTOMER`),
-  CONSTRAINT `FK_PESANAN_MEMILIKI__CUSTOMER` FOREIGN KEY (`ID_CUSTOMER`) REFERENCES `customer` (`ID_CUSTOMER`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=latin1;
+create table `pesanan` (
+  `id_pesanan` int(11) not null auto_increment,
+  `id_customer` int(11) not null,
+  `nota` int(11) default null,
+  `tanggal_pesanan` date default null,
+  `tanggal_lunas` date default null,
+  `tanggal_ambil` date default null,
+  `subtotal` int(11) not null default '0',
+  `total` int(11) not null default '0',
+  `keterangan` varchar(255) default null,
+  primary key (`id_pesanan`),
+  key `fk_pesanan_memiliki__customer` (`id_customer`),
+  constraint `fk_pesanan_memiliki__customer` foreign key (`id_customer`) references `customer` (`id_customer`)
+) engine=innodb auto_increment=241 default charset=latin1;
 
-/*Data for the table `pesanan` */
+/*data for the table `pesanan` */
 
-insert  into `pesanan`(`ID_PESANAN`,`ID_CUSTOMER`,`NOTA`,`TANGGAL_PESANAN`,`TANGGAL_LUNAS`,`TANGGAL_AMBIL`,`SUBTOTAL`,`TOTAL`,`KETERANGAN`) values 
+insert  into `pesanan`(`id_pesanan`,`id_customer`,`nota`,`tanggal_pesanan`,`tanggal_lunas`,`tanggal_ambil`,`subtotal`,`total`,`keterangan`) values 
 (1,79,NULL,'2019-10-01','2019-10-04','2019-10-04',0,0,''),
 (2,90,NULL,'2019-10-01','2019-10-14','2019-10-14',0,0,''),
 (3,4,NULL,'2019-10-01','2019-10-10','2019-10-10',0,0,''),
@@ -878,6 +879,7 @@ insert  into `pesanan`(`ID_PESANAN`,`ID_CUSTOMER`,`NOTA`,`TANGGAL_PESANAN`,`TANG
 
 /*table structure for table `unit` */
 
+create table `unit` (
   `id_unit` int(11) not null auto_increment,
   `unit` varchar(16) not null,
   primary key (`id_unit`),
@@ -886,7 +888,7 @@ insert  into `pesanan`(`ID_PESANAN`,`ID_CUSTOMER`,`NOTA`,`TANGGAL_PESANAN`,`TANG
 
 /*data for the table `unit` */
 
-insert  into `unit`(`ID_UNIT`,`UNIT`) values 
+insert  into `unit`(`id_unit`,`unit`) values 
 (1,'Bed Cover'),
 (2,'CPR'),
 (3,'Da'),
@@ -905,76 +907,37 @@ insert  into `unit`(`ID_UNIT`,`UNIT`) values
 (16,'Tas'),
 (17,'Tikar');
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_INSERT_ITEM_KUPON` BEFORE INSERT ON `item_kupon` FOR EACH ROW BEGIN
-	IF EXISTS(
-		SELECT TRUE 
-		FROM pesanan P, kupon K 
-		WHERE P.ID_PESANAN=K.ID_PESANAN
-			AND P.ID_PESANAN=NEW.ID_PESANAN
-			AND K.ID_KUPON=NEW.ID_KUPON) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Pesanan tidak boleh menjadi kupon pesanan itu sendiri";
-	END IF;
-	IF NOT EXISTS(
-		SELECT TRUE 
-		FROM pesanan P
-		WHERE P.ID_PESANAN=NEW.ID_PESANAN
-			AND P.TANGGAL_LUNAS IS NOT NULL) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Kwitansi tidak ditemukan";
-	END IF;
-    END */$$
-
-
-DELIMITER ;
-
-/* Trigger structure for table `item_kupon` */
-
-DELIMITER $$
-
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_INSERT_KUPON` AFTER INSERT ON `item_kupon` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(NEW.ID_PESANAN);
-end */$$
-
-
-DELIMITER ;
-
-/* Trigger structure for table `item_kupon` */
-
-DELIMITER $$
-
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_UPDATE_ITEM_KUPON` BEFORE UPDATE ON `item_kupon` FOR EACH ROW BEGIN
-	IF EXISTS(
-		SELECT TRUE 
-		FROM pesanan P, kupon K 
-		WHERE P.ID_PESANAN=K.ID_PESANAN
-			AND P.ID_PESANAN=NEW.ID_PESANAN
-			AND K.ID_KUPON=NEW.ID_KUPON) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Pesanan tidak boleh menjadi kupon pesanan itu sendiri";
-	END IF;
-	IF NOT EXISTS(
-		SELECT TRUE 
-		FROM pesanan P
-		WHERE P.ID_PESANAN=NEW.ID_PESANAN
-			AND P.TANGGAL_LUNAS IS NOT NULL) THEN
-		SIGNAL SQLSTATE '45000' SET message_text = "Kwitansi tidak ditemukan";
-	END IF;
-    END */$$
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_insert_item_kupon` before insert on `item_kupon` for each row begin
+    if exists(
+        select true 
+        from pesanan p, kupon k 
+        where p.id_pesanan=k.id_pesanan
+            and p.id_pesanan=new.id_pesanan
+            and k.id_kupon=new.id_kupon) then
+        signal sqlstate '45000' set message_text = "pesanan tidak boleh menjadi kupon pesanan itu sendiri";
+    end if;
+    if not exists(
         select true 
         from pesanan p
         where p.id_pesanan=new.id_pesanan
+            and p.tanggal_lunas is not null) then
+        signal sqlstate '45000' set message_text = "kwitansi tidak ditemukan";
     end if;
+    end */$$
 
 
 delimiter ;
 
-/* Trigger structure for table `item_kupon` */
+/* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_update_kupon` after update on `item_kupon` for each row begin
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_insert_kupon` after insert on `item_kupon` for each row begin
+    call recalculate_total_item(new.id_pesanan);
 end */$$
 
 
@@ -982,26 +945,62 @@ delimiter ;
 
 /* trigger structure for table `item_kupon` */
 
-DELIMITER $$
+delimiter $$
 
-/*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `ON_DELETE_KUPON` AFTER DELETE ON `item_kupon` FOR EACH ROW begin
-    CALL RECALCULATE_TOTAL_ITEM(OLD.ID_PESANAN);
-end */$$
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_update_item_kupon` before update on `item_kupon` for each row begin
+    if exists(
+        select true 
+        from pesanan p, kupon k 
+        where p.id_pesanan=k.id_pesanan
+            and p.id_pesanan=new.id_pesanan
+            and k.id_kupon=new.id_kupon) then
+        signal sqlstate '45000' set message_text = "pesanan tidak boleh menjadi kupon pesanan itu sendiri";
+    end if;
+    if not exists(
+        select true 
+        from pesanan p
+        where p.id_pesanan=new.id_pesanan
+            and p.tanggal_lunas is not null) then
+        signal sqlstate '45000' set message_text = "kwitansi tidak ditemukan";
+    end if;
+    end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_pesanan` */
+/* trigger structure for table `item_kupon` */
 
+delimiter $$
 
-    CALL RECALCULATE_TOTAL_ITEM(NEW.ID_PESANAN);
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_update_kupon` after update on `item_kupon` for each row begin
     call recalculate_total_item(new.id_pesanan);
 end */$$
 
 
-DELIMITER ;
+delimiter ;
 
-/* Trigger structure for table `item_pesanan` */
+/* trigger structure for table `item_kupon` */
+
+delimiter $$
+
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_delete_kupon` after delete on `item_kupon` for each row begin
+    call recalculate_total_item(old.id_pesanan);
+end */$$
+
+
+delimiter ;
+
+/* trigger structure for table `item_pesanan` */
+
+delimiter $$
+
+/*!50003 create */ /*!50017 definer = 'root'@'localhost' */ /*!50003 trigger `on_insert_item_pesanan` after insert on `item_pesanan` for each row begin
+    call recalculate_total_item(new.id_pesanan);
+end */$$
+
+
+delimiter ;
+
 /* trigger structure for table `item_pesanan` */
 
 delimiter $$
@@ -1013,7 +1012,6 @@ end */$$
 
 delimiter ;
 
-/* Trigger structure for table `item_pesanan` */
 /* trigger structure for table `item_pesanan` */
 
 delimiter $$
@@ -1025,7 +1023,6 @@ end */$$
 
 delimiter ;
 
-/* Trigger structure for table `pengeluaran` */
 /* trigger structure for table `pengeluaran` */
 
 delimiter $$
@@ -1036,6 +1033,7 @@ if ( isnull(new.tanggal_pengeluaran) ) then
 end if */$$
 
 
+delimiter ;
 
 /* trigger structure for table `pesanan` */
 
@@ -1055,87 +1053,80 @@ delimiter $$
 
 /*!50003 create definer=`root`@`localhost` procedure `recalculate_total_item`(id_pesanan integer)
 begin
-            FROM item_pesanan ip 
-            WHERE ip.ID_PESANAN=ID_PESANAN
     update pesanan p
     set p.subtotal = (
             select sum(ip.harga) 
             from item_pesanan ip 
+            where ip.id_pesanan=id_pesanan
         ),
-            EXISTS(
         p.total = p.subtotal - if(
             exists(
+                select true
+                from kupon k
                 where k.id_pesanan=id_pesanan
             ), (
-                SELECT k.POTONGAN
                 select k.potongan
                 from kupon k
+                where k.id_pesanan=id_pesanan
             ), 0
         )
-    WHERE p.ID_PESANAN=ID_PESANAN;
     where p.id_pesanan=id_pesanan;
 end */$$
 delimiter ;
 
-/*Table structure for table `monthly_pemasukan_stats` */
+/*table structure for table `monthly_pemasukan_stats` */
 
-DROP TABLE IF EXISTS `monthly_pemasukan_stats`;
+drop table if exists `monthly_pemasukan_stats`;
 
- `JUMLAH` bigint(21) ,
 /*!50001 create table  `monthly_pemasukan_stats`(
- `bulan` int(2) ,
- `jumlah` bigint(21) ,
-)*/;
-
-/*Table structure for table `monthly_pengeluaran_stats` */
-/*table structure for table `monthly_pengeluaran_stats` */
-
-DROP TABLE IF EXISTS `monthly_pengeluaran_stats`;
-drop table if exists `monthly_pengeluaran_stats`;
-
- `TAHUN` int(4) ,
- `BULAN` int(2) ,
- `JUMLAH` bigint(21) ,
- `TOTAL` decimal(32,0) 
  `tahun` int(4) ,
  `bulan` int(2) ,
  `jumlah` bigint(21) ,
  `total` decimal(32,0) 
 )*/;
 
-/*Table structure for table `pesanan_customer` */
+/*table structure for table `monthly_pengeluaran_stats` */
 
-DROP TABLE IF EXISTS `pesanan_customer`;
+drop table if exists `monthly_pengeluaran_stats`;
+
+/*!50001 create table  `monthly_pengeluaran_stats`(
+ `tahun` int(4) ,
+ `bulan` int(2) ,
+ `jumlah` bigint(21) ,
+ `total` decimal(32,0) 
+)*/;
+
+/*table structure for table `pesanan_customer` */
+
 drop table if exists `pesanan_customer`;
 
- `ID_PESANAN` int(11) ,
- `TANGGAL_PESANAN` date ,
- `TANGGAL_LUNAS` date ,
- `NAMA_CUSTOMER` varchar(50) 
 /*!50001 create table  `pesanan_customer`(
  `id_pesanan` int(11) ,
+ `id_customer` int(11) ,
  `tanggal_pesanan` date ,
  `tanggal_lunas` date ,
+ `tanggal_ambil` date ,
  `subtotal` int(11) ,
  `total` int(11) ,
+ `keterangan` varchar(255) ,
  `nama_customer` varchar(50) 
 )*/;
 
 /*view structure for view monthly_pemasukan_stats */
 
-/*!50001 DROP TABLE IF EXISTS `monthly_pemasukan_stats` */;
+/*!50001 drop table if exists `monthly_pemasukan_stats` */;
+/*!50001 create algorithm=undefined definer=`root`@`localhost` sql security definer view `monthly_pemasukan_stats` as (select year(`p`.`tanggal_lunas`) as `tahun`,month(`p`.`tanggal_lunas`) as `bulan`,count(0) as `jumlah`,sum(`p`.`total`) as `total` from `pesanan` `p` where (`p`.`tanggal_lunas` is not null) group by year(`p`.`tanggal_lunas`),month(`p`.`tanggal_lunas`) order by year(`p`.`tanggal_lunas`) desc,month(`p`.`tanggal_lunas`) desc) */;
 
 /*view structure for view monthly_pengeluaran_stats */
 
-/*!50001 DROP TABLE IF EXISTS `monthly_pengeluaran_stats` */;
 /*!50001 drop table if exists `monthly_pengeluaran_stats` */;
+/*!50001 create algorithm=undefined definer=`root`@`localhost` sql security definer view `monthly_pengeluaran_stats` as (select year(`pl`.`tanggal_pengeluaran`) as `tahun`,month(`pl`.`tanggal_pengeluaran`) as `bulan`,count(0) as `jumlah`,sum(`pl`.`jumlah_pengeluaran`) as `total` from `pengeluaran` `pl` group by year(`pl`.`tanggal_pengeluaran`),month(`pl`.`tanggal_pengeluaran`) order by year(`pl`.`tanggal_pengeluaran`) desc,month(`pl`.`tanggal_pengeluaran`) desc) */;
 
 /*view structure for view pesanan_customer */
 
 /*!50001 drop table if exists `pesanan_customer` */;
 /*!50001 create algorithm=undefined definer=`root`@`localhost` sql security definer view `pesanan_customer` as (select `p`.`id_pesanan` as `id_pesanan`,`p`.`id_customer` as `id_customer`,`p`.`tanggal_pesanan` as `tanggal_pesanan`,`p`.`tanggal_lunas` as `tanggal_lunas`,`p`.`tanggal_ambil` as `tanggal_ambil`,`p`.`subtotal` as `subtotal`,`p`.`total` as `total`,`p`.`keterangan` as `keterangan`,`c`.`nama_customer` as `nama_customer` from (`pesanan` `p` join `customer` `c`) where (`p`.`id_customer` = `c`.`id_customer`)) */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40101 set sql_mode=@old_sql_mode */;
 /*!40014 set foreign_key_checks=@old_foreign_key_checks */;
 /*!40014 set unique_checks=@old_unique_checks */;
