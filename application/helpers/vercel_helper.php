@@ -2,7 +2,8 @@
 
 if (!function_exists('mysqlToPostgres')) {
     function mysqlToPostgres($query){
-        if ($this->db->dbdriver !== "postgre")
+        $db = &get_instance()->db;
+        if ($db->dbdriver !== "postgre")
             return $query;
         // Replace CURDATE() with CURRENT_DATE
         $query = preg_replace('/\bCURDATE\(\)/i', 'CURRENT_DATE', $query);
@@ -16,8 +17,8 @@ if (!function_exists('mysqlToPostgres')) {
             return "INTERVAL '{$matches[1]} $unit'";
         }, $query);
 
-        //\"{$this->db->schema}\"
-        $schema = &get_instance()->db->schema;  // Replace with your dynamic schema name
+        //\"{$->schema}\"
+        $schema = $db->schema;  // Replace with your dynamic schema name
 
         // Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
         //[\"?a-zA-Z0-9\-_,\.\s]
