@@ -12,25 +12,75 @@ if (!function_exists('mysqlToPostgres')) {
 
         // Replace Show Columns
         $query = preg_replace(
-            '/SHOW\s+COLUMNS\s+FROM\s+([\`\'\"a-zA-Z0-9\-_,\s]+?)(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', 
-            "SELECT column_name FROM information_schema.columns WHERE table_schema = '{$schema}' AND table_name = '$1'", 
+            '/SHOW\s+COLUMNS\s+FROM\s+([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', 
+            "
+            SELECT 
+                c.column_name AS \"Field\",
+                c.data_type AS \"Type\",
+                c.is_nullable AS \"Null\",
+                CASE 
+                    WHEN tc.constraint_type = 'PRIMARY KEY' THEN 'PRI'
+                    WHEN tc.constraint_type = 'UNIQUE' THEN 'UNI'
+                    WHEN tc.constraint_type = 'FOREIGN KEY' THEN 'MUL'
+                    ELSE ''
+                END AS \"Key\",
+                c.column_default AS \"Default\",
+                CASE 
+                    WHEN c.is_identity = 'YES' THEN 'auto_increment'
+                    ELSE ''
+                END AS \"Extra\"
+            FROM 
+                information_schema.columns c
+            LEFT JOIN 
+                information_schema.key_column_usage kcu 
+                ON c.table_schema = kcu.table_schema 
+                AND c.table_name = kcu.table_name 
+                AND c.column_name = kcu.column_name
+            LEFT JOIN 
+                information_schema.table_constraints tc 
+                ON kcu.constraint_name = tc.constraint_name
+            WHERE 
+                c.table_schema = '{$schema}' 
+                AND c.table_name = '$1';
+            ", 
             $query
         );
 
-        // Step 1: Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
-        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"a-zA-Z0-9\-_,\s]+?)(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', function($matches) use ($schema) {
+
+        // Wrap select column name in quotation marks
+        $query = preg_replace_callback('/\bSELECT\s+([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)(?=$|\;|\s+(FROM|\;|$))/i', function($matches) use ($schema) {
+            // Split comma-separated cols
+            $cols = explode(',', $matches[1]);
+            foreach ($cols as &$col) {
+                $col = trim($col);
+                //add quotation mark to the last word
+                $col = preg_replace('/\b([A-Za-z_][A-Za-z0-9_]*)\b(?=\s*$)/i', '"$1"', $col);
+            }
+            $cols = implode(', ', $cols);
+            $rest = '';
+            //$rest = $matches[2] ? "{$matches[2]} {$rest}" : $rest;
+            //$rest = $matches[3] ? "{$matches[3]} {$rest}" : $rest;
+            return "SELECT {$cols} {$rest}";
+        }, $query);
+
+
+        // Add schema name to tables in FROM, JOIN, LEFT JOIN, RIGHT JOIN clauses (only once per table name)
+        $query = preg_replace_callback('/\b(FROM|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN)\s+([\`\'\"a-zA-Z0-9\-_,\(\)\s]+?)(?=$|\;|\s+(ON|WHERE|HAVING|LIMIT|OFFSET|JOIN|LEFT\s+JOIN|RIGHT\s+JOIN|\;|$))/i', function($matches) use ($schema) {
             // Split comma-separated tables
             $tables = explode(',', $matches[2]);
             foreach ($tables as &$table) {
                 // Trim spaces and add schema to each table name
                 $table = trim($table);
-                $table = '"' . $schema . '".' . $table;
+                $table = "\"{$schema}\".{$table}";
             }
             $tables = implode(', ', $tables);
-            return "{$matches[1]} \"{$schema}\".{$tables}";
+            $rest = '';
+            //$rest = $matches[3] ? "{$matches[3]} {$rest}" : $rest;
+            //$rest = $matches[4] ? "{$matches[4]} {$rest}" : $rest;
+            return "{$matches[1]} {$tables} {$rest}";
         }, $query);
 
-        // Step 2: Remove duplicate schema occurrences
+        // Remove duplicate schema occurrences
         $query = str_replace("\"{$schema}\".\"{$schema}\"", "\"{$schema}\"", $query);
         $query = str_replace("\"{$schema}\".\"{$schema}\"", "\"{$schema}\"", $query);
 
