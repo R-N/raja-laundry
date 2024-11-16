@@ -248,6 +248,12 @@ $config['log_threshold'] = 0;
 |
 */
 $config['log_path'] = '';
+if (ENVIRONMENT == 'production'){
+    $config['log_path'] = $_SERVER['DOCUMENT_ROOT'];
+    if (!is_dir($config['log_path'])){
+        $config['log_path'] = '';
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
