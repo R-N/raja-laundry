@@ -101,6 +101,6 @@ $route['default_controller'] = 'Main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['welcome'] = 'welcome/index';
-$route['welcome/(:any)'] = 'welcome/$1';
-$route['test'] = 'hungna/test';
+// $route['welcome'] = 'welcome/index';
+// $route['welcome/(:any)'] = 'welcome/$1';
+// $route['test'] = 'hungna/test';
