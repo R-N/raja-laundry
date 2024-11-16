@@ -73,7 +73,8 @@ switch (ENVIRONMENT) {
         break;
     case 'testing':
     case 'production':
-        error_reporting(E_ALL & ~E_WARNING);
+        //error_reporting(E_ALL & ~E_WARNING);
+        error_reporting(-1);
         ini_set('log_errors', 1); 
         ini_set('display_errors', 1);
         ini_set('error_log', $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'error.log'); // Specify the log file location
