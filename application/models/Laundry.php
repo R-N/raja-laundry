@@ -23,7 +23,7 @@ class Laundry extends CI_Model {
     
     function getIdCustomerPesanan($idPesanan){
         $sql =  "SELECT id_customer FROM pesanan WHERE id_pesanan=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -37,7 +37,7 @@ class Laundry extends CI_Model {
     }
     function getCustomer($idCustomer){
         $sql =  "SELECT * FROM customer WHERE id_customer=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idCustomer));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -46,7 +46,7 @@ class Laundry extends CI_Model {
     }
     function getIdPesananItem($idItem){
         $sql =  "SELECT id_pesanan FROM pesanan WHERE id_item=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idItem));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -55,7 +55,7 @@ class Laundry extends CI_Model {
     }
     function getIdPesananKupon($idKupon){
         $sql =  "SELECT id_pesanan FROM kupon WHERE id_kupon=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idKupon));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -64,7 +64,7 @@ class Laundry extends CI_Model {
     }
     function getPesanan($idPesanan){
         $sql =  "SELECT * FROM pesanan WHERE id_pesanan=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -73,7 +73,7 @@ class Laundry extends CI_Model {
     }
     function getIdKuponItem($idItem){
         $sql =  "SELECT id_kupon FROM item_kupon WHERE id_pesanan=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idItem));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -82,7 +82,7 @@ class Laundry extends CI_Model {
     }
     function getKupon($idKupon){
         $sql =  "SELECT * FROM kupon WHERE id_kupon=?;";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($idPesanan));
         if($query->num_rows() == 0) return null;
         $result = $query->row();
@@ -111,7 +111,7 @@ class Laundry extends CI_Model {
                 {$monthQuery}
             GROUP BY WEEKDAY(tanggal_{$tanggal}), DAYNAME(tanggal_{$tanggal})
             ORDER BY WEEKDAY(tanggal_{$tanggal})";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -138,7 +138,7 @@ class Laundry extends CI_Model {
             GROUP BY C.id_customer, C.nama_customer
             ORDER BY COUNT(*){$monthDivider} DESC
             {$limitQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
@@ -165,7 +165,7 @@ class Laundry extends CI_Model {
             GROUP BY C.id_customer, C.nama_customer
             ORDER BY SUM(P.total){$monthDivider} DESC
             {$limitQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->result();
@@ -194,7 +194,7 @@ class Laundry extends CI_Model {
             GROUP BY YEAR(P.tanggal_{$tanggal}),MONTH(P.tanggal_{$tanggal})
             ORDER BY YEAR(P.tanggal_{$tanggal})ASC,MONTH(P.tanggal_{$tanggal}) ASC
             {$limitQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         $result0 = $query->result();
         $result = array();
@@ -252,7 +252,7 @@ class Laundry extends CI_Model {
             WHERE P.tahun IS NULL
             ORDER BY tahun ASC, bulan ASC
             {$limitQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         $result0 = $query->result();
         $result = array();
@@ -308,7 +308,7 @@ class Laundry extends CI_Model {
             WHERE P.tahun IS NULL
             ORDER BY tahun ASC, bulan ASC
             {$limitQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         $result0 = $query->result();
         
@@ -362,7 +362,7 @@ class Laundry extends CI_Model {
             WHERE TRUE
                 {$monthQuery}
                 {$lunasQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -377,7 +377,7 @@ class Laundry extends CI_Model {
             FROM pengeluaran PL
             WHERE TRUE  
             {$monthQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -396,7 +396,7 @@ class Laundry extends CI_Model {
             WHERE YEAR(P.tanggal_{$tanggal})=YEAR(CURDATE())
                 AND MONTH(P.tanggal_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -408,7 +408,7 @@ class Laundry extends CI_Model {
             FROM pengeluaran PL
             WHERE YEAR(PL.tanggal_pengeluaran)=YEAR(CURDATE())
                 AND MONTH(PL.tanggal_pengeluaran)=MONTH(CURDATE())";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -431,7 +431,7 @@ class Laundry extends CI_Model {
             WHERE TRUE
                 {$monthQuery}
                 {$lunasQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -450,7 +450,7 @@ class Laundry extends CI_Model {
             WHERE YEAR(P.tanggal_{$tanggal})=YEAR(CURDATE())
                 AND MONTH(P.tanggal_{$tanggal})=MONTH(CURDATE())
                 {$lunasQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -464,7 +464,7 @@ class Laundry extends CI_Model {
             SELECT COUNT(*) AS count
             FROM pesanan P
             WHERE tanggal_{$belum} IS NULL";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->row();
@@ -494,7 +494,7 @@ class Laundry extends CI_Model {
                 {$lunasQuery}
             GROUP BY PK.id_paket, PK.paket
             ORDER BY PK.id_paket";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         
         $result = $query->result();
@@ -519,7 +519,7 @@ class Laundry extends CI_Model {
                 AND YEAR(P.tanggal_pesanan) = ?
                 AND MONTH(P.tanggal_pesanan) = ?
             GROUP BY PK.id_paket, PK.paket, U.id_unit";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
         return $result;
@@ -542,7 +542,7 @@ class Laundry extends CI_Model {
                 AND YEAR(P.tanggal_pesanan) = ?
                 AND MONTH(P.tanggal_pesanan) = ?
             GROUP BY C.id_customer, C.nama_customer";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
         return $result;
@@ -554,46 +554,46 @@ class Laundry extends CI_Model {
         $sql = "
             SELECT 
                 P.*,
-                C.NAMA_CUSTOMER,
-                P.SUBTOTAL-P.TOTAL AS POTONGAN
+                C.nama_customer,
+                P.subtotal-P.total AS potongan
             FROM pesanan P, customer C
             WHERE P.ID_CUSTOMER=C.ID_CUSTOMER
-                AND YEAR(P.TANGGAL_PESANAN) = ?
-                AND MONTH(P.TANGGAL_PESANAN) = ?";
-        $sql = mysqlToPostgres($sql);
+                AND YEAR(P.tanggal_pesanan) = ?
+                AND MONTH(P.tanggal_pesanan) = ?";
+        
         $query = $this->db->query($sql, array($year, $month));
         $result = $query->result();
         return $result;
     }
     
-    function getYears($tanggal="PESANAN", $lunas=null){
+    function getYears($tanggal="pesanan", $lunas=null){
         $tanggal = strtoupper($tanggal);
-        if($tanggal == "LUNAS") $lunas = true;
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         $sql = "
-            SELECT DISTINCT YEAR(P.TANGGAL_{$tanggal}) AS TAHUN
+            SELECT DISTINCT YEAR(P.tanggal_{$tanggal}) AS tahun
             FROM pesanan P
             WHERE TRUE
                 {$lunasQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;
     }
-    function getMonths($year, $tanggal="PESANAN", $lunas=null){
+    function getMonths($year, $tanggal="pesanan", $lunas=null){
         $tanggal = strtoupper($tanggal);
-        if($tanggal == "LUNAS") $lunas = true;
+        if($tanggal == "lunas") $lunas = true;
         $lunasQuery = $lunas == null ? "" : 
-            ($lunas == true ? " AND P.TANGGAL_LUNAS IS NOT NULL"
-                : " AND P.TANGGAL_LUNAS IS NULL");
+            ($lunas == true ? " AND P.tanggal_lunas IS NOT NULL"
+                : " AND P.tanggal_lunas IS NULL");
         $sql = "
-            SELECT DISTINCT MONTH(P.TANGGAL_{$tanggal}) AS BULAN
+            SELECT DISTINCT MONTH(P.tanggal_{$tanggal}) AS bulan
             FROM pesanan P
-            WHERE YEAR(P.TANGGAL_{$tanggal}) = ?
+            WHERE YEAR(P.tanggal_{$tanggal}) = ?
                 {$lunasQuery}";
-        $sql = mysqlToPostgres($sql);
+        
         $query = $this->db->query($sql, array($year));
         $result = $query->result();
         return $result;

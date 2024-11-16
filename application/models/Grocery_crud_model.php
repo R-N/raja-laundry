@@ -438,7 +438,7 @@ class Grocery_crud_model  extends CI_Model  {
     {
         $db_field_types = array();
         $sql = "SHOW COLUMNS FROM {$this->table_name}";
-        $sql = mysqlToPostgres($sql);
+        
         foreach($this->db->query($sql)->result() as $db_field_type)
         {
             $type = explode("(",$db_field_type->Type);
