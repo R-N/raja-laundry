@@ -96,6 +96,7 @@ class Main extends HungNG_CI_Base_Controllers {
     
     
     public function pesanan($idCustomer='', $op='', $idPesanan=''){
+        $this->output->enable_profiler(TRUE);
         try{
             if(!is_numeric($idCustomer) && $idCustomer != ''){
                 $idPesanan = $op;
