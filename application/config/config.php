@@ -237,6 +237,9 @@ $config['allow_get_array'] = TRUE;
 |
 */
 $config['log_threshold'] = 0;
+if (ENVIRONMENT == 'production'){
+    $config['log_threshold'] = 1;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -248,6 +251,12 @@ $config['log_threshold'] = 0;
 |
 */
 $config['log_path'] = '';
+if (ENVIRONMENT == 'production'){
+    $config['log_path'] = $_SERVER['DOCUMENT_ROOT'];
+    if (!is_dir($config['log_path'])){
+        $config['log_path'] = '';
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -400,7 +409,9 @@ $config['sess_cookie_name'] = sha1(
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
-if (ENVIRONMENT === 'development') {
+if (ENVIRONMENT == "production"){
+    $config['sess_save_path'] = sys_get_temp_dir();
+}else{
     $config['sess_save_path'] = __DIR__ . '/../../storage/ci_sessions/';
 }
 $config['sess_match_ip'] = TRUE;
