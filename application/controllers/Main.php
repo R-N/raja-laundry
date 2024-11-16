@@ -54,7 +54,6 @@ class Main extends HungNG_CI_Base_Controllers {
     }
     
     public function customer($op='', $idCustomer='', $month=3){
-        $this->output->enable_profiler(TRUE);
         try{
             $crud = new grocery_CRUD();
 
@@ -97,7 +96,6 @@ class Main extends HungNG_CI_Base_Controllers {
     
     
     public function pesanan($idCustomer='', $op='', $idPesanan=''){
-        $this->output->enable_profiler(TRUE);
         try{
             if(!is_numeric($idCustomer) && $idCustomer != ''){
                 $idPesanan = $op;
@@ -378,7 +376,6 @@ class Main extends HungNG_CI_Base_Controllers {
     }
 
     public function pengeluaran($op='', $idPengeluaran=''){
-        $this->output->enable_profiler(TRUE);
         try{
             $crud = new grocery_CRUD();
 
@@ -404,7 +401,6 @@ class Main extends HungNG_CI_Base_Controllers {
         }
     }
     public function laporan($laporan='customer', $tahun='', $bulan=''){
-        $this->output->enable_profiler(TRUE);
         if($tahun == '' || !$tahun){
             $tahun = date('Y');
         }
