@@ -30,7 +30,7 @@ class MY_Loader extends HungNG_Loader
         }
 
         $driver = config_item( 'subclass_prefix' ) . 'DB_' . $db->dbdriver . '_driver';
-        $dirs = array("libraries", "core");
+        $dirs = array("libraries", "core", "database", "database/drivers");
         foreach ($dirs as $dir){
             $file = APPPATH . "{$dir}/{$driver}.php";
     
