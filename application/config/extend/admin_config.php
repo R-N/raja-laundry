@@ -11,5 +11,5 @@ $config['admin_config_basic_auth'] = [
     'serviceId' => 'CodeIgniter skeleton on Vercel',
     'framework' => 'CodeIgniter v' . CI_VERSION,
     'username' => 'admin',
-    'password' => ''
+    'password' => 'admin'
 ];
