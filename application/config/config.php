@@ -237,6 +237,9 @@ $config['allow_get_array'] = TRUE;
 |
 */
 $config['log_threshold'] = 0;
+if (ENVIRONMENT == 'production'){
+    $config['log_threshold'] = 1;
+}
 
 /*
 |--------------------------------------------------------------------------
