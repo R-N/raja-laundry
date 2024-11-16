@@ -1,6 +1,6 @@
 /*
 sqlyog ultimate v13.1.1 (64 bit)
-mysql - 10.1.34-mariadb : database - raja-laundry
+mysql - 10.1.34-mariadb : database - raja_laundry
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ mysql - 10.1.34-mariadb : database - raja-laundry
 /*!40014 set @old_foreign_key_checks=@@foreign_key_checks, foreign_key_checks=0 */;
 /*!40101 set @old_sql_mode=@@sql_mode, sql_mode='no_auto_value_on_zero' */;
 /*!40111 set @old_sql_notes=@@sql_notes, sql_notes=0 */;
-create database /*!32312 if not exists*/`raja-laundry` /*!40100 default character set latin1 */;
+create database /*!32312 if not exists*/`raja_laundry` /*!40100 default character set latin1 */;
 
-use `raja-laundry`;
+use `raja_laundry`;
 
 /*table structure for table `customer` */
 
