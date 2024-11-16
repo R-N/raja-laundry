@@ -400,12 +400,14 @@ $config['sess_cookie_name'] = sha1(
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
-if (ENVIRONMENT === 'development') {
-    $config['sess_save_path'] = __DIR__ . '/../../storage/ci_sessions/';
-}
+$config['sess_save_path'] = __DIR__ . '/../../storage/ci_sessions/';
 $config['sess_match_ip'] = TRUE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
+
+if (!is_dir($config['sess_save_path'])){
+    $config['sess_save_path'] = sys_get_temp_dir();
+}
 
 /*
 |--------------------------------------------------------------------------
