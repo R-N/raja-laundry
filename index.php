@@ -260,7 +260,6 @@ if (is_dir($application_folder)) {
 }
 
 define('APPPATH', $application_folder . DIRECTORY_SEPARATOR);
-echo APPPATH;
 
 // The path to the "views" directory
 if ( ! isset($view_folder[0]) && is_dir(APPPATH . 'views' . DIRECTORY_SEPARATOR)) {
